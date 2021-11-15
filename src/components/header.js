@@ -34,7 +34,7 @@ function Header() {
                 <nav>
                     <ul className="gnb">
                         <li className="text"><a href="">스터디관리</a></li>
-                        <li className="icon"><a href=""><img src="img/user_circle.svg"></img></a></li>
+                        <li className="icon"><a href=""><img src="img/icon/user_circle.svg"></img></a></li>
                     </ul>
                 </nav>
             </div>
