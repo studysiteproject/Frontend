@@ -1,0 +1,78 @@
+@import './base.css';
+
+.Header{
+	
+    width: 80%;
+	height: 80px;
+    margin: auto;
+
+    padding: 30px;
+    position: relative;
+    top: 20px;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+    background: #FFFFFF;
+
+}
+
+.logo-div{
+    display: flex;
+    align-items: center;
+    padding: 0px;
+
+    position: static;
+    left: 30px;
+    top: 15px;
+
+    flex: none;
+    flex-grow: 0;
+}
+.logo-img{
+    position: static;
+    width: 80px;
+    height: 68px;
+    left: 0px;
+    top: 0px;
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 0px;
+}
+
+.gnb{
+    /* Auto Layout */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    position: static;
+
+    top: 25px;
+    right: 30px;
+
+    padding: 24px;
+
+}
+
+.text{
+
+    /* poppins/title_15 */
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.15px;
+
+    margin: 0px 24px;
+}
