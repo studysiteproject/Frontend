@@ -1,21 +1,21 @@
 @import './base.css';
 
 .Header{
-	
     width: 80%;
 	height: 80px;
     margin: auto;
 
     padding: 30px;
     position: relative;
-    top: 20px;
 
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 
-    background: #FFFFFF;
+    margin-top: 20px;
+    margin-bottom: 20px;
 
+    background: #FFFFFF;
 }
 
 .logo-div{
@@ -61,7 +61,6 @@
 }
 
 .text{
-
     /* poppins/title_15 */
     font-style: normal;
     font-weight: normal;
