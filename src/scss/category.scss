@@ -1,0 +1,100 @@
+@import "./base.scss";
+
+.Category{
+    width: 80%;
+
+    margin: auto;
+    padding: 0px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: #FFFFFF;
+}
+
+.category-items{
+    
+    // category-items 컴포넌트에 대한 설정
+    width: 100%;
+
+    margin: auto;
+    padding: 0px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    // 선택된 item 일 때 (하위 컴포넌트가 category-item-select)
+    .category-item-select{
+        @extend .category-item-default;
+
+        .category-item-text{
+            @extend .category-item-text-default;
+            color: #000000;
+        }
+        .category-item-mark{
+            @extend .category-item-mark-default;
+            background: #2D89DF;
+        }
+    }
+
+    // 선택되지 않은 item 일 때 (하위 컴포넌트가 category-item)
+    .category-item{
+        @extend .category-item-default;
+
+        .category-item-text{
+            @extend .category-item-text-default;
+            color: #5A5A5A;
+        }
+        .category-item-mark{
+            @extend .category-item-mark-default;
+            background: none;
+        }
+    }
+
+}
+
+.category-item-default{
+    width: 100%;
+    height: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.category-item-text-default{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0.1px;
+    // color: #000000;
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 10px;
+}
+
+.category-item-mark-default{
+    width: 100%;
+    height: 5px;
+    // background: #2D89DF;
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+// 컴포넌트 간 구분을 위한 선
+.category-line{
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.2);
+}

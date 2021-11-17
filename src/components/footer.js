@@ -1,4 +1,4 @@
-import '../css/footer.css'
+import '../scss/footer.scss'
 
 import Member from './member';
 

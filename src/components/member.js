@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import '../css/member.css'
+import '../scss/member.scss'
 
 var member = [
-  {
+    {
       id : 1,
       name : "김동연",
       email : "dongyeon1201@gmail.com",
@@ -27,7 +27,7 @@ function Member() {
     return (
         <div className="Member">
             {
-                member.map(function(item){
+                member.map((item) => {
                     return(
                         <div>
                             <ul className="MemberView">
