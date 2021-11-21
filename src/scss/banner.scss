@@ -1,0 +1,46 @@
+@import './base.scss';
+
+.Banner{
+
+    width: 100%;
+    height: 280px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #BFE0FF;
+}
+
+.Banner-Text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0px;
+
+    margin: 0px 100px;
+}
+
+.Banner-Text-title{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 33px;
+    line-height: 49px;
+
+    display: flex;
+    letter-spacing: 0.25px;
+
+    color: #000000;
+}
+
+.Banner-Text-caption{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+
+    display: flex;
+    letter-spacing: 0.4px;
+
+    color: #000000;
+}

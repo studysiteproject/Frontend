@@ -1,4 +1,5 @@
-import '../css/header.css'
+import '../scss/header.scss'
+import { Link } from 'react-router-dom';
 
 const getCookieValue = (key) => {
     let cookieKey = key + "="; 
@@ -16,42 +17,45 @@ const getCookieValue = (key) => {
       }
     }
     return result;
-  }
+}
 
 function Header() {
 
     let access_token_exits = getCookieValue("access") ? true : false
     let user_index = getCookieValue("access") ? true : false
 
+    // 로그인 된 상태일 때
     if (access_token_exits && user_index){
         return (
             <div className="Header">
                 <div className="logo-div">
-                    <a href="#">
+                    <Link to="/">
                         <img className="logo-img" src="img/docker.svg"></img>
-                    </a>
+                    </Link>
                 </div>
                 <nav>
                     <ul className="gnb">
-                        <li className="text"><a href="">스터디관리</a></li>
-                        <li className="icon"><a href=""><img src="img/icon/user_circle.svg"></img></a></li>
+                        <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>스터디관리</Link></li>
+                        <li className="icon"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}><img src="img/icon/user_circle.svg"></img></Link></li>
                     </ul>
                 </nav>
             </div>
         );
     }
+
+    // 로그인이 되지 않은 상태일 때
     else{
         return (
             <div className="Header">
                 <div className="logo-div">
-                    <a href="#">
+                    <Link to="/">
                         <img className="logo-img" src="img/docker.svg"></img>
-                    </a>
+                    </Link>
                 </div>
                 <nav>
                     <ul className="gnb">
-                        <li className="text"><a href="">회원가입</a></li>
-                        <li className="text"><a href="">로그인</a></li>
+                        <li className="text"><Link to="/123" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
+                        <li className="text"><Link to="/123" style={{ textDecoration: 'none', color: '#222222' }}>로그인</Link></li>
                     </ul>
                 </nav>
             </div>
