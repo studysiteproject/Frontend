@@ -21,33 +21,3 @@ export function SetListAPI(){
     }
     
 }
-
-// let fileUploadHandler = ()=>{
-//     const fd = new FormData();
-
-//     let header ={
-//       Cookie: document.cookie
-//     }
-
-//     fd.append('image', selectFile, selectFile.name);
-//     axios.post('http://localhost:8000/profile/image',fd, { headers: header, withCredentials: true, credentials: "include" })
-//       .then(res => {
-//         console.log(res);
-//       });
-// }
-
-// let loginHandler = ()=>{
-
-//     let data = {
-//         user_id: id,
-//         user_pw: pw
-//     }
-
-//     axios.post('http://localhost:8000/auth/login', data, { withCredentials: true, credentials: "include" })
-//         .then(res => {
-//         console.log(res);
-//         })
-//         .catch(function (error) {
-//         console.log(error);
-//         });
-// }
