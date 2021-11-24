@@ -1,6 +1,7 @@
 @import '../base.scss';
 
-.Button-Md{
+// 기본값은 MD
+.Button-Default{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,4 +29,16 @@
 
         color: #FFFFFF;
     }
+}
+
+.Button-Md{
+    @extend .Button-Default;
+
+    height: 38px;
+}
+
+.Button-Sm{
+    @extend .Button-Default;
+
+    height: 30px;
 }
