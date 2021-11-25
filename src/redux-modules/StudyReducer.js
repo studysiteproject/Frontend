@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 }
 
 // 스터디 목록 얻어오기 액션
-const SetList = createAction(SET_LIST, (data)=>({data}))
+const SetList = createAction(SET_LIST, (data)=>({data}));
   
 export default function Reducer(state=INITIAL_STATE, action){
 

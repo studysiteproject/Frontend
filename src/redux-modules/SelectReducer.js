@@ -7,10 +7,6 @@ const INITIAL_STATE = {
 }
 
 // 카테고리 선택 변경 액션
-// export const changeSelect = value => ({
-//     type: 'CHANGE_SELECT',
-//     payload: { category: value }
-// });
 const changeSelect = createAction(CHANGE_SELECT, (num) => ({num}));
 
 // 리듀서 작성 & export

@@ -77,7 +77,6 @@ function Item(props){
                 {/* 스터디 주최자 정보 */}
                 <div className="StudyList-Item-Profile">
                     <div className="StudyList-Item-Profile-img">
-                        {/* <img src="img/profile/default.png"></img> */}
                         <img src={props.item.user_info.img_url}></img>
                     </div>
                     <text className="StudyList-Item-Profile-name">{props.item.user_info.user_name}</text>
