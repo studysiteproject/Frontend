@@ -1,31 +1,34 @@
 import '../scss/header.scss'
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 
-const getCookieValue = (key) => {
-    let cookieKey = key + "="; 
-    let result = "";
-    const cookieArr = document.cookie.split(";");
-    
-    for(let i = 0; i < cookieArr.length; i++) {
-      if(cookieArr[i][0] === " ") {
-        cookieArr[i] = cookieArr[i].substring(1);
-      }
-      
-      if(cookieArr[i].indexOf(cookieKey) === 0) {
-        result = cookieArr[i].slice(cookieKey.length, cookieArr[i].length);
-        return result;
-      }
-    }
-    return result;
-}
+import { UserAuthActionList } from '../redux-modules/UserReducer';
 
 function Header() {
 
-    let access_token_exits = getCookieValue("access") ? true : false
-    let user_index = getCookieValue("access") ? true : false
+    // 로그인 상태 확인
+    let islogin = useSelector((state) => state.userReducer.islogin);
+    let dispatch = useDispatch();
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+
+            // localStorage에서 islogin 값을 얻어온다.
+            const value = JSON.parse(window.localStorage.getItem("islogin"));
+            if(value) dispatch(UserAuthActionList.SetLoginState(value))
+
+            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있을 때(로그인한 상태일 때)
+            if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
+            {   
+                dispatch(UserAuthActionList.SetLoginState(false));
+                localStorage.setItem("islogin", false);
+            }
+        }
+    },[]);
 
     // 로그인 된 상태일 때
-    if (access_token_exits && user_index){
+    if (islogin){
         return (
             <div className="Header">
                 <div className="logo-div">
@@ -54,8 +57,8 @@ function Header() {
                 </div>
                 <nav>
                     <ul className="gnb">
-                        <li className="text"><Link to="/123" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
-                        <li className="text"><Link to="/123" style={{ textDecoration: 'none', color: '#222222' }}>로그인</Link></li>
+                        <li className="text"><Link to="/signup" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
+                        <li className="text"><Link to="/login" style={{ textDecoration: 'none', color: '#222222' }}>로그인</Link></li>
                     </ul>
                 </nav>
             </div>

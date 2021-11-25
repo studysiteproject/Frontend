@@ -25,6 +25,8 @@
     display: flex;
     letter-spacing: 0.15px;
 
+    white-space: nowrap;
+
     color: #000000;
 }
 
@@ -37,6 +39,8 @@
 
     display: flex;
     letter-spacing: 0.4px;
+
+    white-space: nowrap;
 
     color: #5A5A5A;
 }
