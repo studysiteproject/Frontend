@@ -57,7 +57,7 @@ function Header() {
                 </div>
                 <nav>
                     <ul className="gnb">
-                        <li className="text"><Link to="/signup" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
+                        <li className="text"><Link to="/register" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
                         <li className="text"><Link to="/login" style={{ textDecoration: 'none', color: '#222222' }}>로그인</Link></li>
                     </ul>
                 </nav>

@@ -6,7 +6,7 @@ export function LoginAPI(id, pw){
 
     return function (dispatch){
 
-        let data = {
+        const data = {
             user_id: id,
             user_pw: pw
         }
@@ -17,7 +17,7 @@ export function LoginAPI(id, pw){
             localStorage.setItem('islogin', true);
             return res;
         })
-        .catch(function (error) {
+        .catch(error => {
             alert("로그인에 실패하였습니다.");
             dispatch(UserAuthActionList.SetLoginState(false));
             localStorage.setItem('islogin', false);

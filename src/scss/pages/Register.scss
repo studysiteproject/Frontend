@@ -1,2 +1,111 @@
 @import '../base.scss';
-@import '../button//button-style.scss'
+@import '../button/button-style.scss';
+
+.Register{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    
+    padding: 100px;
+
+    width: 100%;
+    height: 100%;
+    background: rgba(219, 219, 219, 0.5);
+}
+
+.Register-View{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+
+    padding: 30px 0px 24px 0px;
+
+    min-width: 800px;
+    max-width: 33%;
+
+    margin: auto;
+
+    background: rgba(127, 200, 241, 0.75);
+    border-radius: 20px 20px 20px 20px;
+    overflow: hidden;
+
+    img{
+        width: 100px;
+        margin: auto;
+        margin-bottom: 30px;
+    }
+
+}
+
+.Register-View-input{
+
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+
+    width: 100%;
+
+    background: #FFFFFF;
+
+}
+
+.Register-View-input-info{
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 10px;
+    
+    width: 100%;
+    
+    padding: 50px 50px 0px 50px;
+
+    .item{
+        margin-bottom: 30px;
+    }
+
+    input {
+        width: 100%;
+
+        background: #F2F2F2;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+        padding: 15px;
+        
+        border: none;
+        outline: none;
+    }
+
+    text{
+        display: flex;
+        align-self: flex-start;
+
+        font-style: normal;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 37px;
+        letter-spacing: 1.5px;
+    }
+
+}
+
+.Register-View-input-button{
+    width: 100%;
+
+    margin-bottom: 20px;
+    padding: 0px 50px 0px 50px;
+
+    button{
+        width: 100%;
+    }
+}
+
+.checkData{
+    &.able{
+        color: green;
+    }
+    &.error{
+        color: red;
+    }
+}

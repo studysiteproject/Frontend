@@ -65,7 +65,7 @@ function LoginPage(){
                             <ul className="Login-View-input-links">
                                 <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>아이디 찾기</Link></li>
                                 <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>비밀번호 찾기</Link></li>
-                                <li className="text"><Link to="/signup" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
+                                <li className="text"><Link to="/register" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
                             </ul>
 
                         </div>
