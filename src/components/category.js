@@ -5,8 +5,8 @@ import { actionList } from '../redux-modules/SelectReducer.js'
 
 function Category(props) {
 
-    let select = useSelector((state) => state.selectReducer.select)
-    let dispatch = useDispatch()
+    const select = useSelector((state) => state.selectReducer.select)
+    const dispatch = useDispatch()
 
     var categorylist = ['전체', '개발', '디자인', '공무원'];
     

@@ -1,5 +1,5 @@
-import Header from "./header";
-import Footer from "./footer";
+import Header from "./base/header";
+import Footer from "./base/footer";
 
 import MainPage from "../pages/Main";
 import LoginPage from "../pages/Login";

@@ -9,15 +9,16 @@ import { UserAuthActionList } from '../redux-modules/UserReducer';
 function LoginPage(){
 
     // ID & PW 값 임시 저장
-    let [id, setid] = useState();
-    let [pw, setpw] = useState();
+    const [id, setid] = useState();
+    const [pw, setpw] = useState();
 
     // 로그인 상태 확인
     let islogin = useSelector((state) => state.userReducer.islogin);
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
+    // 로그인된 상태인지 확인
     useEffect(() => {
         if (typeof window !== 'undefined') {
 

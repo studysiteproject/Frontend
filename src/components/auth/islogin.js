@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 function IsLogin() {
 
     // 로그인 상태 확인
-    let [islogin, setislogin] = useState(false);
+    const [islogin, setislogin] = useState(false);
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {

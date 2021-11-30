@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 export const REGEX = {
     ID_regex: '^[a-zA-Z0-9-_]{6,20}$',
     Nickname_regex : '^[a-zA-Z가-힣0-9\_]{3,20}$',

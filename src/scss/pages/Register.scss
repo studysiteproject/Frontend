@@ -1,5 +1,5 @@
 @import '../base.scss';
-@import '../button/button-style.scss';
+@import '../base/button-style.scss';
 
 .Register{
     display: flex;
@@ -28,7 +28,6 @@
 
     background: rgba(127, 200, 241, 0.75);
     border-radius: 20px 20px 20px 20px;
-    overflow: hidden;
 
     img{
         width: 100px;
@@ -88,13 +87,14 @@
         letter-spacing: 1.5px;
     }
 
+    
 }
 
 .Register-View-input-button{
+
     width: 100%;
 
     margin-bottom: 20px;
-    padding: 0px 50px 0px 50px;
 
     button{
         width: 100%;

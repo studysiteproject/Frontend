@@ -1,7 +1,8 @@
-import { useState } from 'react';
+/*eslint-disable*/
+
 import '../scss/member.scss'
 
-var member = [
+const member = [
     {
       id : 1,
       name : "김동연",

@@ -1,15 +1,15 @@
-import '../scss/header.scss'
+import '../../scss/base/header.scss'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 
-import { UserAuthActionList } from '../redux-modules/UserReducer';
+import { UserAuthActionList } from '../../redux-modules/UserReducer';
 
 function Header() {
 
     // 로그인 상태 확인
-    let islogin = useSelector((state) => state.userReducer.islogin);
-    let dispatch = useDispatch();
+    const islogin = useSelector((state) => state.userReducer.islogin);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
