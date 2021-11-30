@@ -1,9 +1,9 @@
 import '../scss/pages/Main.scss'
 
 import Category from "../components/category";
-import Banner from '../components/banner';
-import Search from "../components/input/search";
-import CreateStudyButton from "../components/button/CreateStudyButton";
+import Banner from '../components/base/banner';
+import Search from "../components/input";
+import CreateStudyButton from "../components/button";
 import StudyList from '../components/StudyList';
 
 function MainPage(){

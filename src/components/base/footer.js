@@ -1,6 +1,6 @@
-import '../scss/footer.scss'
+import '../../scss/base/footer.scss'
 
-import Member from './member';
+import Member from '../../data/member';
 
 function Footer() {
 

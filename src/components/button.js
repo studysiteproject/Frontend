@@ -1,4 +1,4 @@
-import '../../scss/button/button-style.scss'
+import '../scss/base/button-style.scss'
 
 {/* 생성버튼 */}
 function CreateStudyButton() {

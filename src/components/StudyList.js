@@ -10,8 +10,8 @@ import { SetListAPI } from '../redux-modules/module/StudyManage'
 
 function StudyList(props){
 
-    let studylist = useSelector((state) => state.studyReducer.studylist);
-    let dispatch = useDispatch();
+    const studylist = useSelector((state) => state.studyReducer.studylist);
+    const dispatch = useDispatch();
 
     let StudyListLength = studylist.length;
 

@@ -1,4 +1,4 @@
-import '../../scss/input/search.scss'
+import '../scss/search.scss';
 
 {/* 검색창 */}
 function Search() {
