@@ -94,7 +94,7 @@ function RegisterPage(){
             // 회원가입 API 호출
             axios.post(`${process.env.REACT_APP_DJANGO_API_URL}/user/create`, data, { withCredentials: true, credentials: "include" })
             .then(res => {
-                alert("회원가입에 성공하였습니다!");
+                alert("회원가입에 성공하였습니다!\n로그인을 위해 회원가입 시 작성한 이메일로 전송된 인증 메일을 확인해주세요.");
                 navigate('/');
                 return res;
             })
