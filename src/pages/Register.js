@@ -1,5 +1,8 @@
 import '../scss/pages/Register.scss'
 
+import Header from '../components/base/header'
+import Footer from '../components/base/footer'
+
 import { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +10,7 @@ import Select from 'react-select';
 
 import { RegisterAPI } from '../redux-modules/module/UserManage';
 import { UserAuthActionList } from '../redux-modules/UserReducer';
+import { SendAuthEmail } from '../redux-modules/module/UserAuth';
 
 import { CheckUserInfo } from '../components/auth/Checkinfo';
 import { REGEX, REGEX_MESSAGE } from '../data/regex';
@@ -95,6 +99,7 @@ function RegisterPage(){
             axios.post(`${process.env.REACT_APP_DJANGO_API_URL}/user/create`, data, { withCredentials: true, credentials: "include" })
             .then(res => {
                 alert("회원가입에 성공하였습니다!\n로그인을 위해 회원가입 시 작성한 이메일로 전송된 인증 메일을 확인해주세요.");
+                SendAuthEmail(email);
                 navigate('/');
                 return res;
             })
@@ -118,6 +123,8 @@ function RegisterPage(){
     }
     else{
         return (
+            <>
+            <Header/>
             <div className="Register">
      
                     <div className="Register-View">
@@ -248,6 +255,8 @@ function RegisterPage(){
                     </div>
                 
             </div>
+            <Footer/>
+            </>
         );
     }
 }
