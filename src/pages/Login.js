@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import '../scss/pages/Login.scss'
 
+import Header from '../components/base/header'
+import Footer from '../components/base/footer'
+
 import { LoginAPI } from '../redux-modules/module/UserAuth';
 import { UserAuthActionList } from '../redux-modules/UserReducer';
 
@@ -43,6 +46,7 @@ function LoginPage(){
     else{
         return (
             <>
+                <Header/>
                 <div className="Login">
                     <div className="Login-View">
                         <img src="img/docker.svg" />
@@ -72,6 +76,7 @@ function LoginPage(){
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </>
         );
     }
