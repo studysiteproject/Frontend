@@ -85,8 +85,8 @@ function Item(props){
                 {/* 스터디 즐겨찾기 버튼(하트) 추가 */}
                 {
                     props.item.isfavorite
-                    ? <img src="img/heart_fill.svg" onClick={()=>{alert(props.item.id + "즐겨찾기 삭제")}}></img>
-                    : <img src="img/heart_unfill.svg" onClick={()=>{alert(props.item.id + "즐겨찾기 추가")}}></img>
+                    ? <img src="/img/heart_fill.svg" onClick={()=>{alert(props.item.id + "즐겨찾기 삭제")}}></img>
+                    : <img src="/img/heart_unfill.svg" onClick={()=>{alert(props.item.id + "즐겨찾기 추가")}}></img>
                 }
             </div>
 

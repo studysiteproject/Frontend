@@ -33,13 +33,13 @@ function Header() {
             <div className="Header">
                 <div className="logo-div">
                     <Link to="/">
-                        <img className="logo-img" src="img/docker.svg"></img>
+                        <img className="logo-img" src="/img/docker.svg"></img>
                     </Link>
                 </div>
                 <nav>
                     <ul className="gnb">
                         <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>스터디관리</Link></li>
-                        <li className="icon"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}><img src="img/icon/user_circle.svg"></img></Link></li>
+                        <li className="icon"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}><img src="/img/icon/user_circle.svg"></img></Link></li>
                     </ul>
                 </nav>
             </div>
@@ -52,7 +52,7 @@ function Header() {
             <div className="Header">
                 <div className="logo-div">
                     <Link to="/">
-                        <img className="logo-img" src="img/docker.svg"></img>
+                        <img className="logo-img" src="/img/docker.svg"></img>
                     </Link>
                 </div>
                 <nav>

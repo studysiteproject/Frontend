@@ -55,6 +55,7 @@ export function SendAuthEmail(email){
     // 회원가입 API 호출
     axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/auth/email/send?user_email=${email}`, { withCredentials: true, credentials: "include" })
     .then(res => {
+        alert("인증메일 전송에 성공하였습니다.\n입력하신 메일에 전송된 인증메일을 확인해주세요.");
         return res;
     })
     .catch(error => {

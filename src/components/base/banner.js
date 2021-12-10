@@ -11,7 +11,7 @@ function Banner(){
             </ul>
 
             {/* 사진이 큰편이어서 배너 높이의 80%로 설정 */}
-            <img style={{height:'80%'}} src="img/study_student.png"></img>
+            <img style={{height:'80%'}} src="/img/study_student.png"></img>
 
         </div>
     );

@@ -88,7 +88,34 @@ function checkEmail(email, setableemail){
                 res.data['available'] ? setableemail(true) : setableemail(false)
             })
             .catch(error => {
-                console.log("사용할 수 없는 이메일입니다.");
+                setableemail(false);
+            })
+        }
+        else{
+            setableemail(false);
+        }
+
+    }
+
+}
+
+// 인증 가능한 이메일인지 확인 함수
+// 가입 시 사용하는 연재 사용하지 않는 이메일을 체크하는 목적이라면
+// 이 함수는 이메일 인증을 받기위해 기존에 사용중인 Email인지 확인한다.
+function AbleAuthEmail(email, setableemail){
+
+    // 이메일이 입력되었을 때만
+    if (email.length > 0){
+        
+        // 불필요한 요청을 방지하기 위해 이메일의 규격에 맞는 값만 검증
+        if (email.match(new RegExp(REGEX.Email_regex))){
+            axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/auth/email_duplicate_check?user_email=${email}`, { withCredentials: true, credentials: "include" })
+            .then(res => {
+                // res.data['available'] == true -> 해당 메일로 가입한 기록이 없는 경우(인증 불가)
+                // res.data['available'] == false -> 해당 메일로 가입한 기록이 있는 경우(인증 가능)
+                res.data['available'] ? setableemail(false) : setableemail(true)
+            })
+            .catch(error => {
                 setableemail(false);
             })
         }
@@ -104,5 +131,6 @@ export const CheckUserInfo = {
     checkID,
     checkPW,
     checkNickName,
-    checkEmail
+    checkEmail,
+    AbleAuthEmail
 }

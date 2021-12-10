@@ -49,7 +49,7 @@ function LoginPage(){
                 <Header/>
                 <div className="Login">
                     <div className="Login-View">
-                        <img src="img/docker.svg" />
+                        <img src="/img/docker.svg" />
                         <div className="Login-View-input">
 
                             {/* ID & PW 입력 창 */}

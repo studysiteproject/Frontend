@@ -8,7 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Select from 'react-select';
 
-import { RegisterAPI } from '../redux-modules/module/UserManage';
 import { UserAuthActionList } from '../redux-modules/UserReducer';
 import { SendAuthEmail } from '../redux-modules/module/UserAuth';
 
@@ -129,7 +128,7 @@ function RegisterPage(){
      
                     <div className="Register-View">
                         
-                        <img src="img/docker.svg" />
+                        <img src="/img/docker.svg" />
 
                         <div className="Register-View-input">
 
