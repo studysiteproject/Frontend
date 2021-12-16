@@ -60,7 +60,7 @@ function RegisterPage(){
             const value = JSON.parse(window.localStorage.getItem("islogin"));
             if(value) dispatch(UserAuthActionList.SetLoginState(value))
 
-            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있을 때(로그인한 상태일 때)
+            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있지 않을 때
             if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
             {   
                 dispatch(UserAuthActionList.SetLoginState(false));
