@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { UserAuthActionList } from '../redux-modules/UserReducer';
 import { SendAuthEmail } from '../redux-modules/module/UserAuth';
 
-import { CheckUserInfo } from '../components/auth/Checkinfo';
+import { CheckUserInfo } from '../components/util/Checkinfo';
 import { REGEX, REGEX_MESSAGE } from '../data/regex';
 
 function EmailReAuthPage(){

@@ -6,7 +6,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
 import { useSelector, useDispatch } from 'react-redux';
-import { SetListAPI } from '../redux-modules/module/StudyManage'
+import { SetListAPI, AddFavoriteAPI, DeleteFavoriteAPI } from '../redux-modules/module/StudyManage';
 
 function StudyList(props){
 
@@ -40,6 +40,8 @@ function StudyList(props){
 {/* 각 스터디 아이템 (하나의 스터디) */}
 function Item(props){
 
+    const dispatch = useDispatch();
+
     const renderTooltip = (props, value) => (
         <Tooltip {...props}>{value}</Tooltip>
     );
@@ -48,7 +50,7 @@ function Item(props){
         <div className="StudyList-Item">
             {/* 모집 스터디 제목 */}
             <div className="StudyList-Item-title" onClick={()=>{alert(props.item.id + "번 스터디입니다.")}}>
-                <text >{props.item.title}</text>
+                <text>{props.item.title}</text>
             </div>
 
             {/* 제목을 제외한 나머지 부분 (사용 기술 아이콘 / 인원 수 / 프로필 등) */}
@@ -85,8 +87,12 @@ function Item(props){
                 {/* 스터디 즐겨찾기 버튼(하트) 추가 */}
                 {
                     props.item.isfavorite
-                    ? <img src="/img/heart_fill.svg" onClick={()=>{alert(props.item.id + "즐겨찾기 삭제")}}></img>
-                    : <img src="/img/heart_unfill.svg" onClick={()=>{alert(props.item.id + "즐겨찾기 추가")}}></img>
+                    ? <img src="/img/heart_fill.svg" onClick={()=>{
+                        dispatch(DeleteFavoriteAPI(props.item.id));
+                    }}></img>
+                    : <img src="/img/heart_unfill.svg" onClick={()=>{
+                        dispatch(AddFavoriteAPI(props.item.id));
+                    }}></img>
                 }
             </div>
 
