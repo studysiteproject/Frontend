@@ -7,6 +7,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { SetListAPI, AddFavoriteAPI, DeleteFavoriteAPI } from '../redux-modules/module/StudyManage';
+import { REGEX } from '../data/regex';
 
 function StudyList(props){
 
@@ -25,7 +26,10 @@ function StudyList(props){
                 {
                     studylist.map((item)=>{
                         return(
-                            <Item item={item}></Item>
+                            item.title.includes(props.MainSearch)
+                            ? <Item item={item}></Item>
+                            : null
+                            
                         )
                     })
                 }

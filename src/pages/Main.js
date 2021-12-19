@@ -12,9 +12,12 @@ import axios from 'axios';
 
 import { UserAuthActionList } from '../redux-modules/UserReducer';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function MainPage(){
+
+    const [select, setselect] = useState(0);
+    const [MainSearch, setMainSearch] = useState("");
 
     const dispatch = useDispatch();
 
@@ -52,13 +55,13 @@ function MainPage(){
     return (
         <>
             <Header/>
-            <Category/>
+            <Category select={select} setselect ={setselect}/>
             <Banner/>
             <div className="flex-row-end">
-                <Search/>
+                <Search setMainSearch={setMainSearch}/>
                 <CreateStudyButton/>
             </div>
-            <StudyList/>
+            <StudyList MainSearch={MainSearch}/>
             <Footer/>
         </>
     );

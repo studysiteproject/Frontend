@@ -20,6 +20,7 @@ export default function Reducer(state=INITIAL_STATE, action){
                 ...state,
                 studylist: action.payload.data
             }
+            
         case CHANGE_FAVORITE:
             
             // 입력한 index의 item 얻어오기
