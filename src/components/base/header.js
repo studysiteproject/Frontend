@@ -11,6 +11,8 @@ function Header() {
     const islogin = useSelector((state) => state.userReducer.islogin);
     const dispatch = useDispatch();
 
+    const [clickprofile, setclickprofile] = useState(false);
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
 
@@ -18,7 +20,7 @@ function Header() {
             const value = JSON.parse(window.localStorage.getItem("islogin"));
             if(value) dispatch(UserAuthActionList.SetLoginState(value))
 
-            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있을 때(로그인한 상태일 때)
+            // 토큰 & 유저 인덱스가 설정되지 않은 상태일 때
             if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
             {   
                 dispatch(UserAuthActionList.SetLoginState(false));
@@ -39,7 +41,30 @@ function Header() {
                 <nav>
                     <ul className="gnb">
                         <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>스터디관리</Link></li>
-                        <li className="icon"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}><img src="/img/icon/user_circle.svg"></img></Link></li>
+                        <li className="icon">
+                            <div style={{position: 'relative'}}>
+                                <img src="/img/icon/user_circle.svg" 
+
+                                    // 해당 아이콘 클릭 시, 메뉴 확인
+                                    onClick={()=>{setclickprofile(!clickprofile)}}
+                                />
+                                {
+                                    clickprofile
+                                    ? <div class="menu-profile" 
+                                        
+                                        // 클릭 시 보이는 메뉴에서 마우스를 벗어나면 다시 숨긴다.
+                                        onMouseLeave={()=>{setclickprofile(false)}}
+                                    >
+                                        <ul>
+                                            <li><Link to="/profile" style={{ textDecoration: 'none', color: '#222222' }}>프로필 확인</Link></li>
+                                            <li><Link to="/logout" style={{ textDecoration: 'none', color: '#222222' }}>로그아웃</Link></li>
+                                        </ul>
+                                    </div> 
+                                    : null
+                                }
+                            </div>
+                        </li>
+                        
                     </ul>
                 </nav>
             </div>
