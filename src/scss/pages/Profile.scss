@@ -1,0 +1,156 @@
+@import '../base.scss';
+@import '../base/button-style.scss';
+
+.Profile-Frame{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    
+    padding: 20%;
+
+    width: 100%;
+    height: 100%;
+    background: rgba(219, 219, 219, 0.5);
+}
+
+.Profile-View-Frame{
+
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+
+    min-width: 500px;
+    width: 100%;
+
+    padding: 50px 50px 0px 50px;
+
+    background: #FFFFFF;
+
+}
+
+.Profile-View-input{
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 10px;
+    
+    width: 100%;
+    
+    padding: 50px 50px 0px 50px;
+
+    .item{
+        display: flex;
+        flex-direction: row;
+
+        align-items: center;
+        justify-items: center;
+
+        margin-bottom: 50px;
+        
+        .title{
+
+            width: 100px;
+            min-width: 100px;
+
+            text{
+                font-style: normal;
+                font-weight: bold;
+                font-size: 20px;
+                line-height: 20px;
+                
+                letter-spacing: 0.25px;
+
+                white-space: nowrap;
+
+                padding-right: 50px;
+
+                color: #000000;
+            }
+        }
+
+        .tech{
+            
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            
+            .tech-list{
+                display: flex;
+                flex-wrap: wrap;
+        
+                width: 100%;
+            }
+
+            .tech-search{
+                width: 100%;
+            }
+
+            // 다른 input 박스의 쉐도우 효과와 padding 적용을 삭제
+            input{
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+            }
+
+        }
+
+    }
+
+    input {
+        width: 100%;
+
+        background: #F2F2F2;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+        padding: 15px;
+        
+        border: none;
+        outline: none;
+    }
+    
+}
+
+.Register-View-input-button{
+
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    button{
+        width: 100%;
+    }
+}
+
+.checkData{
+    &.able{
+        color: green;
+    }
+    &.error{
+        color: red;
+    }
+    &.none{
+        color: blue;
+    }
+}
+
+.tech-search-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: auto;
+    width: 100%;
+    max-height: 150px;
+    min-height: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    .tech-search-list-item{
+        width: 80%;
+        margin: 5px;
+
+        &:hover{
+            background: rgba(119, 129, 197, 0.1);
+        }
+    }
+}

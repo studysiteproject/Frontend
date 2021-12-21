@@ -57,6 +57,7 @@ function Header() {
                                     >
                                         <ul>
                                             <li><Link to="/profile" style={{ textDecoration: 'none', color: '#222222' }}>프로필 확인</Link></li>
+                                            <li><Link to="/setiings" style={{ textDecoration: 'none', color: '#222222' }}>환경 설정</Link></li>
                                             <li><Link to="/logout" style={{ textDecoration: 'none', color: '#222222' }}>로그아웃</Link></li>
                                         </ul>
                                     </div> 

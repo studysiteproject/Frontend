@@ -63,7 +63,7 @@ function LoginPage(){
                             {/* 로그인 버튼 */}
                             <div class="Login-View-input-button">
                                 <button className="Button-Md" onClick={()=>{dispatch(LoginAPI(id, pw));}}>
-                                    <text>로그인</text>
+                                    로그인
                                 </button>
                             </div>
                             

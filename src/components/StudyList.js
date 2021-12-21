@@ -25,12 +25,19 @@ function StudyList(props){
             <div className="StudyList">
                 {
                     studylist.map((item)=>{
-                        return(
-                            item.title.includes(props.MainSearch)
-                            ? <Item item={item}></Item>
-                            : null
+                        if (!"[\[\]?*+|{}\\()@.nr]".includes(props.MainSearch)){
+                            if(item.title.match(new RegExp(props.MainSearch,'i')) != null){
+                                return (
+                                    <Item item={item}></Item>
+                                )
+                            }
+                        }
+                        // return(
+                        //     item.title.includes(props.MainSearch)
+                        //     ? <Item item={item}></Item>
+                        //     : null
                             
-                        )
+                        // )
                     })
                 }
             </div>

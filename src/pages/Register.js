@@ -2,11 +2,11 @@ import '../scss/pages/Register.scss'
 
 import Header from '../components/base/header'
 import Footer from '../components/base/footer'
+import SelectBox from '../components/selectbox';
 
 import { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Select from 'react-select';
 
 import { UserAuthActionList } from '../redux-modules/UserReducer';
 import { SendAuthEmail } from '../redux-modules/module/UserAuth';
@@ -24,7 +24,7 @@ function RegisterPage(){
     const [ableid, setableid] = useState(false); // ID 사용가능 여부
 
     const [pw, setpw] = useState('');   // 패스워드 임시 저장
-    const [checkpw, setcheckpw] = useState(); // 패스워드 확인 값 임시 저장
+    const [checkpw, setcheckpw] = useState(''); // 패스워드 확인 값 임시 저장
     const [ablepw, setablepw] = useState(false); // 패스워드 사용가능 여부
 
     const [nickname, setnickname] = useState(''); // 이름(닉네임) 값 임시 저장
@@ -33,7 +33,7 @@ function RegisterPage(){
     const [email, setemail] = useState(''); // 이메일 값 임시 저장
     const [ableemail, setableemail] = useState(false); // 이메일 사용가능 여부
 
-    const [job, setjob] = useState(job_data[0]['value']); // 직업 값 임시 저장
+    const [job, setjob] = useState(''); // 직업 값 임시 저장
 
     const [ablesubmit, setablesubmit] = useState(false); // 회원가입 버튼 활성화 값 임시 저장
 
@@ -142,10 +142,14 @@ function RegisterPage(){
                                     <div className="item">
                                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                             <text>ID</text>
-                                            <text className={`checkData ${ableid ? "able" : "error"}`}>{ableid ? "사용 가능한 ID입니다." : "사용할 수 없는 ID입니다."}</text>
+                                            {
+                                                id.length
+                                                ? <text className={`checkData ${ableid ? "able" : "error"}`}>{ableid ? "사용 가능한 ID입니다." : "사용할 수 없는 ID입니다."}</text>
+                                                : <text className={`checkData none`}>{"ID를 입력해주세요."}</text>
+                                            }
                                         </div>
                                         <input type="text" 
-                                            onChange={(e)=>{setid(e.target.value);CheckUserInfo.checkID(e.target.value, setableid)}} 
+                                            onChange={(e)=>{setid(e.target.value);CheckUserInfo.checkID_action(e.target.value, setableid)}} 
                                             className="Register-View-input-info id" 
                                             placeholder="6 ~ 20자리를 입력해주세요." 
                                             pattern={REGEX.ID_regex} title={REGEX_MESSAGE.ID_message} 
@@ -156,10 +160,14 @@ function RegisterPage(){
                                     <div className="item">
                                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                             <text>Password</text>
-                                            <text className={`checkData ${ablepw ? "able" : "error"}`}>{ablepw ? "사용 가능한 PW입니다." : "사용할 수 없는 PW입니다."}</text>
+                                            {
+                                                pw.length
+                                                ? <text className={`checkData ${ablepw ? "able" : "error"}`}>{ablepw ? "사용 가능한 PW입니다." : "사용할 수 없는 PW입니다."}</text>
+                                                : <text className={`checkData none`}>{"패스워드를 입력해주세요."}</text>
+                                            }
                                         </div>
                                         <input type="password" 
-                                            onChange={(e)=>{setpw(e.target.value);CheckUserInfo.checkPW(e.target.value, setablepw)}} 
+                                            onChange={(e)=>{setpw(e.target.value);CheckUserInfo.checkPW_action(e.target.value, setablepw)}} 
                                             className="Register-View-input-info password" 
                                             placeholder="8글자 이상 입력해주세요."
                                             required
@@ -170,7 +178,12 @@ function RegisterPage(){
                                     <div className="item">
                                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                             <text>Password 확인</text>
-                                            <text className={`checkData ${pw == checkpw ? "able" : "error"}`}>{pw == checkpw ? "✅" : "패스워드와 동일하게 입력해주세요."}</text>
+                                            {
+                                                checkpw.length
+                                                ? <text className={`checkData ${pw == checkpw ? "able" : "error"}`}>{pw == checkpw ? "✅" : "패스워드와 동일하게 입력해주세요."}</text>
+                                                : <text className={`checkData none`}>{"패스워드 확인 값을 입력해주세요."}</text>
+                                            }
+                                            
                                         </div>
                                         <input type="password" 
                                             onChange={(e)=>{setcheckpw(e.target.value)}} 
@@ -186,10 +199,14 @@ function RegisterPage(){
                                     <div className="item">
                                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                             <text>닉네임</text>
-                                            <text className={`checkData ${ablenickname ? "able" : "error"}`}>{ablenickname ? "사용 가능한 닉네임입니다." : "사용할 수 없는 닉네임입니다."}</text>
+                                            {
+                                                nickname.length
+                                                ? <text className={`checkData ${ablenickname ? "able" : "error"}`}>{ablenickname ? "사용 가능한 닉네임입니다." : "사용할 수 없는 닉네임입니다."}</text>
+                                                : <text className={`checkData none`}>{"닉네임을 입력해주세요."}</text>
+                                            }
                                         </div>
                                         <input type="text" 
-                                            onChange={(e)=>{setnickname(e.target.value);CheckUserInfo.checkNickName(e.target.value, setablenickname)}} 
+                                            onChange={(e)=>{setnickname(e.target.value);CheckUserInfo.checkNickName_action(e.target.value, setablenickname)}} 
                                             className="Register-View-input-info nickname" 
                                             placeholder="3 ~ 20자를 입력해주세요."
                                             pattern={REGEX.Nickname_regex} 
@@ -202,10 +219,14 @@ function RegisterPage(){
                                     <div className="item">
                                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                             <text>Email</text>
-                                            <text className={`checkData ${ableemail ? "able" : "error"}`}>{ableemail ? "사용 가능한 Email입니다." : "사용할 수 없는 Email입니다."}</text>
+                                            {
+                                                email.length
+                                                ? <text className={`checkData ${ableemail ? "able" : "error"}`}>{ableemail ? "사용 가능한 Email입니다." : "사용할 수 없는 Email입니다."}</text>
+                                                : <text className={`checkData none`}>{"이메일을 입력해주세요."}</text>
+                                            }
                                         </div>
                                         <input type="text" 
-                                            onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail(e.target.value, setableemail)}} 
+                                            onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
                                             className="Register-View-input-info email" 
                                             placeholder="이메일을 입력해주세요."
                                             pattern={REGEX.Email_regex} 
@@ -219,11 +240,12 @@ function RegisterPage(){
                                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                             <text>직업</text>
                                         </div>
-                                        <Select 
-                                            options={options} 
-                                            defaultValue={options[0]} 
+                                        <SelectBox
+                                            choice={job}
+                                            setChoice={setjob}
+                                            placeholder={"직업을 선택하세요."}
+                                            options={job_data}
                                             isSearchable={false}
-                                            onChange={(e)=>{setjob(e.value)}}
                                         />
                                     </div>
 
@@ -235,13 +257,14 @@ function RegisterPage(){
                                     {/* 모든 데이터를 정상적으로 입력하면 회원가입 버튼이 활성화된다. */}
                                     {
                                         ablesubmit
-                                        ? <button type="submit" className="Button-Md" onClick={()=>{
+                                        ? <button type="submit" className="Button-Md" 
+                                            onClick={()=>{
                                                 Submit(id, pw, nickname, email, job);
                                             }}>
-                                                <text>회원가입</text>
+                                            회원가입
                                         </button>
                                         : <button type="submit" className="Button-Md" disabled>
-                                            <text>회원가입</text>
+                                            회원가입
                                         </button>
                                     }
 

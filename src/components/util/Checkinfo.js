@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { REGEX, REGEX_MESSAGE } from '../../data/regex';
 
+const _ = require('lodash');
+
 // ID 중복 & 패턴 확인 함수
 function checkID(id, setableid){
 
@@ -127,10 +129,16 @@ function AbleAuthEmail(email, setableemail){
 
 }
 
+// 불필요한 요청을 줄이기 위해 입력 데이터 검사 함수는 디바운싱 방식 이용
+const checkID_action = _.debounce(checkID, 500);
+const checkPW_action = _.debounce(checkPW, 500);
+const checkNickName_action = _.debounce(checkNickName, 500);
+const checkEmail_action = _.debounce(checkEmail, 500);
+
 export const CheckUserInfo = {
-    checkID,
-    checkPW,
-    checkNickName,
-    checkEmail,
+    checkID_action,
+    checkPW_action,
+    checkNickName_action,
+    checkEmail_action,
     AbleAuthEmail
 }
