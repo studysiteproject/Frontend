@@ -31,15 +31,34 @@ function ProfilePage(){
     const [ablenickname, setablenickname] = useState(false); // 이름(닉네임) 사용가능 여부
 
     const [email, setemail] = useState(''); // 이메일 값 임시 저장
-    const [ableemail, setableemail] = useState(false); // 이메일 사용가능 여부
+    const [ableemail, setableemail] = useState(true); // 이메일 사용가능 여부
 
     const [job, setjob] = useState(''); // 직업 값 임시 저장
 
     // 기술 검색 값 임시 저장
     const [techsearch, setTechsearch] = useState('');
 
-    const All_Tech_List = All_Tech_List(); // 전체 기술 목록
+    const All_Tech_List = [
+        {
+           "id":1,
+           "tech_name":"Spring",
+           "img_url":"img/icon/tech/spring.svg"
+        },
+        {
+           "id":2,
+           "tech_name":"Github",
+           "img_url":"img/icon/tech/github.svg"
+        }
+    ] // 전체 기술 목록
+
     const [mytecharray, setmytecharray] = useState([]); // 현재 나의 기술 목록(테스트)
+    
+    const [myurlarray, setmyurlarray] = useState([
+        "https://dongyeon1201.kr",
+        "https://profile.dongyeon1201.kr"
+    ]); // 현재 나의 url 목록(테스트)
+
+    const [newurl, setnewurl] = useState("");
 
     // 기술테크에 기술 추가
     function AddMytech(id, tech_name, url){
@@ -99,6 +118,11 @@ function ProfilePage(){
         })
 
         return array
+    }
+
+    function AddUrl(newurl){
+        alert(newurl);
+        setnewurl("");
     }
 
     // 로그인 여부 확인
@@ -207,7 +231,7 @@ function ProfilePage(){
 
                                     {/* 직업 선택창 */}
                                     <div className="item">
-                                        <div className='title'>
+                                        <div className='title' style={{display: "flex", alignSelf:"start"}}>
                                             <text>직업</text>
                                         </div>
                                         <div style={{width: '100%'}}>
@@ -234,9 +258,15 @@ function ProfilePage(){
                                                 {
                                                     mytecharray.map((item)=>{
                                                         return(
-                                                            <div style={{width: '100px', height:'30px', background: 'red', margin: '0px 10px 10px 0px'}}
-                                                                onClick={()=>{DeleteMytech(item.id)}}
-                                                            >{item.tech_name}</div>
+                                                            <div className="tech-item-box">
+                                                                <div>
+                                                                    <img class="md" src={item.img_url} style={{marginRight: '15px'}}></img>
+                                                                    {item.tech_name}
+                                                                    <img class="sm" src="/img/icon/coolicon.svg" style={{marginLeft: '15px'}}
+                                                                        onClick={()=>{DeleteMytech(item.id)}}
+                                                                    ></img>
+                                                                </div>
+                                                            </div>
                                                         )
                                                     })
                                                 }
@@ -250,6 +280,71 @@ function ProfilePage(){
                                                 options={techoption(All_Tech_List)}
                                             />
                                         </div>
+                                    </div>
+
+                                    {/* URL 입력창 */}
+                                    <div className="item" style={{flexDirection:"column"}}>
+                                        <div className='title' style={{display: "flex", alignSelf:"start"}}>
+                                            <text>URL</text>
+                                        </div>
+                                    </div>
+                                                
+                                    <div style={{marginBottom:"50px"}}>
+
+                                        {/* 나의 url 갯수만큼 아이템을 보여준다. */}
+                                        {
+                                            myurlarray.map((item)=>{
+                                                return(
+                                                    <div className="item">
+                                                        <div style={{paddingRight: '50px'}}>
+                                                            <img class="md" src={"img/icon/tech/github.svg"} style={{marginRight: '15px'}}></img>
+                                                        </div>
+                                                            <input type="text" 
+                                                                onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
+                                                                className="Register-View-input-info email" 
+                                                                placeholder="URL을 입력해주세요."
+                                                                pattern={REGEX.Email_regex} 
+                                                                title={REGEX_MESSAGE.Email_message} 
+                                                                required
+                                                                readOnly
+                                                                value={item}
+                                                            />
+                                                    </div>
+                                                )
+                                            })
+                                        }
+
+
+                                        <div style={{display:'flex', justifyContent: 'center'}}>
+                                            
+                                            {/* 입력창 */}
+                                            <div style={{
+                                                borderBottom: '1px solid black',
+                                                width: (newurl.length * 0.65) + "em",
+                                                minWidth: "30%"
+                                            }}>
+                                                <input
+                                                    placeholder='URL을 입력해주세요.'
+                                                    onChange={(e)=>{setnewurl(e.target.value)}}
+                                                    style={{
+                                                        background: 'none',
+                                                        boxShadow: 'none',
+                                                        display: 'flex',
+                                                        alignSelf: 'center'
+                                                    }}
+                                                    value={newurl}
+                                                ></input>
+                                            </div>
+
+                                            {/* url 추가 */}
+                                            <img class="md" src={"img/icon/plus_circle.svg"}
+                                                style={{
+                                                    marginLeft: '15px'
+                                                }}
+                                                onClick={(e)=>{AddUrl(newurl);}}
+                                            ></img>
+                                        </div>
+
                                     </div>
 
                                 </form>

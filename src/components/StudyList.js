@@ -32,12 +32,12 @@ function StudyList(props){
                                 )
                             }
                         }
-                        // return(
-                        //     item.title.includes(props.MainSearch)
-                        //     ? <Item item={item}></Item>
-                        //     : null
+                        return(
+                            item.title.includes(props.MainSearch)
+                            ? <Item item={item}></Item>
+                            : null
                             
-                        // )
+                        )
                     })
                 }
             </div>
