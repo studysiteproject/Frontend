@@ -16,10 +16,10 @@ import { CheckUserInfo } from '../components/util/Checkinfo';
 
 import { REGEX, REGEX_MESSAGE } from '../data/regex';
 import job_data from '../data/job';
+import { getCookieValue } from '../util';
 
 import axios from "axios";
-import { Select } from '@material-ui/core';
-import All_Tech_List from '../data/tech';
+import { TechInfo, UrlInfo } from '../data/profile';
 
 function ProfilePage(){
     
@@ -34,85 +34,81 @@ function ProfilePage(){
     const [ableemail, setableemail] = useState(true); // 이메일 사용가능 여부
 
     const [job, setjob] = useState(''); // 직업 값 임시 저장
-
-    // 기술 검색 값 임시 저장
-    const [techsearch, setTechsearch] = useState('');
-
-    const All_Tech_List = [
-        {
-           "id":1,
-           "tech_name":"Spring",
-           "img_url":"img/icon/tech/spring.svg"
-        },
-        {
-           "id":2,
-           "tech_name":"Github",
-           "img_url":"img/icon/tech/github.svg"
-        }
-    ] // 전체 기술 목록
-
-    const [mytecharray, setmytecharray] = useState([]); // 현재 나의 기술 목록(테스트)
     
-    const [myurlarray, setmyurlarray] = useState([
-        "https://dongyeon1201.kr",
-        "https://profile.dongyeon1201.kr"
-    ]); // 현재 나의 url 목록(테스트)
+    const [AllTechList, SetAllTechList] = useState([]); // 전체 기술 목록
+    const [MyTechArray, SetMyTechArray] = useState([]); // 현재 나의 기술 목록
+    const [techsearch, setTechsearch] = useState(''); // 기술 검색 값 임시 저장
 
+    const [myurlarray, setmyurlarray] = useState([]); // 현재 나의 url 목록
     const [newurl, setnewurl] = useState("");
 
     // 기술테크에 기술 추가
-    function AddMytech(id, tech_name, url){
-        let newarray = [...mytecharray];
-        
-        // 이미 존재하는 스킬인지 확인
-        let isExist = false
+    function AddMytech(id, name, icon_url){
 
-        // 만약 이미 존재하는 스킬일경우 isExist 값을 참으로 변경
-        newarray.map((item)=>{
-            if (item.id == id){
-                isExist = true
-            }
+        axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/tech/add?tech_index=${id}`, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            let newarray = [...MyTechArray];
+        
+            // 이미 존재하는 스킬인지 확인
+            let isExist = false
+    
+            // 만약 이미 존재하는 스킬일경우 isExist 값을 참으로 변경
+            newarray.map((item)=>{
+                if (item.id == id){
+                    isExist = true
+                }
+            })
+    
+            // 이미 존재하는 스터디일경우 추가하지 않는다.
+            if (!isExist){
+                newarray.push({
+                    "id":id,
+                    "name":name,
+                    "icon_url":icon_url
+                });
+    
+                // 변경된 배열 적용
+                SetMyTechArray(newarray);
+            }    
+        })
+        .catch(error => {
+            return error;
         })
 
-        // 이미 존재하는 스터디일경우 추가하지 않는다.
-        if (!isExist){
-            newarray.push({
-                "id":id,
-                "tech_name":tech_name,
-                "img_url":url
-            });
-
-            // 변경된 배열 적용
-            setmytecharray(newarray);
-        }
     }
 
     // 기술테크에서 기술 삭제
     function DeleteMytech(id){
-        var newarray = [...mytecharray];
+        axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/tech/delete?tech_index=${id}`, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            var newarray = [...MyTechArray];
         
-        // 삭제를 원하는 기술이 존재할 경우 목록에서 삭제
-        newarray.map((item, i)=>{
-            if (item.id == id){
-                newarray.splice(i,1);
-            }
+            // 삭제를 원하는 기술이 존재할 경우 목록에서 삭제
+            newarray.map((item, i)=>{
+                if (item.id == id){
+                    newarray.splice(i,1);
+                }
+            })
+    
+            // 변경된 배열 적용
+            SetMyTechArray(newarray);    
         })
-
-        // 변경된 배열 적용
-        setmytecharray(newarray);
+        .catch(error => {
+            return error;
+        })
     }
 
     // 기술 추가에 사용되는 목록 설정
-    const techoption = (All_Tech_List) => {
+    const techoption = (AllTechList) => {
         var array = []
 
-        All_Tech_List.map((item)=>{
+        AllTechList.map((item)=>{
             array.push({
-                "value": item.tech_name,
+                "value": item.name,
                 "label": 
-                    <div onClick={()=>{AddMytech(item.id, item.tech_name, item.img_url)}}>
-                        <img class="md" src={item.img_url}></img>
-                        <text>{item.tech_name}</text>
+                    <div onClick={()=>{AddMytech(item.id, item.name, item.icon_url)}}>
+                        <img class="md" src={item.icon_url}></img>
+                        <text>{item.name}</text>
                     </div>
             })
         })
@@ -120,9 +116,63 @@ function ProfilePage(){
         return array
     }
 
-    function AddUrl(newurl){
-        alert(newurl);
-        setnewurl("");
+    // URL 목록에 새로운 URL을 추가
+    function AddUrl(url){
+
+        axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/url/add?input_url=${newurl}`, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            // 만약 이미 존재하는 url을 추가하려는 경우
+            if (myurlarray.includes(url)){
+                alert("이미 존재하는 url 입니다.");
+            }
+            else{
+                // 배열에 새로운 값을 추가하기 위한 배열 복제
+                var newarray = [...myurlarray];
+        
+                // 새롭게 입력한 url값 추가 후 적용
+                newarray.push(url);
+                setmyurlarray(newarray);
+            }
+
+            // input 태그의 값을 초기화
+            setnewurl("");
+        })
+        .catch(error => {
+            return error;
+        })
+        
+    }
+
+    function DeleteUrl(url){
+        
+        axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/url/delete?input_url=${url}`, { withCredentials: true, credentials: "include" })
+        .then(res => {
+
+            if (myurlarray.includes(url)){
+                
+                // 배열에 새로운 값을 추가하기 위한 배열 복제
+                var newarray = [...myurlarray];
+                
+                // 삭제를 원하는 기술이 존재할 경우 목록에서 삭제
+                newarray.map((item, i)=>{
+                    if (item == url){
+                        newarray.splice(i,1);
+                    }
+                })
+    
+                // 변경된 배열 적용
+                setmyurlarray(newarray);   
+                
+            }
+            // 만약 존재하지 않는 url을 삭제하려는 경우
+            else{
+                alert("존재하지 않는 url 입니다.");
+            }
+        })
+        .catch(error => {
+            return error;
+        })
+
     }
 
     // 로그인 여부 확인
@@ -157,13 +207,25 @@ function ProfilePage(){
         }
     },[]);
 
-    // 정보 받아오기
+    // 사용자의 정보 받아오기
     useEffect(()=>{
+
+        // 로그인한 사용자의 쿠키 값에서 index 얻어오기
+        const user_index = getCookieValue("index");
+        
+        // 현재 나의 URL 목록 얻어오기
+        UrlInfo.MyUrlList(setmyurlarray, user_index);
+
+        // 전체 기술 목록 얻어오기
+        TechInfo.GetAllTechList(SetAllTechList);
+        
+        // 현재 나의 기술 목록 얻어오기
+        TechInfo.MyTechList(SetMyTechArray, user_index);
+        
 
     },[]);
 
-    // 로그인 되지 않았을 때
-    // if (islogin){
+    if (islogin){
         return(
             <>
                 <Header/>
@@ -256,12 +318,12 @@ function ProfilePage(){
                                             {/* 현재는 item 클릭 시 삭제되도록 설정(테스트) */}
                                             <div className='tech-list'>
                                                 {
-                                                    mytecharray.map((item)=>{
+                                                    MyTechArray.map((item)=>{
                                                         return(
                                                             <div className="tech-item-box">
                                                                 <div>
-                                                                    <img class="md" src={item.img_url} style={{marginRight: '15px'}}></img>
-                                                                    {item.tech_name}
+                                                                    <img class="md" src={item.icon_url} style={{marginRight: '15px'}}></img>
+                                                                    {item.name}
                                                                     <img class="sm" src="/img/icon/coolicon.svg" style={{marginLeft: '15px'}}
                                                                         onClick={()=>{DeleteMytech(item.id)}}
                                                                     ></img>
@@ -277,7 +339,7 @@ function ProfilePage(){
                                                 choice={techsearch}
                                                 setChoice={setTechsearch}
                                                 placeholder={"원하는 기술을 검색하세요."}
-                                                options={techoption(All_Tech_List)}
+                                                options={techoption(AllTechList)}
                                             />
                                         </div>
                                     </div>
@@ -299,29 +361,35 @@ function ProfilePage(){
                                                         <div style={{paddingRight: '50px'}}>
                                                             <img class="md" src={"img/icon/tech/github.svg"} style={{marginRight: '15px'}}></img>
                                                         </div>
-                                                            <input type="text" 
-                                                                onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
-                                                                className="Register-View-input-info email" 
-                                                                placeholder="URL을 입력해주세요."
-                                                                pattern={REGEX.Email_regex} 
-                                                                title={REGEX_MESSAGE.Email_message} 
-                                                                required
-                                                                readOnly
-                                                                value={item}
-                                                            />
+                                                        <input type="text" 
+                                                            onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
+                                                            className="Register-View-input-info email" 
+                                                            placeholder="URL을 입력해주세요."
+                                                            pattern={REGEX.Email_regex} 
+                                                            title={REGEX_MESSAGE.Email_message} 
+                                                            required
+                                                            readOnly
+                                                            value={item}
+                                                            style={{marginRight: '20px'}}
+                                                        />
+                                                        <img 
+                                                            class="sm"
+                                                            src={"img/icon/trash_full.svg"}
+                                                            onClick={()=>{DeleteUrl(item)}}
+                                                        />
                                                     </div>
                                                 )
                                             })
                                         }
 
-
+                                        {/* URL 입력 부분 */}
                                         <div style={{display:'flex', justifyContent: 'center'}}>
                                             
                                             {/* 입력창 */}
                                             <div style={{
                                                 borderBottom: '1px solid black',
                                                 width: (newurl.length * 0.65) + "em",
-                                                minWidth: "30%"
+                                                minWidth: "40%"
                                             }}>
                                                 <input
                                                     placeholder='URL을 입력해주세요.'
@@ -343,6 +411,7 @@ function ProfilePage(){
                                                 }}
                                                 onClick={(e)=>{AddUrl(newurl);}}
                                             ></img>
+
                                         </div>
 
                                     </div>
@@ -358,11 +427,12 @@ function ProfilePage(){
                 <Footer/>
             </>
         );
-    // }
-    // else{
-    //     navigate('/login');
-    //     return(<></>);
-    // }
+    }
+    // 로그인 되지 않았을 때
+    else{
+        navigate('/login');
+        return(<></>);
+    }
 }
 
 export default ProfilePage
