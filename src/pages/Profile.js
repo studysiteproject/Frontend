@@ -19,7 +19,7 @@ import job_data from '../data/job';
 import { getCookieValue } from '../util';
 
 import axios from "axios";
-import { TechInfo, UrlInfo } from '../data/profile';
+import { BasicInfo, TechInfo, UrlInfo } from '../data/profile';
 
 function ProfilePage(){
     
@@ -27,10 +27,14 @@ function ProfilePage(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [profileimage, setprofileimage] = useState(''); // 프로필 이미지 경로
+
     const [nickname, setnickname] = useState(''); // 이름(닉네임) 값 임시 저장
-    const [ablenickname, setablenickname] = useState(false); // 이름(닉네임) 사용가능 여부
+    const [defaultnickname, setdefaultnickname] = useState(''); // 이름(닉네임) 값 임시 저장
+    const [ablenickname, setablenickname] = useState(true); // 이름(닉네임) 사용가능 여부
 
     const [email, setemail] = useState(''); // 이메일 값 임시 저장
+    const [defaultemail, setdefaultemail] = useState(''); // 이메일 값 임시 저장
     const [ableemail, setableemail] = useState(true); // 이메일 사용가능 여부
 
     const [job, setjob] = useState(''); // 직업 값 임시 저장
@@ -40,7 +44,10 @@ function ProfilePage(){
     const [techsearch, setTechsearch] = useState(''); // 기술 검색 값 임시 저장
 
     const [myurlarray, setmyurlarray] = useState([]); // 현재 나의 url 목록
-    const [newurl, setnewurl] = useState("");
+    const [newurl, setnewurl] = useState(""); // url 추가를 위해 입력한 새로운 url 값
+    const [newurlable, setnewurlable] = useState(false); // 새로운 url 값의 사용 가능 여부
+
+    const [ablesubmit, setablesubmit] = useState(false); // 회원 수정 버튼 활성화 값 임시 저장
 
     // 기술테크에 기술 추가
     function AddMytech(id, name, icon_url){
@@ -119,30 +126,39 @@ function ProfilePage(){
     // URL 목록에 새로운 URL을 추가
     function AddUrl(url){
 
-        axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/url/add?input_url=${newurl}`, { withCredentials: true, credentials: "include" })
-        .then(res => {
-            // 만약 이미 존재하는 url을 추가하려는 경우
-            if (myurlarray.includes(url)){
-                alert("이미 존재하는 url 입니다.");
-            }
-            else{
-                // 배열에 새로운 값을 추가하기 위한 배열 복제
-                var newarray = [...myurlarray];
-        
-                // 새롭게 입력한 url값 추가 후 적용
-                newarray.push(url);
-                setmyurlarray(newarray);
-            }
+        // 추가 가능한 URL 값인지 확인
+        if (newurlable){
+            axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/url/add?input_url=${newurl}`, { withCredentials: true, credentials: "include" })
+            .then(res => {
+                // 만약 이미 존재하는 url을 추가하려는 경우
+                if (myurlarray.includes(url)){
+                    alert("이미 존재하는 url 입니다.");
+                }
+                else{
+                    // 배열에 새로운 값을 추가하기 위한 배열 복제
+                    var newarray = [...myurlarray];
+            
+                    // 새롭게 입력한 url값 추가 후 적용
+                    newarray.push(url);
+                    setmyurlarray(newarray);
+                }
+    
+                // input 태그의 값과 사용가능 여부 초기화
+                setnewurl("");
+                setnewurlable(false);
+            })
+            .catch(error => {
+                return error;
+            })
+        }
 
-            // input 태그의 값을 초기화
-            setnewurl("");
-        })
-        .catch(error => {
-            return error;
-        })
-        
+        // 사용할 수 없는 URL 값인 경우 알림
+        else{
+            alert("이미 존재하는 URL 이거나 사용할 수 없는 URL값 입니다.");
+        }
     }
 
+    // URL 목록에서 URL을 삭제
     function DeleteUrl(url){
         
         axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/url/delete?input_url=${url}`, { withCredentials: true, credentials: "include" })
@@ -172,6 +188,43 @@ function ProfilePage(){
         .catch(error => {
             return error;
         })
+
+    }
+
+    // 회원 정보 수정 요청 함수
+    function Submit(nickname, email, job){
+        
+        // 모든 항목에서 사용가능한 데이터를 입력했을 경우
+        if (ablesubmit){
+
+            // 회원가입 API에서 사용될 데이터
+            var data = {
+                "user_job": job
+            }
+
+            if (defaultnickname != nickname){
+                data["user_name"] = nickname;
+            }
+            if (defaultemail != email){
+                data["user_email"] = email;
+            }
+            
+            // 회원가입 API 호출
+            axios.put(`${process.env.REACT_APP_DJANGO_API_URL}/user/update`, data, { withCredentials: true, credentials: "include" })
+            .then(res => {
+                alert("회원정보 수정에 성공하였습니다!");
+                navigate('/');
+                return res;
+            })
+            .catch(error => {
+                alert("회원정보 수정에 실패하였습니다!");
+                return error;
+            });
+
+        }
+        else{
+            alert("입력값을 확인해주세요.");
+        }
 
     }
 
@@ -207,24 +260,44 @@ function ProfilePage(){
         }
     },[]);
 
+    // 입력값이 변할때 마다 회원가입이 가능한지 확인
+    useEffect(()=>{
+        if (ablenickname && ableemail && job.length > 0){
+            setablesubmit(true);
+        }
+        else{
+            setablesubmit(false);
+        }
+    }, [ablenickname, ableemail, job])
+
     // 사용자의 정보 받아오기
     useEffect(()=>{
 
         // 로그인한 사용자의 쿠키 값에서 index 얻어오기
         const user_index = getCookieValue("index");
         
+        const SetBasicInfo = {
+            setnickname,
+            setdefaultnickname,
+            setemail,
+            setdefaultemail,
+            setjob,
+            setprofileimage,
+        }
+        BasicInfo.GetUserInfo(SetBasicInfo, user_index);
+
         // 현재 나의 URL 목록 얻어오기
         UrlInfo.MyUrlList(setmyurlarray, user_index);
-
+        
         // 전체 기술 목록 얻어오기
         TechInfo.GetAllTechList(SetAllTechList);
         
         // 현재 나의 기술 목록 얻어오기
         TechInfo.MyTechList(SetMyTechArray, user_index);
-        
 
     },[]);
 
+    // 로그인 되었을 때
     if (islogin){
         return(
             <>
@@ -241,6 +314,7 @@ function ProfilePage(){
 
                             <div className='Profile-View-input'>
 
+                                {/* 회원 정보 */}
                                 <form>
 
                                     {/* 닉네임 조회, 변경 */}
@@ -257,11 +331,22 @@ function ProfilePage(){
                                                 }
                                             </div>
                                             <input type="text" 
-                                                onChange={(e)=>{setnickname(e.target.value);CheckUserInfo.checkNickName_action(e.target.value, setablenickname)}} 
+                                                onChange={(e)=>{
+
+                                                    setnickname(e.target.value);
+
+                                                    if (e.target.value == defaultnickname){
+                                                        setablenickname(true);
+                                                    }
+                                                    else {
+                                                        CheckUserInfo.checkNickName_action(e.target.value, setablenickname)
+                                                    }
+                                                }} 
                                                 className="Register-View-input-info nickname" 
                                                 placeholder="3 ~ 20자를 입력해주세요."
                                                 pattern={REGEX.Nickname_regex} 
-                                                title={REGEX_MESSAGE.Nickname_message} 
+                                                title={REGEX_MESSAGE.Nickname_message}
+                                                value={nickname}
                                                 required
                                             />
                                         </div>
@@ -281,11 +366,21 @@ function ProfilePage(){
                                                 }
                                             </div>
                                             <input type="text" 
-                                                onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
+                                                onChange={(e)=>{
+                                                    setemail(e.target.value);
+
+                                                    if (e.target.value == defaultemail){
+                                                        setableemail(true);
+                                                    }
+                                                    else {
+                                                        CheckUserInfo.checkEmail_action(e.target.value, setableemail)
+                                                    }
+                                                }} 
                                                 className="Register-View-input-info email" 
                                                 placeholder="이메일을 입력해주세요."
                                                 pattern={REGEX.Email_regex} 
                                                 title={REGEX_MESSAGE.Email_message} 
+                                                value={email}
                                                 required
                                             />
                                         </div>
@@ -309,6 +404,8 @@ function ProfilePage(){
 
                                     {/* 기술스택 조회, 편집 */}
                                     <div className="item">
+
+                                        {/* 제목 */}
                                         <div className='title'>
                                             <text>기술스택</text>
                                         </div>
@@ -344,13 +441,14 @@ function ProfilePage(){
                                         </div>
                                     </div>
 
-                                    {/* URL 입력창 */}
+                                    {/* URL 제목 */}
                                     <div className="item" style={{flexDirection:"column"}}>
                                         <div className='title' style={{display: "flex", alignSelf:"start"}}>
                                             <text>URL</text>
                                         </div>
                                     </div>
-                                                
+                                     
+                                    {/* URL 조회 & 입력*/}
                                     <div style={{marginBottom:"50px"}}>
 
                                         {/* 나의 url 갯수만큼 아이템을 보여준다. */}
@@ -389,11 +487,24 @@ function ProfilePage(){
                                             <div style={{
                                                 borderBottom: '1px solid black',
                                                 width: (newurl.length * 0.65) + "em",
-                                                minWidth: "40%"
+                                                minWidth: "40%",
+                                                display:'flex',
+                                                alignItems:'center'
                                             }}>
                                                 <input
-                                                    placeholder='URL을 입력해주세요.'
-                                                    onChange={(e)=>{setnewurl(e.target.value)}}
+                                                    placeholder='추가를 원하는 URL 값을 입력해주세요.'
+                                                    onChange={(e)=>{
+                                                        
+                                                        setnewurl(e.target.value);
+
+                                                        if(myurlarray.includes(e.target.value)){
+                                                            setnewurlable(false);
+                                                        }
+                                                        else{
+                                                            CheckUserInfo.checkUrl_action(e.target.value, setnewurlable);
+                                                        }
+
+                                                    }}
                                                     style={{
                                                         background: 'none',
                                                         boxShadow: 'none',
@@ -401,22 +512,52 @@ function ProfilePage(){
                                                         alignSelf: 'center'
                                                     }}
                                                     value={newurl}
-                                                ></input>
+                                                />
+                                                <img 
+                                                    className='sm' 
+                                                    src={
+                                                        newurlable
+                                                        ? "img/icon/check_bold.svg"
+                                                        : "img/icon/coolicon.svg"
+                                                    }
+                                                />
                                             </div>
 
                                             {/* url 추가 */}
                                             <img class="md" src={"img/icon/plus_circle.svg"}
                                                 style={{
-                                                    marginLeft: '15px'
+                                                    marginLeft: '30px'
                                                 }}
                                                 onClick={(e)=>{AddUrl(newurl);}}
-                                            ></img>
+                                            />
 
                                         </div>
 
                                     </div>
-
+                                
                                 </form>
+
+                                {/* 수정하기 버튼 */}
+                                <div
+                                    style={{display:'flex', justifyContent:'flex-end', width:'100%', marginBottom:'50px'}}
+                                    >
+                                    <button 
+                                        class="Button-Md"
+                                        style={{width:'30%'}}
+                                        onClick={()=>{
+
+                                            // 회원 정보 수정 여부 확인
+                                            var result = window.confirm("회원 정보를 수정하시겠습니까?");
+                                            
+                                            // 확인 시 회원 정보 수정 함수 실행
+                                            if (result){
+                                                Submit(nickname, email, job);
+                                            }
+
+                                        }}
+                                    >프로필 수정하기
+                                    </button>
+                                </div>                                
 
                             </div>
 
@@ -430,6 +571,7 @@ function ProfilePage(){
     }
     // 로그인 되지 않았을 때
     else{
+        // 로그인창으로 이동
         navigate('/login');
         return(<></>);
     }

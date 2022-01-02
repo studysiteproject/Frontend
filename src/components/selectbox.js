@@ -13,12 +13,12 @@ function SelectBox(props) {
         styles={{
           menu: provided => ({...provided, zIndex: 999}),
         }}
-        item={props.options.find(op => { // choice state에 따라 디폴트 option 세팅
-          return op.value === props.choice
+        value={props.options.find(option => { // choice state에 따라 디폴트 option 세팅
+          return option.value == props.choice
         })}
         placeholder={props.placeholder}
         onChange={(item) => {
-            props.setChoice(item.value);
+          props.setChoice(item.value);
         }}
         options={props.options}
         isSearchable={props.isSearchable}

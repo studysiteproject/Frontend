@@ -129,16 +129,39 @@ function AbleAuthEmail(email, setableemail){
 
 }
 
+// URL 패턴확인 함수
+function checkUrl(url, seturlable){
+    
+    // URL이 입력되었을 때만
+    if (url.length > 0){
+
+        // 만약 URL의 조건에 맞다면 true
+        if (url.match(new RegExp(REGEX.URL_regex))){
+            seturlable(true);
+        }
+        else{
+            seturlable(false);
+        }
+
+    }
+    else{
+        seturlable(false);
+    }
+
+}
+
 // 불필요한 요청을 줄이기 위해 입력 데이터 검사 함수는 디바운싱 방식 이용
 const checkID_action = _.debounce(checkID, 500);
 const checkPW_action = _.debounce(checkPW, 500);
 const checkNickName_action = _.debounce(checkNickName, 500);
 const checkEmail_action = _.debounce(checkEmail, 500);
+const checkUrl_action = _.debounce(checkUrl, 200);
 
 export const CheckUserInfo = {
     checkID_action,
     checkPW_action,
     checkNickName_action,
     checkEmail_action,
+    checkUrl_action,
     AbleAuthEmail
 }
