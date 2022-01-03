@@ -497,7 +497,7 @@ function ProfilePage(){
                                                         return(
                                                             <div className="tech-item-box">
                                                                 <div>
-                                                                    <img class="sm" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.icon_url}`} style={{marginRight: '15px'}}></img>
+                                                                    <img class="sm" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.category}/${item.icon_url}`} style={{marginRight: '15px'}}></img>
                                                                     {item.name}
                                                                     <img class="sm" src="/img/icon/coolicon.svg" style={{marginLeft: '15px'}}
                                                                         onClick={()=>{DeleteMytech(item.id)}}
