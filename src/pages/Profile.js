@@ -149,7 +149,7 @@ function ProfilePage(){
                 "value": item.name,
                 "label": 
                     <div onClick={()=>{AddMytech(item.id, item.name, item.icon_url)}}>
-                        <img class="md" src={item.icon_url} style={{marginRight:'10px'}}/>
+                        <img class="md" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.icon_url}`} style={{marginRight:'10px'}}/>
                         <text>{item.name}</text>
                     </div>
             })
@@ -229,9 +229,6 @@ function ProfilePage(){
     // 입력한 URL이 어떤 홈페이지의 URL인지(EX : Github, LinkedIn, Notion, ...)
     function CheckUrlType(url){
 
-        // 타입에 따른 아이콘이 저장된 base url
-        const base_path = "/img/icon/url/";
-
         // url 타입이 저장된 json 값의 key 목록을 가져온다.
         const url_type_keys = Object.keys(URL_TYPE_REGEX);
 
@@ -240,11 +237,11 @@ function ProfilePage(){
             let type_name = url_type_keys[index]
 
             if (url.match(new RegExp(URL_TYPE_REGEX[type_name]))){
-                return base_path + type_name + ".svg";
+                return `${BasicInfo.URL_TYPE_ICON_BASE_URL}/${type_name}.svg`
             }
         }
 
-        return base_path + "default.svg";
+        return `${BasicInfo.URL_TYPE_ICON_BASE_URL}/default.svg`
     }
 
     // 회원 정보 수정 요청 함수
@@ -499,7 +496,7 @@ function ProfilePage(){
                                                         return(
                                                             <div className="tech-item-box">
                                                                 <div>
-                                                                    <img class="sm" src={item.icon_url} style={{marginRight: '15px'}}></img>
+                                                                    <img class="sm" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.icon_url}`} style={{marginRight: '15px'}}></img>
                                                                     {item.name}
                                                                     <img class="sm" src="/img/icon/coolicon.svg" style={{marginLeft: '15px'}}
                                                                         onClick={()=>{DeleteMytech(item.id)}}

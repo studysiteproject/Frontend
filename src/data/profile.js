@@ -60,10 +60,14 @@ function MyUrlList(setdata, user_index){
 }
 
 const PROFILE_BASE_URL = "https://catchstudy-images.s3.ap-northeast-2.amazonaws.com/profile";
+const URL_TYPE_ICON_BASE_URL = "/img/icon/url"
+const TECH_ICON_BASE_URL = "img/icon/tech"
 
 export const BasicInfo = {
     GetUserInfo,
-    PROFILE_BASE_URL
+    PROFILE_BASE_URL,
+    URL_TYPE_ICON_BASE_URL,
+    TECH_ICON_BASE_URL
 }
 
 export const TechInfo = {
