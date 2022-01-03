@@ -8,6 +8,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { useSelector, useDispatch } from 'react-redux';
 import { SetListAPI, AddFavoriteAPI, DeleteFavoriteAPI } from '../redux-modules/module/StudyManage';
 import { REGEX } from '../data/regex';
+import { BasicInfo } from '../data/profile';
 
 function StudyList(props){
 
@@ -74,7 +75,7 @@ function Item(props){
                             props.item.tech_info.map((tech_item)=>{
                                 return(
                                     <OverlayTrigger placement="top" overlay={renderTooltip(props, tech_item.tech_name)}>
-                                        <img src={tech_item.img_url}></img>
+                                        <img src={`${BasicInfo.TECH_ICON_BASE_URL}/${tech_item.category}/${tech_item.img_url}`}></img>
                                     </OverlayTrigger>
                                 )
                             })
