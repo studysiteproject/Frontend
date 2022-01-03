@@ -156,6 +156,7 @@ function RegisterPage(){
                                             required
                                         />
                                     </div>
+
                                     {/* PW 입력창 */}
                                     <div className="item">
                                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -180,7 +181,11 @@ function RegisterPage(){
                                             <text>Password 확인</text>
                                             {
                                                 checkpw.length
-                                                ? <text className={`checkData ${pw == checkpw ? "able" : "error"}`}>{pw == checkpw ? "✅" : "패스워드와 동일하게 입력해주세요."}</text>
+                                                ? <text className={`checkData ${pw == checkpw ? "able" : "error"}`}>
+                                                    {pw == checkpw 
+                                                        ? <img class="sm" src="/img/icon/check_bold.svg" style={{margin:'0'}}/> 
+                                                        : "패스워드와 동일하게 입력해주세요."}
+                                                </text>
                                                 : <text className={`checkData none`}>{"패스워드 확인 값을 입력해주세요."}</text>
                                             }
                                             

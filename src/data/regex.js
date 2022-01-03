@@ -10,6 +10,15 @@ export const REGEX = {
     // URL_regex: '^(http(s)?:\/\/)[a-zA-Z0-9가-힣\!\*\'\(\)\;\:\@\&\=\+\$\,\/\?\#\[\]\%\-\_\.\~]+\.[a-zA-Z0-9가-힣\!\*\'\(\)\;\:\@\&\=\+\$\,\/\?\#\[\]\%\-\_\.\~]+$'
 }
 
+export const URL_TYPE_REGEX = {
+    github: '^(https:\/\/github.com\/)',
+    linkedin: '^(https:\/\/[a-z]+\.linkedin.com\/)',
+    facebook: '((http|https):\/\/|)(www\.|)facebook\.com\/',
+    twitter: '(?:http:\/\/)?(?:www\.)?twitter\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)',
+    instagram: '(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?',
+    notion: '(https?:\/\/)?[a-zA-Z0-9]+\.notion\.site\/[a-zA-Z0-9]+'
+}
+
 export const REGEX_MESSAGE = {
     ID_message : "6-20자 길이의 영대소문자와 숫자와 특수기호 '-', '_' 조합으로만 사용가능합니다.",
     Password_check_message : "입력한 패스워드와 다릅니다.",

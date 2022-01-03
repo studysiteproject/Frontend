@@ -14,7 +14,7 @@ function GetUserInfo(setdata, user_index){
         setdata.setemail(user_info["user_email"])
         setdata.setdefaultemail(user_info["user_email"])
         setdata.setjob(user_info["user_job"])
-        setdata.setprofileimage(user_info["img_url"])
+        setdata.setprofileimage(`${PROFILE_BASE_URL}/${user_index}/${user_info["img_url"]}`)
 
         return res
     })
@@ -59,8 +59,11 @@ function MyUrlList(setdata, user_index){
     })
 }
 
+const PROFILE_BASE_URL = "https://catchstudy-images.s3.ap-northeast-2.amazonaws.com/profile";
+
 export const BasicInfo = {
-    GetUserInfo
+    GetUserInfo,
+    PROFILE_BASE_URL
 }
 
 export const TechInfo = {

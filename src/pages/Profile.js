@@ -9,17 +9,18 @@ import Search from '../components/input';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { UserAuthActionList } from "../redux-modules/UserReducer";
 import { CheckUserInfo } from '../components/util/Checkinfo';
 
-import { REGEX, REGEX_MESSAGE } from '../data/regex';
+import { REGEX, REGEX_MESSAGE, URL_TYPE_REGEX } from '../data/regex';
 import job_data from '../data/job';
 import { getCookieValue } from '../util';
 
 import axios from "axios";
 import { BasicInfo, TechInfo, UrlInfo } from '../data/profile';
+import { SendAuthEmail } from '../redux-modules/module/UserAuth';
 
 function ProfilePage(){
     
@@ -28,6 +29,10 @@ function ProfilePage(){
     const navigate = useNavigate();
 
     const [profileimage, setprofileimage] = useState(''); // 프로필 이미지 경로
+    const hiddenFileInput = React.useRef(null);
+    const handleClick = (e) => {
+        hiddenFileInput.current.click();
+    };
 
     const [nickname, setnickname] = useState(''); // 이름(닉네임) 값 임시 저장
     const [defaultnickname, setdefaultnickname] = useState(''); // 이름(닉네임) 값 임시 저장
@@ -48,6 +53,36 @@ function ProfilePage(){
     const [newurlable, setnewurlable] = useState(false); // 새로운 url 값의 사용 가능 여부
 
     const [ablesubmit, setablesubmit] = useState(false); // 회원 수정 버튼 활성화 값 임시 저장
+
+    // 엔터 입력 시 URL 추가 동작 기능
+    const onCheckEnter = (e) => {
+        if(e.key === 'Enter') {
+            AddUrl(newurl);
+        }
+    }
+
+    function UploadProfile(files){
+        
+        const user_index = getCookieValue("index");
+        const uploadFile = files[0];
+
+        const formData = new FormData();
+        formData.append('files',uploadFile);
+        
+        // 프로필 이미지 업로드 API 호출
+        axios.post(`${process.env.REACT_APP_DJANGO_API_URL}/profile/image`, formData, { 'Content-Type': 'multipart/form-data', withCredentials: true, credentials: "include" })
+        .then(res => {
+            setprofileimage(
+                `${BasicInfo.PROFILE_BASE_URL}/${user_index}/${res.data['filename']}`
+            );
+            return res;
+        })
+        .catch(error => {
+            alert("업로드에 실패하였습니다!");
+            return error;
+        });
+
+    }
 
     // 기술테크에 기술 추가
     function AddMytech(id, name, icon_url){
@@ -114,7 +149,7 @@ function ProfilePage(){
                 "value": item.name,
                 "label": 
                     <div onClick={()=>{AddMytech(item.id, item.name, item.icon_url)}}>
-                        <img class="md" src={item.icon_url}></img>
+                        <img class="md" src={item.icon_url} style={{marginRight:'10px'}}/>
                         <text>{item.name}</text>
                     </div>
             })
@@ -191,6 +226,27 @@ function ProfilePage(){
 
     }
 
+    // 입력한 URL이 어떤 홈페이지의 URL인지(EX : Github, LinkedIn, Notion, ...)
+    function CheckUrlType(url){
+
+        // 타입에 따른 아이콘이 저장된 base url
+        const base_path = "/img/icon/url/";
+
+        // url 타입이 저장된 json 값의 key 목록을 가져온다.
+        const url_type_keys = Object.keys(URL_TYPE_REGEX);
+
+        for (var index=0; index<url_type_keys.length; index++) {
+            
+            let type_name = url_type_keys[index]
+
+            if (url.match(new RegExp(URL_TYPE_REGEX[type_name]))){
+                return base_path + type_name + ".svg";
+            }
+        }
+
+        return base_path + "default.svg";
+    }
+
     // 회원 정보 수정 요청 함수
     function Submit(nickname, email, job){
         
@@ -213,6 +269,12 @@ function ProfilePage(){
             axios.put(`${process.env.REACT_APP_DJANGO_API_URL}/user/update`, data, { withCredentials: true, credentials: "include" })
             .then(res => {
                 alert("회원정보 수정에 성공하였습니다!");
+
+                if (defaultemail != email){
+                    SendAuthEmail(email);
+                    alert("이메일을 변경하여 임시 휴면 상태로 전환되었습니다.\n계정을 다시 활성화 하기 위해서는 변경한 이메일에 전송된 인증 메일을 확인해주세요.");
+                }
+
                 navigate('/');
                 return res;
             })
@@ -284,6 +346,8 @@ function ProfilePage(){
             setjob,
             setprofileimage,
         }
+
+        // 닉네임, 이메일, 직업정보, 프로필 이미지 조회
         BasicInfo.GetUserInfo(SetBasicInfo, user_index);
 
         // 현재 나의 URL 목록 얻어오기
@@ -308,8 +372,23 @@ function ProfilePage(){
                         <div className='Profile-View-Frame'>
 
                             {/* 프로필 이미지 부분 */}
-                            <div className="Profile-image">
+                            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                                
+                                {/* 이미지 확인 부분 */}
+                                <div className="Profile-image" style={{margin: '20px'}}>
+                                    <img src={profileimage}></img>
+                                </div>
 
+                                {/* 이미지 업로드 버튼 부분 */}
+                                <button class="Button-Md" onClick={handleClick}>
+                                    이미지 업로드
+                                </button>
+                                <input type="file"
+                                    ref={hiddenFileInput}
+                                    style={{display:'none'}}
+                                    accept=".png, .jpg"
+                                    onChange={(e)=>{UploadProfile(e.target.files)}}
+                                />
                             </div>
 
                             <div className='Profile-View-input'>
@@ -409,17 +488,18 @@ function ProfilePage(){
                                         <div className='title'>
                                             <text>기술스택</text>
                                         </div>
+
                                         <div className='tech'>
 
                                             {/* 현재 나의 기술 목록을 나타내는 리스트 */}
                                             {/* 현재는 item 클릭 시 삭제되도록 설정(테스트) */}
-                                            <div className='tech-list'>
+                                            <div className='tech-list' style={{marginBottom:'10px'}}>
                                                 {
                                                     MyTechArray.map((item)=>{
                                                         return(
                                                             <div className="tech-item-box">
                                                                 <div>
-                                                                    <img class="md" src={item.icon_url} style={{marginRight: '15px'}}></img>
+                                                                    <img class="sm" src={item.icon_url} style={{marginRight: '15px'}}></img>
                                                                     {item.name}
                                                                     <img class="sm" src="/img/icon/coolicon.svg" style={{marginLeft: '15px'}}
                                                                         onClick={()=>{DeleteMytech(item.id)}}
@@ -457,7 +537,7 @@ function ProfilePage(){
                                                 return(
                                                     <div className="item">
                                                         <div style={{paddingRight: '50px'}}>
-                                                            <img class="md" src={"img/icon/tech/github.svg"} style={{marginRight: '15px'}}></img>
+                                                            <img class="md" src={CheckUrlType(item)} style={{marginRight: '15px'}}></img>
                                                         </div>
                                                         <input type="text" 
                                                             onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
@@ -490,7 +570,9 @@ function ProfilePage(){
                                                 minWidth: "40%",
                                                 display:'flex',
                                                 alignItems:'center'
-                                            }}>
+                                            }}
+                                            onKeyPress={onCheckEnter}
+                                            >
                                                 <input
                                                     placeholder='추가를 원하는 URL 값을 입력해주세요.'
                                                     onChange={(e)=>{
@@ -522,7 +604,7 @@ function ProfilePage(){
                                                     }
                                                 />
                                             </div>
-
+                                            {/* </form> */}
                                             {/* url 추가 */}
                                             <img class="md" src={"img/icon/plus_circle.svg"}
                                                 style={{
