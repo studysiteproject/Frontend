@@ -101,13 +101,14 @@ function EmailReAuthPage(){
                                         {/* 모든 데이터를 정상적으로 입력하면 회원가입 버튼이 활성화된다. */}
                                         {
                                             ablesubmit
-                                            ? <button type="submit" className="Button-Md" onClick={()=>{
-                                                    SendAuthEmail(email);
-                                                }}>
-                                                    <text>인증메일 재전송</text>
-                                            </button>
-                                            : <button type="submit" className="Button-Md" disabled>
-                                                <text>인증메일 재전송</text>
+                                            ? <button type="submit" className="Button-Md" 
+                                                    onClick={()=>{
+                                                        SendAuthEmail(email);
+                                                    }}
+                                                >인증메일 재전송</button>
+
+                                            : <button type="submit" className="Button-Md" value={"인증메일 재전송"} disabled>
+                                                인증메일 재전송                                                
                                             </button>
                                         }
 

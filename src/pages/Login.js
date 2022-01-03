@@ -22,6 +22,13 @@ function LoginPage(){
 
     const navigate = useNavigate();
 
+    // 엔터 입력 시 로그인 동작 기능
+    const onCheckEnter = (e) => {
+        if(e.key === 'Enter') {
+            dispatch(LoginAPI(id, pw));
+        }
+    }
+
     // 로그인된 상태인지 확인
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -54,16 +61,18 @@ function LoginPage(){
                         <div className="Login-View-input">
 
                             {/* ID & PW 입력 창 */}
-                            <div className="Login-View-input-info">
-                                <input type="text" onChange={(e)=>{setid(e.target.value)}} className="Login-View-input-info id" placeholder="ID"/>
-                                <hr style={{margin: '0px', color: 'rgba(0, 0, 0, 0.10)'}}/>
-                                <input type="password" onChange={(e)=>{setpw(e.target.value)}} className="Login-View-input-info password" placeholder="Password"/>
-                            </div>
+                            <form onKeyPress={onCheckEnter} style={{width:'100%'}}>
+                                <div className="Login-View-input-info">
+                                    <input type="text" onChange={(e)=>{setid(e.target.value)}} className="Login-View-input-info id" placeholder="ID"/>
+                                    <hr style={{margin: '0px', color: 'rgba(0, 0, 0, 0.10)'}}/>
+                                    <input type="password" onChange={(e)=>{setpw(e.target.value)}} className="Login-View-input-info password" placeholder="Password"/>
+                                </div>
+                            </form>
 
                             {/* 로그인 버튼 */}
                             <div class="Login-View-input-button">
                                 <button className="Button-Md" onClick={()=>{dispatch(LoginAPI(id, pw));}}>
-                                    <text>로그인</text>
+                                    로그인
                                 </button>
                             </div>
                             

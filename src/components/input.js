@@ -3,6 +3,7 @@ import { REGEX, REGEX_MESSAGE } from '../data/regex';
 import { useState } from 'react';
 
 {/* 검색창 */}
+// 원하는 값과 해당 값의 변경함수(useState)를 사용하여 검색한다.
 function Search(props) {
 
     const [beforeSearch, setbeforeSearch] = useState("");
