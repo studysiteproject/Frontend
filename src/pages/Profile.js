@@ -85,7 +85,7 @@ function ProfilePage(){
     }
 
     // 기술테크에 기술 추가
-    function AddMytech(id, name, icon_url){
+    function AddMytech(id, name, category, icon_url){
 
         axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/tech/add?tech_index=${id}`, { withCredentials: true, credentials: "include" })
         .then(res => {
@@ -106,6 +106,7 @@ function ProfilePage(){
                 newarray.push({
                     "id":id,
                     "name":name,
+                    "category": category,
                     "icon_url":icon_url
                 });
     
@@ -149,13 +150,13 @@ function ProfilePage(){
                 "value": item.name,
                 "label": 
                     <div onClick={()=>{AddMytech(item.id, item.name, item.icon_url)}}>
-                        <img class="md" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.icon_url}`} style={{marginRight:'10px'}}/>
+                        <img class="md" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.category}/${item.icon_url}`} style={{marginRight:'10px'}}/>
                         <text>{item.name}</text>
                     </div>
             })
         })
 
-        return array
+        return array;
     }
 
     // URL 목록에 새로운 URL을 추가

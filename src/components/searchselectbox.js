@@ -23,6 +23,8 @@ function SearchSelectBox(props) {
         }}
         options={props.options}
         isSearchable={true}
+        maxMenuHeight={200}
+        menuPlacement="auto"
       />
     </>
   );
