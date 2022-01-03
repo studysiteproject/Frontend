@@ -149,7 +149,7 @@ function ProfilePage(){
             array.push({
                 "value": item.name,
                 "label": 
-                    <div onClick={()=>{AddMytech(item.id, item.name, item.icon_url)}}>
+                    <div onClick={()=>{AddMytech(item.id, item.name, item.category, item.icon_url)}}>
                         <img class="md" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.category}/${item.icon_url}`} style={{marginRight:'10px'}}/>
                         <text>{item.name}</text>
                     </div>
