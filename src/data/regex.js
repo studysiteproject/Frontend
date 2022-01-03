@@ -16,7 +16,8 @@ export const URL_TYPE_REGEX = {
     facebook: '((http|https):\/\/|)(www\.|)facebook\.com\/',
     twitter: '(?:http:\/\/)?(?:www\.)?twitter\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)',
     instagram: '(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?',
-    notion: '(https?:\/\/)?[a-zA-Z0-9]+\.notion\.site\/[a-zA-Z0-9]+'
+    notion: '(https?:\/\/)?[a-zA-Z0-9]+\.notion\.site\/[a-zA-Z0-9]+',
+    pinterest: '(https?:\/\/)?(www\.)?pinterest\.'
 }
 
 export const REGEX_MESSAGE = {
