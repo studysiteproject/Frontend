@@ -7,6 +7,7 @@ import EmailAuthPage from "../pages/EmailAuth";
 import ProfilePage from "../pages/Profile";
 
 import { BrowserRouter, Route , Routes } from "react-router-dom";
+import MyStudyListPage from "../pages/MyStudyList";
 
 export default () => (
     <BrowserRouter>
@@ -16,6 +17,7 @@ export default () => (
             <Route path='/logout' element={<LogoutPage/>}></Route>
             <Route path='/profile' element={<ProfilePage/>}></Route>
             <Route path='/register' element={<RegisterPage/>}></Route>
+            <Route path='/study/manage' element={<MyStudyListPage/>}></Route>
             <Route path='/auth/email/resend' element={<EmailReAuthPage/>}></Route>
             <Route path='/auth/email/:token' element={<EmailAuthPage/>}></Route>
         </Routes>

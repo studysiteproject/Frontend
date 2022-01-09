@@ -101,7 +101,7 @@ function ProfilePage(){
                 }
             })
     
-            // 이미 존재하는 스터디일경우 추가하지 않는다.
+            // 이미 존재하는 기술일경우 추가하지 않는다.
             if (!isExist){
                 newarray.push({
                     "id":id,
@@ -374,7 +374,7 @@ function ProfilePage(){
                                 
                                 {/* 이미지 확인 부분 */}
                                 <div className="Profile-image" style={{margin: '20px'}}>
-                                    <img src={profileimage}></img>
+                                    <img src={profileimage}/>
                                 </div>
 
                                 {/* 이미지 업로드 버튼 부분 */}
@@ -541,7 +541,7 @@ function ProfilePage(){
                                                             onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
                                                             className="Register-View-input-info email" 
                                                             placeholder="URL을 입력해주세요."
-                                                            pattern={REGEX.Email_regex} 
+                                                            pattern={REGEX.URL_regex} 
                                                             title={REGEX_MESSAGE.Email_message} 
                                                             required
                                                             readOnly

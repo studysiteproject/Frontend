@@ -40,7 +40,7 @@ function Header() {
                 </div>
                 <nav>
                     <ul className="gnb">
-                        <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>스터디관리</Link></li>
+                        <li className="text"><Link to="/study/manage" style={{ textDecoration: 'none', color: '#222222' }}>스터디관리</Link></li>
                         <li className="icon">
                             <div style={{position: 'relative'}}>
                                 <img src="/img/icon/user_circle.svg" 

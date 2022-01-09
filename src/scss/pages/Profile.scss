@@ -13,8 +13,6 @@
     background: rgba(219, 219, 219, 0.5);
 }
 
-
-
 .Profile-View-Frame{
 
     display: flex;
@@ -30,8 +28,12 @@
     background: #FFFFFF;
 
     .Profile-image{
-        min-width: 200px;
-        min-height: 200px;
+        // min-width: 200px;
+        // min-height: 200px;
+
+        width: 100%;
+        height: 100%;
+
         position: relative;
         border-radius: 50%;
         overflow: hidden;
@@ -49,6 +51,12 @@
             height: 100%;
             object-fit: cover;
         }
+    }
+
+    .Profile-image:after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
     }
 
 }   

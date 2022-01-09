@@ -1,0 +1,92 @@
+@import '../base.scss';
+@import '../base/font.scss';
+@import '../base/button-style.scss';
+
+.List-Frame{
+    display: flex;
+    flex-direction: row;
+
+    padding-inline: 100px;
+
+    width: 100%;
+
+    .Profile-item{
+        width: 260px;
+        height: 1000px;
+        
+        margin-right: 180px;
+    
+        .image{
+            position: relative;
+            width: 100%;
+
+            border-radius: 50%;
+            overflow: hidden;
+        
+            border: 0.1px solid #222222;
+            box-sizing: border-box;
+            
+            img{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+
+                top: 0;
+                left: 0;
+            }
+
+        }
+
+        .image:after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+        }
+        
+        .Profile-info{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+
+            width: 100%;   
+            
+            * {
+                display: flex;
+                width: 100%;
+                text-overflow : ellipsis;
+                display: block;
+                overflow: hidden;
+            }
+        }
+
+    }
+
+    .StudyList-item{
+        flex-grow: 1;
+        background: blue;
+    }
+
+}
+
+
+.Profile-image{
+    position: relative;
+
+    width: 100%;
+    height: 200px;
+    
+    border-radius: 50%;
+    overflow: hidden;
+
+    border: 0.1px solid #222222;
+    box-sizing: border-box;
+        
+    img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
