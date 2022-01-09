@@ -20,3 +20,32 @@ a {
 	text-decoration: none;
 	outline: none;
 }
+
+.profile-image{
+	position: relative;
+	width: 100%;
+
+	border-radius: 50%;
+	overflow: hidden;
+
+	border: 0.1px solid #222222;
+	box-sizing: border-box;
+	
+	img{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+
+		top: 0;
+		left: 0;
+
+		object-fit: cover;
+	}
+
+}
+
+.profile-image:after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}

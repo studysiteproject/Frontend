@@ -370,10 +370,10 @@ function ProfilePage(){
                         <div className='Profile-View-Frame'>
 
                             {/* 프로필 이미지 부분 */}
-                            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                            <div className='Profile-Image-Frame'>
                                 
                                 {/* 이미지 확인 부분 */}
-                                <div className="Profile-image" style={{margin: '20px'}}>
+                                <div className="profile-image" style={{marginBottom: '20px'}}>
                                     <img src={profileimage}/>
                                 </div>
 

@@ -1,7 +1,7 @@
 import axios from "axios"
 
 // 닉네임 / 이메일 / 직업 정보를 얻어온다.
-function GetUserInfo(setdata, user_index){
+function GetUserInfo(setdata, user_index, include_default=true){
     axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/profile/basic?user_index=${user_index}`, { withCredentials: true, credentials: "include" })
     .then(res => {
 
@@ -10,11 +10,14 @@ function GetUserInfo(setdata, user_index){
 
         // 인자로 설정한 데이터 설정 함수를 이용하여 얻어온 정보 설정
         setdata.setnickname(user_info["user_name"])
-        setdata.setdefaultnickname(user_info["user_name"])
         setdata.setemail(user_info["user_email"])
-        setdata.setdefaultemail(user_info["user_email"])
         setdata.setjob(user_info["user_job"])
         setdata.setprofileimage(`${PROFILE_BASE_URL}/${user_index}/${user_info["img_url"]}`)
+        
+        if (include_default){
+            setdata.setdefaultnickname(user_info["user_name"])
+            setdata.setdefaultemail(user_info["user_email"])
+        }
 
         return res
     })
