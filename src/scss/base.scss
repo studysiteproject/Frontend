@@ -19,6 +19,19 @@ ul {
 a {
 	text-decoration: none;
 	outline: none;
+
+	&:hover{
+		font-weight: bold;
+	}
+	&:visited{
+		color: none;
+	}
+}
+
+.icon {
+	width: 24px;
+	height: 24px;
+	margin: 5px;
 }
 
 .profile-image{

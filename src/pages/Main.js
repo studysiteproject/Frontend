@@ -11,15 +11,37 @@ import StudyList from '../components/StudyList';
 import axios from 'axios';
 
 import { UserAuthActionList } from '../redux-modules/UserReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { GetStudyListAPI } from '../redux-modules/module/StudyManage';
 
 function MainPage(){
 
+    // 카테고리 선택
     const [select, setselect] = useState(0);
+    var categorylist = ['전체', '개발', '디자인', '공무원'];
+
+    // 검색어 설정
     const [MainSearch, setMainSearch] = useState("");
 
+    // 스터디 목록
+    const studylist = useSelector((state) => state.studyReducer.studylist);
+    let studylistlenth = studylist.length;
+
+    const option = {
+        "users": false,
+        "edit": false,
+        "delete": false,
+        "leader": true,
+        "favorite": true
+    }
+
     const dispatch = useDispatch();
+
+    // 스터디 목록 얻어오기
+    useEffect(()=>{
+        dispatch(GetStudyListAPI())
+    },[studylistlenth]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -55,13 +77,22 @@ function MainPage(){
     return (
         <>
             <Header/>
-            <Category select={select} setselect ={setselect}/>
+            <div style={{width:'80%', margin: 'auto'}}>
+                <Category select={select} setselect ={setselect} categorylist={categorylist}/>
+            </div>
             <Banner/>
             <div className="flex-row-end">
                 <Search setMainSearch={setMainSearch}/>
                 <CreateStudyButton/>
             </div>
-            <StudyList MainSearch={MainSearch}/>
+            <div style={{width:'80%', margin: 'auto'}}>
+            <StudyList 
+                studylist={studylist} 
+                studylistlenth={studylistlenth} 
+                MainSearch={MainSearch}
+                option={option}
+            />
+            </div>
             <Footer/>
         </>
     );

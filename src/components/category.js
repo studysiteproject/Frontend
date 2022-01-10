@@ -1,15 +1,13 @@
 import '../scss/category.scss'
 
 function Category(props) {
-
-    var categorylist = ['전체', '개발', '디자인', '공무원'];
     
         return (
             <div className="Category">
                 <div className="category-items">
 
                     {
-                        categorylist.map((category, i) => {
+                        props.categorylist.map((category, i) => {
                             
                             // 코드를 저장하는 변수
                             let code;

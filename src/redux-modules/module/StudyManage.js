@@ -2,7 +2,7 @@ import axios from 'axios';
 import { StudyActionList } from '../StudyReducer';
 
 // 스터디 리스트를 얻어오는 기능
-export function SetListAPI(){
+export function GetStudyListAPI(study_type){
     
     return function (dispatch){
 
@@ -10,14 +10,44 @@ export function SetListAPI(){
             Cookie: document.cookie
         }
 
-        axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
-        .then(res => {
-            dispatch(StudyActionList.SetList(res.data));
-        })
-        .catch(error=>{
-            return error;
-        })
-    
+        switch (study_type){
+            case "default":
+                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+                .then(res => {
+                    dispatch(StudyActionList.SetList(res.data));
+                })
+                .catch(error=>{
+                    return error;
+                })
+                break;
+            case "default":
+                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+                .then(res => {
+                    dispatch(StudyActionList.SetList(res.data));
+                })
+                .catch(error=>{
+                    return error;
+                })
+                break;
+            case "default":
+                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+                .then(res => {
+                    dispatch(StudyActionList.SetList(res.data));
+                })
+                .catch(error=>{
+                    return error;
+                })
+                break;
+            default:
+                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+                .then(res => {
+                    dispatch(StudyActionList.SetList(res.data));
+                })
+                .catch(error=>{
+                    return error;
+                })
+        }
+        
     }
     
 }

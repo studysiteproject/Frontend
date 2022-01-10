@@ -11,39 +11,16 @@
     width: 100%;
 
     .Profile-item{
-        width: 260px;
-        height: 1000px;
         
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 300px;
+        min-height: 750px;
+        
+        margin-top: 100px;
         margin-right: 180px;
-
-        .profile-image{
-            position: relative;
-            width: 100%;
-
-            border-radius: 50%;
-            overflow: hidden;
-        
-            border: 0.1px solid #222222;
-            box-sizing: border-box;
-            
-            img{
-                position: absolute;
-                width: 100%;
-                height: 100%;
-
-                top: 0;
-                left: 0;
-
-                object-fit: cover;
-            }
-
-        }
-
-        .profile-image:after {
-            content: "";
-            display: block;
-            padding-bottom: 100%;
-        }
         
         .Profile-info{
             display: flex;
@@ -61,7 +38,7 @@
             }
 
             * {
-                margin-bottom: 5px;
+                margin-top: 3px;
             }
 
         }
@@ -69,41 +46,30 @@
     }
 
     .StudyList-item{
+        display: flex;
+        flex-direction: column;
+
         flex-grow: 1;
-        background: blue;
     }
 
-}
-
-
-.Profile-image{
-    position: relative;
-
-    width: 100%;
-    height: 200px;
-    
-    border-radius: 50%;
-    overflow: hidden;
-
-    border: 0.1px solid #222222;
-    box-sizing: border-box;
-        
-    img{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
 }
 
 .Profile-info-detail{
     display: flex;
-
+    flex-direction: column;
     width: 100%;
 
     .item{
         display: flex;
     }
+
+    .tech{
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        flex-direction: row;
+
+        width: 100%;
+    }
+
 }

@@ -61,6 +61,7 @@ function ProfilePage(){
         }
     }
 
+    // 프로필 이미지를 업로드
     function UploadProfile(files){
         
         const user_index = getCookieValue("index");
