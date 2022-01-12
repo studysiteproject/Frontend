@@ -13,7 +13,7 @@ import { SendAuthEmail } from '../redux-modules/module/UserAuth';
 
 import { CheckUserInfo } from '../components/util/Checkinfo';
 import { REGEX, REGEX_MESSAGE } from '../data/regex';
-import job_data from '../data/job';
+import options from '../data/options';
 
 import axios from 'axios';
 
@@ -38,10 +38,10 @@ function RegisterPage(){
     const [ablesubmit, setablesubmit] = useState(false); // 회원가입 버튼 활성화 값 임시 저장
 
     // 직업 옵션 데이터 목록
-    const options = useMemo(
-        () => job_data,
-        []
-    );
+    // const options_data = useMemo(
+    //     () => options.job_data,
+    //     []
+    // );
 
     // 로그인 상태 확인
     const islogin = useSelector((state) => state.userReducer.islogin);
@@ -249,7 +249,7 @@ function RegisterPage(){
                                             choice={job}
                                             setChoice={setjob}
                                             placeholder={"직업을 선택하세요."}
-                                            options={job_data}
+                                            options={options.job_data}
                                             isSearchable={false}
                                         />
                                     </div>

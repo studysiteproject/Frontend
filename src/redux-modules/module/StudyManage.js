@@ -2,7 +2,7 @@ import axios from 'axios';
 import { StudyActionList } from '../StudyReducer';
 
 // 스터디 리스트를 얻어오는 기능
-export function GetStudyListAPI(study_type){
+export function GetStudyListAPI(study_type=""){
     
     return function (dispatch){
 
@@ -11,8 +11,8 @@ export function GetStudyListAPI(study_type){
         }
 
         switch (study_type){
-            case "default":
-                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+            case "develop":
+                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
                 .then(res => {
                     dispatch(StudyActionList.SetList(res.data));
                 })
@@ -20,8 +20,8 @@ export function GetStudyListAPI(study_type){
                     return error;
                 })
                 break;
-            case "default":
-                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+            case "design":
+                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
                 .then(res => {
                     dispatch(StudyActionList.SetList(res.data));
                 })
@@ -29,8 +29,8 @@ export function GetStudyListAPI(study_type){
                     return error;
                 })
                 break;
-            case "default":
-                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+            case "public_officer":
+                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
                 .then(res => {
                     dispatch(StudyActionList.SetList(res.data));
                 })
@@ -39,7 +39,7 @@ export function GetStudyListAPI(study_type){
                 })
                 break;
             default:
-                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/user/testapi`, { headers: header, withCredentials: true, credentials: "include" })
+                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
                 .then(res => {
                     dispatch(StudyActionList.SetList(res.data));
                 })

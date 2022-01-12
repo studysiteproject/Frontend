@@ -1,0 +1,80 @@
+@import '../base.scss';
+@import '../base/font.scss';
+@import '../base/button-style.scss';
+@import '../base/align.scss';
+
+.Frame{
+
+    padding: 10%;
+
+    display: flex;
+    flex-direction: column;
+    
+    width: 100%;
+
+    background: rgba(219, 219, 219, 0.5);
+}
+
+.Study-Info{
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+
+    .item{
+        padding: 3%;
+    }
+}
+
+.Study-Info-select{
+    display: flex;
+    justify-content: space-between;
+    
+    width: 100%;
+}
+
+.Study-Setting{
+    width: 100%;
+}
+
+.tech{
+            
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    
+    .tech-list{
+        display: flex;
+        flex-wrap: wrap;
+
+        width: 100%;
+    }
+
+    .tech-search{
+        width: 100%;
+    }
+
+    // 다른 input 박스의 쉐도우 효과와 padding 적용을 삭제
+    input{
+        box-shadow: none;
+        padding: 0;
+        width: 100%;
+    }
+
+}
+
+.tech-item-box{
+    min-width: 200px;
+    height: 40px;
+
+    background: #F2F2F2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    margin: 10px;
+    padding: 10px;
+}

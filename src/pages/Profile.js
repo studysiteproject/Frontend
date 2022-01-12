@@ -15,7 +15,7 @@ import { UserAuthActionList } from "../redux-modules/UserReducer";
 import { CheckUserInfo } from '../components/util/Checkinfo';
 
 import { REGEX, REGEX_MESSAGE, URL_TYPE_REGEX } from '../data/regex';
-import job_data from '../data/job';
+import options from '../data/options';
 import { getCookieValue } from '../util';
 
 import axios from "axios";
@@ -382,6 +382,7 @@ function ProfilePage(){
                                 <button class="Button-Md" onClick={handleClick}>
                                     이미지 업로드
                                 </button>
+
                                 <input type="file"
                                     ref={hiddenFileInput}
                                     style={{display:'none'}}
@@ -474,7 +475,7 @@ function ProfilePage(){
                                                 choice={job}
                                                 setChoice={setjob}
                                                 placeholder={"직업을 선택하세요."}
-                                                options={job_data}
+                                                options={options.job_data}
                                                 isSearchable={false}
                                             />
                                         </div>
@@ -491,7 +492,7 @@ function ProfilePage(){
                                         <div className='tech'>
 
                                             {/* 현재 나의 기술 목록을 나타내는 리스트 */}
-                                            {/* 현재는 item 클릭 시 삭제되도록 설정(테스트) */}
+                                            {/* item의 X 클릭 시 삭제되도록 설정 */}
                                             <div className='tech-list' style={{marginBottom:'10px'}}>
                                                 {
                                                     MyTechArray.map((item)=>{
