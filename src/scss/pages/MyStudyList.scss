@@ -1,6 +1,7 @@
 @import '../base.scss';
 @import '../base/font.scss';
 @import '../base/button-style.scss';
+@import '../base/align.scss';
 
 .List-Frame{
     display: flex;
@@ -27,15 +28,7 @@
             flex-direction: column;
             justify-content: flex-start;
 
-            width: 100%;   
-            
-            .info {
-                display: flex;
-                width: 100%;
-                text-overflow : ellipsis;
-                display: block;
-                overflow: hidden;
-            }
+            width: 100%;
 
             * {
                 margin-top: 3px;

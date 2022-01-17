@@ -9,25 +9,8 @@ function Header() {
 
     // 로그인 상태 확인
     const islogin = useSelector((state) => state.userReducer.islogin);
-    const dispatch = useDispatch();
 
     const [clickprofile, setclickprofile] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-
-            // localStorage에서 islogin 값을 얻어온다.
-            const value = JSON.parse(window.localStorage.getItem("islogin"));
-            if(value) dispatch(UserAuthActionList.SetLoginState(value))
-
-            // 토큰 & 유저 인덱스가 설정되지 않은 상태일 때
-            if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
-            {   
-                dispatch(UserAuthActionList.SetLoginState(false));
-                localStorage.setItem("islogin", false);
-            }
-        }
-    },[]);
 
     // 로그인 된 상태일 때
     if (islogin){

@@ -8,10 +8,11 @@ const job_data = [
 ]
 
 const category = [
-    { value: "develop", label: "개발 / 프로그래밍" },
+    { value: "dev", label: "개발 / 프로그래밍" },
     { value: "design", label: "디자인 / 영상편집" },
     { value: "certifi", label: "자격증" },
-    { value: "lang", label: "외국어" }
+    { value: "lang", label: "외국어" },
+    { value: "official", label: "공무원" }
 ]
 
 const place = [

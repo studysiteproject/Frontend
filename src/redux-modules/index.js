@@ -5,7 +5,7 @@ import StudyReducer from './StudyReducer'
 import UserReducer from './UserReducer'
 
 export default combineReducers({
-    selectReducer : InfoReducer,
+    infoReducer : InfoReducer,
     studyReducer : StudyReducer,
     userReducer : UserReducer,
 });

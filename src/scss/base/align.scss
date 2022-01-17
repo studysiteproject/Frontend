@@ -25,3 +25,19 @@ $margin : 15px;
         margin-right: $margin;
     }
 }
+
+.start-align{
+    display: flex;
+    align-self: flex-start;
+}
+
+.end-align{
+    display: flex;
+    align-items: flex-end;
+}
+
+.ellipsis-div {
+	text-overflow : ellipsis;
+	display: block;
+	overflow: hidden;
+}

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { StudyActionList } from '../StudyReducer';
+import { ActivePopup, UnActivePopup } from './InfoManage';
 
 // 스터디 리스트를 얻어오는 기능
 export function GetStudyListAPI(study_type=""){
@@ -9,43 +10,63 @@ export function GetStudyListAPI(study_type=""){
         let header = {
             Cookie: document.cookie
         }
+        let URL = "";
 
+        // 인자로 사용한 URL을 이용하여 스터디의 정보를 얻어오는 콜백함수
+        const ReqStudyData = (URL) => {
+            axios.get(URL, { headers: header, withCredentials: true, credentials: "include" })
+            .then(res => {
+                dispatch(StudyActionList.SetList(res.data));
+            })
+            .catch(error=>{
+                return error;
+            })
+        }
+        
         switch (study_type){
-            case "develop":
-                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
-                .then(res => {
-                    dispatch(StudyActionList.SetList(res.data));
-                })
-                .catch(error=>{
-                    return error;
-                })
+
+            // 개발 카테고리인 스터디 목록
+            case "all":
+                URL = `${process.env.REACT_APP_SPRING_API_URL}/study`;
+                ReqStudyData(URL);
                 break;
+
+            // 개발 카테고리인 스터디 목록
+            case "dev":
+                URL = `${process.env.REACT_APP_SPRING_API_URL}/study?category=dev`;
+                ReqStudyData(URL);
+                break;
+
+            // 디자인 카테고리인 스터디 목록
             case "design":
-                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
-                .then(res => {
-                    dispatch(StudyActionList.SetList(res.data));
-                })
-                .catch(error=>{
-                    return error;
-                })
+                URL = `${process.env.REACT_APP_SPRING_API_URL}/study?category=design`;
+                ReqStudyData(URL);
                 break;
-            case "public_officer":
-                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
-                .then(res => {
-                    dispatch(StudyActionList.SetList(res.data));
-                })
-                .catch(error=>{
-                    return error;
-                })
+
+            // 공무원 카테고리인 스터디 목록
+            case "official":
+                URL = `${process.env.REACT_APP_SPRING_API_URL}/study?category=official`;
+                ReqStudyData(URL);
                 break;
-            default:
-                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study`, { headers: header, withCredentials: true, credentials: "include" })
-                .then(res => {
-                    dispatch(StudyActionList.SetList(res.data));
-                })
-                .catch(error=>{
-                    return error;
-                })
+
+            // 내가 생성한 스터디 목록
+            case "created":
+                URL = `${process.env.REACT_APP_SPRING_API_URL}/study/created`;
+                ReqStudyData(URL);
+                break;
+
+            // 내가 즐겨찾기한 스터디 목록
+            case "favorite":
+                URL = `${process.env.REACT_APP_SPRING_API_URL}/study/favorite`;
+                ReqStudyData(URL);
+                break;
+            
+            // 내가 참여한 스터디 목록
+            case "applicationlist":
+                URL = `${process.env.REACT_APP_SPRING_API_URL}/study/applicationlist`;
+                ReqStudyData(URL);
+                break;
+
         }
         
     }
@@ -65,13 +86,16 @@ export function AddFavoriteAPI(id){
             const status = error.response['status'];
 
             if(status == 400){
-                alert("이미 즐겨찾기에 추가한 스터디이거나, 존재하지 않는 스터디 입니다.\n스터디를 확인해주세요.");
+                dispatch(ActivePopup("error", "이미 즐겨찾기에 추가한 스터디이거나, 존재하지 않는 스터디 입니다.\n스터디를 확인해주세요."));
+                dispatch(UnActivePopup(2));
             }
             else if (status == 401){
-                alert('즐겨찾기 기능은 로그인 후 사용가능합니다.\n로그인을 진행해주세요.');
+                dispatch(ActivePopup("error", "즐겨찾기 기능은 로그인 후 사용가능합니다.\n로그인을 진행해주세요."));
+                dispatch(UnActivePopup(2));
             }
             else{
-                alert('즐겨찾기 추가에 실패하였습니다.');
+                dispatch(ActivePopup("error", "즐겨찾기 추가에 실패하였습니다."));
+                dispatch(UnActivePopup(2));
             }
 
             return error;
@@ -92,13 +116,16 @@ export function DeleteFavoriteAPI(id){
             const status = error.response['status'];
 
             if(status == 400){
-                alert("즐겨찾기한 스터디가 아닙니다.\n즐겨찾기 된 스터디가 맞는지 확인해주세요.")
+                dispatch(ActivePopup("error", "즐겨찾기한 스터디가 아닙니다.\n즐겨찾기 된 스터디가 맞는지 확인해주세요."));
+                dispatch(UnActivePopup(2));
             }
             else if (status == 401){
-                alert('즐겨찾기 기능은 로그인 후 사용가능합니다.\n로그인을 진행해주세요.');
+                dispatch(ActivePopup("error", "즐겨찾기 기능은 로그인 후 사용가능합니다.\n로그인을 진행해주세요."));
+                dispatch(UnActivePopup(2));
             }
             else{
-                alert('즐겨찾기 삭제에 실패하였습니다.');
+                dispatch(ActivePopup("error", "즐겨찾기 삭제에 실패하였습니다."));
+                dispatch(UnActivePopup(2));
             }
 
             return error;

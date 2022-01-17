@@ -21,9 +21,13 @@ import { UserAuthActionList } from '../redux-modules/UserReducer';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import axios from 'axios';
 import { times } from 'lodash';
+import { StudyActionList } from '../redux-modules/StudyReducer';
+import IsLoginPage, { IsLoginAPI } from '../components/util/islogin';
 
 
 function MyStudyListPage(){
+
+    const islogin = useSelector((state) => state.userReducer.islogin);
 
     // 프로필에서 사용되는 사용자의 정보를 저장
     const [profileimage, setprofileimage] = useState("");
@@ -65,103 +69,88 @@ function MyStudyListPage(){
     // 스터디 목록
     const studylist = useSelector((state) => state.studyReducer.studylist);
     let studylistlenth = studylist.length;
-
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    
+    // 로그인 확인 후 페이지 이동
+    useEffect(()=>{
+
+        // 로그인 확인 API 실행
+        dispatch(IsLoginAPI());
+        
+        if(!islogin){
+            navigate('/login');
+            return(<></>);      
+        }
+    },[])
 
     // 사용자의 정보 받아오기
     useEffect(()=>{
 
-        // 로그인한 사용자의 쿠키 값에서 index 얻어오기
-        const user_index = getCookieValue("index");
-        
-        const SetBasicInfo = {
-            setnickname,
-            setemail,
-            setjob,
-            setprofileimage,
+        if(islogin){
+            // 로그인한 사용자의 쿠키 값에서 index 얻어오기
+            const user_index = getCookieValue("index");
+            
+            const SetBasicInfo = {
+                setnickname,
+                setemail,
+                setjob,
+                setprofileimage,
+            }
+    
+            // 닉네임, 이메일, 직업정보, 프로필 이미지 조회
+            BasicInfo.GetUserInfo(SetBasicInfo, user_index, false);
+    
+            // 현재 나의 URL 목록 얻어오기
+            UrlInfo.MyUrlList(setmyurlarray, user_index);
+                    
+            // 현재 나의 기술 목록 얻어오기
+            TechInfo.MyTechList(SetMyTechArray, user_index);
         }
-
-        // 닉네임, 이메일, 직업정보, 프로필 이미지 조회
-        BasicInfo.GetUserInfo(SetBasicInfo, user_index, false);
-
-        // 현재 나의 URL 목록 얻어오기
-        UrlInfo.MyUrlList(setmyurlarray, user_index);
-                
-        // 현재 나의 기술 목록 얻어오기
-        TechInfo.MyTechList(SetMyTechArray, user_index);
 
     },[]);
 
     // 카테고리 변경 시 스터디 목록 옵션 변경
     useEffect(()=>{
         
-        switch (select){
-            case 0:
-                dispatch(GetStudyListAPI())
-                setOption({
-                    "users": true,
-                    "edit": true,
-                    "delete": true,
-                    "leader": false,
-                    "favorite": false
-                })
-                break;
-            case 1:
-                dispatch(GetStudyListAPI())
-                setOption({
-                    "users": true,
-                    "edit": false,
-                    "delete": true,
-                    "leader": false,
-                    "favorite": false
-                });
-                break;
-            case 2:
-                dispatch(GetStudyListAPI())
-                setOption({
-                    "users": true,
-                    "edit": false,
-                    "delete": false,
-                    "leader": false,
-                    "favorite": true
-                });
-                break;
+        if (islogin)
+        {
+            switch (select){
+                case 0:
+                    dispatch(GetStudyListAPI("created"))
+                    setOption({
+                        "users": true,
+                        "edit": true,
+                        "delete": true,
+                        "leader": false,
+                        "favorite": false
+                    })
+                    break;
+                case 1:
+                    dispatch(GetStudyListAPI("applicationlist"))
+                    setOption({
+                        "users": true,
+                        "edit": false,
+                        "delete": true,
+                        "leader": false,
+                        "favorite": false
+                    });
+                    break;
+                case 2:
+                    dispatch(GetStudyListAPI("favorite"))
+                    setOption({
+                        "users": true,
+                        "edit": false,
+                        "delete": false,
+                        "leader": false,
+                        "favorite": true
+                    });
+                    break;
+            }
         }
 
     },[select]);
-
-    // 로그인 여부 확인
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-
-            // localStorage에서 islogin 값을 얻어온다.
-            const value = JSON.parse(window.localStorage.getItem("islogin"));
-            if(value) dispatch(UserAuthActionList.SetLoginState(value))
-
-            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있지 않을 때
-            if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
-            {   
-                dispatch(UserAuthActionList.SetLoginState(false));
-                localStorage.setItem("islogin", false);
-            }
-
-            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있을 때 유효한 토큰인지 확인
-            else{
-                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/auth/verify_user`, { withCredentials: true, credentials: "include" })
-                .then(res => {
-                    dispatch(UserAuthActionList.SetLoginState(true));
-                    localStorage.setItem("islogin", true);
-                    return res;
-                })
-                .catch(error => {
-                    dispatch(UserAuthActionList.SetLoginState(false));
-                    localStorage.setItem("islogin", false);
-                    return error;
-                });
-            }
-        }
-    },[]);
 
     return(
         <>
@@ -177,13 +166,14 @@ function MyStudyListPage(){
                             <img src={profileimage}/>
                         </div>
 
+                        {/* 회원 상세 정보 */}
                         <div className="Profile-info">
 
                             {/* 이름 */}
-                            <div className='Font-Md Bold info'>{nickname}</div>
+                            <div className='Font-Md Bold ellipsis-div'>{nickname}</div>
 
                             {/* 이메일 */}
-                            <div className='Font-Sm Semi Bold info'>{email}</div>
+                            <div className='Font-Sm Semi Bold ellipsis-div'>{email}</div>
 
                             {/* 프로필 관리 버튼 */}
                             <button class="Button-Sm" style={{width:'100%'}} onClick={()=>{navigate('/profile')}}>프로필 관리</button>
@@ -203,8 +193,8 @@ function MyStudyListPage(){
                                         return(
                                             <div className='item'>
                                                 <img class="sm" src="/img/icon/url.svg" style={{marginRight:'5px'}}/>
-                                                <div className='Font-Sm Semi Bold info'>
-                                                    <a class="Font-Sm Semi info" href={item} target="_blank">{item}</a>
+                                                <div className='Font-Sm Bold start-align ellipsis-div start-align'>
+                                                    <a class="Font-Sm Semi" href={item} target="_blank">{item}</a>
                                                 </div>
                                             </div>
                                         )
@@ -246,7 +236,7 @@ function MyStudyListPage(){
                         />
 
                         {/* 검색창, 스터디 추가 버튼 */}
-                        <div className="flex-row-end" style={{width:'100%'}}>
+                        <div className="flex-row-end" style={{width:'100%', margin:'0px'}}>
                             <Search setMainSearch={setMainSearch}/>
                             <CreateStudyButton/>
                         </div>
@@ -265,6 +255,7 @@ function MyStudyListPage(){
             <Footer/>
         </>
     )
+
 }
 
 export default MyStudyListPage

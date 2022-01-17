@@ -21,6 +21,8 @@ import { getCookieValue } from '../util';
 import axios from "axios";
 import { BasicInfo, TechInfo, UrlInfo } from '../data/profile';
 import { SendAuthEmail } from '../redux-modules/module/UserAuth';
+import { ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
+import IsLogin, { IsLoginAPI } from '../components/util/islogin';
 
 function ProfilePage(){
     
@@ -79,7 +81,8 @@ function ProfilePage(){
             return res;
         })
         .catch(error => {
-            alert("업로드에 실패하였습니다!");
+            dispatch(ActivePopup("error", "업로드에 실패하였습니다!"));
+            dispatch(UnActivePopup(2));
             return error;
         });
 
@@ -169,7 +172,8 @@ function ProfilePage(){
             .then(res => {
                 // 만약 이미 존재하는 url을 추가하려는 경우
                 if (myurlarray.includes(url)){
-                    alert("이미 존재하는 url 입니다.");
+                    dispatch(ActivePopup("error", "이미 존재하는 url 입니다."));
+                    dispatch(UnActivePopup(2));
                 }
                 else{
                     // 배열에 새로운 값을 추가하기 위한 배열 복제
@@ -191,7 +195,8 @@ function ProfilePage(){
 
         // 사용할 수 없는 URL 값인 경우 알림
         else{
-            alert("이미 존재하는 URL 이거나 사용할 수 없는 URL값 입니다.");
+            dispatch(ActivePopup("error", "이미 존재하는 URL 이거나 사용할 수 없는 URL값 입니다."));
+            dispatch(UnActivePopup(2));
         }
     }
 
@@ -219,7 +224,8 @@ function ProfilePage(){
             }
             // 만약 존재하지 않는 url을 삭제하려는 경우
             else{
-                alert("존재하지 않는 url 입니다.");
+                dispatch(ActivePopup("error", "존재하지 않는 url 입니다."));
+                dispatch(UnActivePopup(2));
             }
         })
         .catch(error => {
@@ -267,59 +273,44 @@ function ProfilePage(){
             // 회원가입 API 호출
             axios.put(`${process.env.REACT_APP_DJANGO_API_URL}/user/update`, data, { withCredentials: true, credentials: "include" })
             .then(res => {
-                alert("회원정보 수정에 성공하였습니다!");
+                dispatch(ActivePopup("info", "회원정보 수정에 성공하였습니다!"));
+                dispatch(UnActivePopup(2));
 
                 if (defaultemail != email){
-                    SendAuthEmail(email);
-                    alert("이메일을 변경하여 임시 휴면 상태로 전환되었습니다.\n계정을 다시 활성화 하기 위해서는 변경한 이메일에 전송된 인증 메일을 확인해주세요.");
+                    dispatch(SendAuthEmail(email));
+                    dispatch(ActivePopup("info", "이메일을 변경하여 임시 휴면 상태로 전환되었습니다.\n계정을 다시 활성화 하기 위해서는 변경한 이메일에 전송된 인증 메일을 확인해주세요."));
+                    dispatch(UnActivePopup(2));
                 }
 
-                navigate('/');
+                setTimeout(()=>{navigate('/')}, 2000);
+
                 return res;
             })
             .catch(error => {
-                alert("회원정보 수정에 실패하였습니다!");
+                dispatch(ActivePopup("error", "회원정보 수정에 실패하였습니다!"));
+                dispatch(UnActivePopup(2));
                 return error;
             });
 
         }
         else{
-            alert("입력값을 확인해주세요.");
+            dispatch(ActivePopup("error", "입력값을 확인해주세요."));
+            dispatch(UnActivePopup(2));
         }
 
     }
 
-    // 로그인 여부 확인
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
+    // 로그인 확인 후 페이지 이동
+    useEffect(()=>{
 
-            // localStorage에서 islogin 값을 얻어온다.
-            const value = JSON.parse(window.localStorage.getItem("islogin"));
-            if(value) dispatch(UserAuthActionList.SetLoginState(value))
-
-            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있지 않을 때
-            if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
-            {   
-                dispatch(UserAuthActionList.SetLoginState(false));
-                localStorage.setItem("islogin", false);
-            }
-
-            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있을 때 유효한 토큰인지 확인
-            else{
-                axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/auth/verify_user`, { withCredentials: true, credentials: "include" })
-                .then(res => {
-                    dispatch(UserAuthActionList.SetLoginState(true));
-                    localStorage.setItem("islogin", true);
-                    return res;
-                })
-                .catch(error => {
-                    dispatch(UserAuthActionList.SetLoginState(false));
-                    localStorage.setItem("islogin", false);
-                    return error;
-                });
-            }
+        // 로그인 확인 API 실행
+        dispatch(IsLoginAPI());
+        
+        if(!islogin){
+            navigate('/login');
+            return(<></>);      
         }
-    },[]);
+    },[])
 
     // 입력값이 변할때 마다 회원가입이 가능한지 확인
     useEffect(()=>{
@@ -360,303 +351,295 @@ function ProfilePage(){
 
     },[]);
 
-    // 로그인 되었을 때
-    if (islogin){
-        return(
-            <>
-                <Header/>
-                    
-                    <div className="Profile-Frame">
+    return(
+        <>
+            <Header/>
+                
+                <div className="Profile-Frame">
 
-                        <div className='Profile-View-Frame'>
+                    <div className='Profile-View-Frame'>
 
-                            {/* 프로필 이미지 부분 */}
-                            <div className='Profile-Image-Frame'>
-                                
-                                {/* 이미지 확인 부분 */}
-                                <div className="profile-image" style={{marginBottom: '20px'}}>
-                                    <img src={profileimage}/>
+                        {/* 프로필 이미지 부분 */}
+                        <div className='Profile-Image-Frame'>
+                            
+                            {/* 이미지 확인 부분 */}
+                            <div className="profile-image" style={{marginBottom: '20px'}}>
+                                <img src={profileimage}/>
+                            </div>
+
+                            {/* 이미지 업로드 버튼 부분 */}
+                            <button class="Button-Md" onClick={handleClick}>
+                                이미지 업로드
+                            </button>
+
+                            <input type="file"
+                                ref={hiddenFileInput}
+                                style={{display:'none'}}
+                                accept=".png, .jpg"
+                                onChange={(e)=>{UploadProfile(e.target.files)}}
+                            />
+                        </div>
+
+                        <div className='Profile-View-input'>
+
+                            {/* 회원 정보 */}
+                            <form>
+
+                                {/* 닉네임 조회, 변경 */}
+                                <div className="item">
+                                    <div className='title'>
+                                        <text>닉네임</text>
+                                    </div>
+                                    <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+                                        <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                                            {
+                                                nickname.length
+                                                ? <text className={`checkData ${ablenickname ? "able" : "error"}`}>{ablenickname ? "사용 가능한 닉네임입니다." : "사용할 수 없는 닉네임입니다."}</text>
+                                                : <text className={`checkData none`}>{"닉네임을 입력해주세요."}</text>
+                                            }
+                                        </div>
+                                        <input type="text" 
+                                            onChange={(e)=>{
+
+                                                setnickname(e.target.value);
+
+                                                if (e.target.value == defaultnickname){
+                                                    setablenickname(true);
+                                                }
+                                                else {
+                                                    CheckUserInfo.checkNickName_action(e.target.value, setablenickname)
+                                                }
+                                            }} 
+                                            className="Register-View-input-info nickname" 
+                                            placeholder="3 ~ 20자를 입력해주세요."
+                                            pattern={REGEX.Nickname_regex} 
+                                            title={REGEX_MESSAGE.Nickname_message}
+                                            value={nickname}
+                                            required
+                                        />
+                                    </div>
                                 </div>
 
-                                {/* 이미지 업로드 버튼 부분 */}
-                                <button class="Button-Md" onClick={handleClick}>
-                                    이미지 업로드
-                                </button>
-
-                                <input type="file"
-                                    ref={hiddenFileInput}
-                                    style={{display:'none'}}
-                                    accept=".png, .jpg"
-                                    onChange={(e)=>{UploadProfile(e.target.files)}}
-                                />
-                            </div>
-
-                            <div className='Profile-View-input'>
-
-                                {/* 회원 정보 */}
-                                <form>
-
-                                    {/* 닉네임 조회, 변경 */}
-                                    <div className="item">
-                                        <div className='title'>
-                                            <text>닉네임</text>
+                                {/* 이메일 입력창 */}
+                                <div className="item">
+                                    <div className='title'>
+                                        <text>Email</text>
+                                    </div>
+                                    <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+                                        <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                                            {
+                                                email.length
+                                                ? <text className={`checkData ${ableemail ? "able" : "error"}`}>{ableemail ? "사용 가능한 Email입니다." : "사용할 수 없는 Email입니다."}</text>
+                                                : <text className={`checkData none`}>{"이메일을 입력해주세요."}</text>
+                                            }
                                         </div>
-                                        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-                                            <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-                                                {
-                                                    nickname.length
-                                                    ? <text className={`checkData ${ablenickname ? "able" : "error"}`}>{ablenickname ? "사용 가능한 닉네임입니다." : "사용할 수 없는 닉네임입니다."}</text>
-                                                    : <text className={`checkData none`}>{"닉네임을 입력해주세요."}</text>
+                                        <input type="text" 
+                                            onChange={(e)=>{
+                                                setemail(e.target.value);
+
+                                                if (e.target.value == defaultemail){
+                                                    setableemail(true);
                                                 }
-                                            </div>
-                                            <input type="text" 
-                                                onChange={(e)=>{
-
-                                                    setnickname(e.target.value);
-
-                                                    if (e.target.value == defaultnickname){
-                                                        setablenickname(true);
-                                                    }
-                                                    else {
-                                                        CheckUserInfo.checkNickName_action(e.target.value, setablenickname)
-                                                    }
-                                                }} 
-                                                className="Register-View-input-info nickname" 
-                                                placeholder="3 ~ 20자를 입력해주세요."
-                                                pattern={REGEX.Nickname_regex} 
-                                                title={REGEX_MESSAGE.Nickname_message}
-                                                value={nickname}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* 이메일 입력창 */}
-                                    <div className="item">
-                                        <div className='title'>
-                                            <text>Email</text>
-                                        </div>
-                                        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-                                            <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-                                                {
-                                                    email.length
-                                                    ? <text className={`checkData ${ableemail ? "able" : "error"}`}>{ableemail ? "사용 가능한 Email입니다." : "사용할 수 없는 Email입니다."}</text>
-                                                    : <text className={`checkData none`}>{"이메일을 입력해주세요."}</text>
+                                                else {
+                                                    CheckUserInfo.checkEmail_action(e.target.value, setableemail)
                                                 }
-                                            </div>
-                                            <input type="text" 
-                                                onChange={(e)=>{
-                                                    setemail(e.target.value);
+                                            }} 
+                                            className="Register-View-input-info email" 
+                                            placeholder="이메일을 입력해주세요."
+                                            pattern={REGEX.Email_regex} 
+                                            title={REGEX_MESSAGE.Email_message} 
+                                            value={email}
+                                            required
+                                        />
+                                    </div>
+                                </div>
 
-                                                    if (e.target.value == defaultemail){
-                                                        setableemail(true);
-                                                    }
-                                                    else {
-                                                        CheckUserInfo.checkEmail_action(e.target.value, setableemail)
-                                                    }
-                                                }} 
-                                                className="Register-View-input-info email" 
-                                                placeholder="이메일을 입력해주세요."
-                                                pattern={REGEX.Email_regex} 
-                                                title={REGEX_MESSAGE.Email_message} 
-                                                value={email}
-                                                required
-                                            />
-                                        </div>
+                                {/* 직업 선택창 */}
+                                <div className="item">
+                                    <div className='title' style={{display: "flex", alignSelf:"start"}}>
+                                        <text>직업</text>
+                                    </div>
+                                    <div style={{width: '100%'}}>
+                                        <SelectBox
+                                            choice={job}
+                                            setChoice={setjob}
+                                            placeholder={"직업을 선택하세요."}
+                                            options={options.job_data}
+                                            isSearchable={false}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* 기술스택 조회, 편집 */}
+                                <div className="item">
+
+                                    {/* 제목 */}
+                                    <div className='title'>
+                                        <text>기술스택</text>
                                     </div>
 
-                                    {/* 직업 선택창 */}
-                                    <div className="item">
-                                        <div className='title' style={{display: "flex", alignSelf:"start"}}>
-                                            <text>직업</text>
-                                        </div>
-                                        <div style={{width: '100%'}}>
-                                            <SelectBox
-                                                choice={job}
-                                                setChoice={setjob}
-                                                placeholder={"직업을 선택하세요."}
-                                                options={options.job_data}
-                                                isSearchable={false}
-                                            />
-                                        </div>
-                                    </div>
+                                    <div className='tech'>
 
-                                    {/* 기술스택 조회, 편집 */}
-                                    <div className="item">
-
-                                        {/* 제목 */}
-                                        <div className='title'>
-                                            <text>기술스택</text>
-                                        </div>
-
-                                        <div className='tech'>
-
-                                            {/* 현재 나의 기술 목록을 나타내는 리스트 */}
-                                            {/* item의 X 클릭 시 삭제되도록 설정 */}
-                                            <div className='tech-list' style={{marginBottom:'10px'}}>
-                                                {
-                                                    MyTechArray.map((item)=>{
-                                                        return(
-                                                            <div className="tech-item-box">
-                                                                <div>
-                                                                    <img class="sm" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.category}/${item.icon_url}`} style={{marginRight: '15px'}}></img>
-                                                                    {item.name}
-                                                                    <img class="sm" src="/img/icon/coolicon.svg" style={{marginLeft: '15px'}}
-                                                                        onClick={()=>{DeleteMytech(item.id)}}
-                                                                    ></img>
-                                                                </div>
+                                        {/* 현재 나의 기술 목록을 나타내는 리스트 */}
+                                        {/* item의 X 클릭 시 삭제되도록 설정 */}
+                                        <div className='tech-list' style={{marginBottom:'10px'}}>
+                                            {
+                                                MyTechArray.map((item)=>{
+                                                    return(
+                                                        <div className="tech-item-box">
+                                                            <div>
+                                                                <img class="sm" src={`${BasicInfo.TECH_ICON_BASE_URL}/${item.category}/${item.icon_url}`} style={{marginRight: '15px'}}></img>
+                                                                {item.name}
+                                                                <img class="sm" src="/img/icon/coolicon.svg" style={{marginLeft: '15px'}}
+                                                                    onClick={()=>{DeleteMytech(item.id)}}
+                                                                ></img>
                                                             </div>
-                                                        )
-                                                    })
-                                                }
-                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
 
-                                            {/* 기술 목록 검색, 선택 박스 */}
-                                            <SearchSelectBox
-                                                choice={techsearch}
-                                                setChoice={setTechsearch}
-                                                placeholder={"원하는 기술을 검색하세요."}
-                                                options={techoption(AllTechList)}
+                                        {/* 기술 목록 검색, 선택 박스 */}
+                                        <SearchSelectBox
+                                            choice={techsearch}
+                                            setChoice={setTechsearch}
+                                            placeholder={"원하는 기술을 검색하세요."}
+                                            options={techoption(AllTechList)}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* URL 제목 */}
+                                <div className="item" style={{flexDirection:"column"}}>
+                                    <div className='title' style={{display: "flex", alignSelf:"start"}}>
+                                        <text>URL</text>
+                                    </div>
+                                </div>
+                                    
+                                {/* URL 조회 & 입력*/}
+                                <div style={{marginBottom:"50px"}}>
+
+                                    {/* 나의 url 갯수만큼 아이템을 보여준다. */}
+                                    {
+                                        myurlarray.map((item)=>{
+                                            return(
+                                                <div className="item">
+                                                    <div style={{paddingRight: '50px'}}>
+                                                        <img class="md" src={CheckUrlType(item)} style={{marginRight: '15px'}}></img>
+                                                    </div>
+                                                    <input type="text" 
+                                                        onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
+                                                        className="Register-View-input-info email" 
+                                                        placeholder="URL을 입력해주세요."
+                                                        pattern={REGEX.URL_regex} 
+                                                        title={REGEX_MESSAGE.Email_message} 
+                                                        required
+                                                        readOnly
+                                                        value={item}
+                                                        style={{marginRight: '20px'}}
+                                                    />
+                                                    <img 
+                                                        class="sm"
+                                                        src={"img/icon/trash_full.svg"}
+                                                        onClick={()=>{DeleteUrl(item)}}
+                                                    />
+                                                </div>
+                                            )
+                                        })
+                                    }
+
+                                    {/* URL 입력 부분 */}
+                                    <div style={{display:'flex', justifyContent: 'center'}}>
+                                        
+                                        {/* 입력창 */}
+                                        <div style={{
+                                            borderBottom: '1px solid black',
+                                            width: (newurl.length * 0.65) + "em",
+                                            minWidth: "40%",
+                                            display:'flex',
+                                            alignItems:'center'
+                                        }}
+                                        onKeyPress={onCheckEnter}
+                                        >
+                                            <input
+                                                placeholder='추가를 원하는 URL 값을 입력해주세요.'
+                                                onChange={(e)=>{
+                                                    
+                                                    setnewurl(e.target.value);
+
+                                                    if(myurlarray.includes(e.target.value)){
+                                                        setnewurlable(false);
+                                                    }
+                                                    else{
+                                                        CheckUserInfo.checkUrl_action(e.target.value, setnewurlable);
+                                                    }
+
+                                                }}
+                                                style={{
+                                                    background: 'none',
+                                                    boxShadow: 'none',
+                                                    display: 'flex',
+                                                    alignSelf: 'center'
+                                                }}
+                                                value={newurl}
+                                            />
+                                            <img 
+                                                className='sm' 
+                                                src={
+                                                    newurlable
+                                                    ? "img/icon/check_bold.svg"
+                                                    : "img/icon/coolicon.svg"
+                                                }
                                             />
                                         </div>
+                                        {/* </form> */}
+                                        {/* url 추가 */}
+                                        <img class="md" src={"img/icon/plus_circle.svg"}
+                                            style={{
+                                                marginLeft: '30px'
+                                            }}
+                                            onClick={(e)=>{AddUrl(newurl);}}
+                                        />
+
                                     </div>
 
-                                    {/* URL 제목 */}
-                                    <div className="item" style={{flexDirection:"column"}}>
-                                        <div className='title' style={{display: "flex", alignSelf:"start"}}>
-                                            <text>URL</text>
-                                        </div>
-                                    </div>
-                                     
-                                    {/* URL 조회 & 입력*/}
-                                    <div style={{marginBottom:"50px"}}>
+                                </div>
+                            
+                            </form>
 
-                                        {/* 나의 url 갯수만큼 아이템을 보여준다. */}
-                                        {
-                                            myurlarray.map((item)=>{
-                                                return(
-                                                    <div className="item">
-                                                        <div style={{paddingRight: '50px'}}>
-                                                            <img class="md" src={CheckUrlType(item)} style={{marginRight: '15px'}}></img>
-                                                        </div>
-                                                        <input type="text" 
-                                                            onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
-                                                            className="Register-View-input-info email" 
-                                                            placeholder="URL을 입력해주세요."
-                                                            pattern={REGEX.URL_regex} 
-                                                            title={REGEX_MESSAGE.Email_message} 
-                                                            required
-                                                            readOnly
-                                                            value={item}
-                                                            style={{marginRight: '20px'}}
-                                                        />
-                                                        <img 
-                                                            class="sm"
-                                                            src={"img/icon/trash_full.svg"}
-                                                            onClick={()=>{DeleteUrl(item)}}
-                                                        />
-                                                    </div>
-                                                )
-                                            })
+                            {/* 수정하기 버튼 */}
+                            <div
+                                style={{display:'flex', justifyContent:'flex-end', width:'100%', marginBottom:'50px'}}
+                                >
+                                <button 
+                                    class="Button-Md"
+                                    style={{width:'30%'}}
+                                    onClick={()=>{
+
+                                        // 회원 정보 수정 여부 확인
+                                        var result = window.confirm("회원 정보를 수정하시겠습니까?");
+                                        
+                                        // 확인 시 회원 정보 수정 함수 실행
+                                        if (result){
+                                            Submit(nickname, email, job);
                                         }
 
-                                        {/* URL 입력 부분 */}
-                                        <div style={{display:'flex', justifyContent: 'center'}}>
-                                            
-                                            {/* 입력창 */}
-                                            <div style={{
-                                                borderBottom: '1px solid black',
-                                                width: (newurl.length * 0.65) + "em",
-                                                minWidth: "40%",
-                                                display:'flex',
-                                                alignItems:'center'
-                                            }}
-                                            onKeyPress={onCheckEnter}
-                                            >
-                                                <input
-                                                    placeholder='추가를 원하는 URL 값을 입력해주세요.'
-                                                    onChange={(e)=>{
-                                                        
-                                                        setnewurl(e.target.value);
-
-                                                        if(myurlarray.includes(e.target.value)){
-                                                            setnewurlable(false);
-                                                        }
-                                                        else{
-                                                            CheckUserInfo.checkUrl_action(e.target.value, setnewurlable);
-                                                        }
-
-                                                    }}
-                                                    style={{
-                                                        background: 'none',
-                                                        boxShadow: 'none',
-                                                        display: 'flex',
-                                                        alignSelf: 'center'
-                                                    }}
-                                                    value={newurl}
-                                                />
-                                                <img 
-                                                    className='sm' 
-                                                    src={
-                                                        newurlable
-                                                        ? "img/icon/check_bold.svg"
-                                                        : "img/icon/coolicon.svg"
-                                                    }
-                                                />
-                                            </div>
-                                            {/* </form> */}
-                                            {/* url 추가 */}
-                                            <img class="md" src={"img/icon/plus_circle.svg"}
-                                                style={{
-                                                    marginLeft: '30px'
-                                                }}
-                                                onClick={(e)=>{AddUrl(newurl);}}
-                                            />
-
-                                        </div>
-
-                                    </div>
-                                
-                                </form>
-
-                                {/* 수정하기 버튼 */}
-                                <div
-                                    style={{display:'flex', justifyContent:'flex-end', width:'100%', marginBottom:'50px'}}
-                                    >
-                                    <button 
-                                        class="Button-Md"
-                                        style={{width:'30%'}}
-                                        onClick={()=>{
-
-                                            // 회원 정보 수정 여부 확인
-                                            var result = window.confirm("회원 정보를 수정하시겠습니까?");
-                                            
-                                            // 확인 시 회원 정보 수정 함수 실행
-                                            if (result){
-                                                Submit(nickname, email, job);
-                                            }
-
-                                        }}
-                                    >프로필 수정하기
-                                    </button>
-                                </div>                                
-
-                            </div>
+                                    }}
+                                >프로필 수정하기
+                                </button>
+                            </div>                                
 
                         </div>
 
                     </div>
 
-                <Footer/>
-            </>
-        );
-    }
-    // 로그인 되지 않았을 때
-    else{
-        // 로그인창으로 이동
-        navigate('/login');
-        return(<></>);
-    }
+                </div>
+
+            <Footer/>
+        </>
+    );
+    
 }
 
 export default ProfilePage

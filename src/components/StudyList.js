@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import '../scss/base/font.scss'
 import '../scss/StudyList.scss';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,8 +14,6 @@ import { useNavigate } from 'react-router-dom';
 
 function StudyList(props){
 
-    const dispatch = useDispatch();
-
     if (props.studylistlenth > 0){
         return(
             <div className="StudyList">
@@ -27,6 +26,7 @@ function StudyList(props){
                                 return (
                                     <Item 
                                         item={item}
+                                        option={props.option}
                                     />
                                 )
                             }
@@ -69,20 +69,20 @@ function Item(props){
 
             {/* 모집 스터디 제목 */}
             <div className="StudyList-Item-title" onClick={()=>{alert(props.item.id + "번 스터디입니다.")}}>
-                <text>{props.item.title}</text>
+                <text className='Font-Md'>{props.item.title}</text>
             </div>
 
             {/* 제목을 제외한 나머지 부분 (사용 기술 아이콘 / 인원 수 / 프로필 등) */}
             <div style={{display:'flex', alignItems:'center'}}>
 
-                {/* 아이콘 목록 */}
+                {/* 기술 스택 아이콘 목록 */}
                 <div>
                     <div className="StudyList-Item-tech-icon">
                         {
                             props.item.tech_info.map((tech_item)=>{
                                 return(
-                                    <OverlayTrigger placement="top" overlay={renderTooltip(props, tech_item.tech_name)}>
-                                        <img src={`${BasicInfo.TECH_ICON_BASE_URL}/${tech_item.category}/${tech_item.img_url}`}></img>
+                                    <OverlayTrigger placement="top" overlay={renderTooltip(props, tech_item.name)}>
+                                        <img src={`${BasicInfo.TECH_ICON_BASE_URL}/${tech_item.category}/${tech_item.icon_url}`}></img>
                                     </OverlayTrigger>
                                 )
                             })
@@ -100,7 +100,7 @@ function Item(props){
                     props.option['leader']
                     ? <div className="StudyList-Item-Profile">
                         <div className="StudyList-Item-Profile-img">
-                            <img src={props.item.user_info.img_url}></img>
+                            <img src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.id}/${props.item.user_info.img_url}`}></img>
                         </div>
                         <text className="StudyList-Item-Profile-name">{props.item.user_info.user_name}</text>
                       </div>

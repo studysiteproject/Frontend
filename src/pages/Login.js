@@ -9,18 +9,24 @@ import Footer from '../components/base/footer'
 import { LoginAPI } from '../redux-modules/module/UserAuth';
 import { UserAuthActionList } from '../redux-modules/UserReducer';
 import axios from 'axios';
+import IsLogin, { IsLoginAPI } from '../components/util/islogin';
 
 function LoginPage(){
 
     // ID & PW 값 임시 저장
     const [id, setid] = useState();
     const [pw, setpw] = useState();
+    
+    const islogin = useSelector((state) => state.userReducer.islogin);
 
-    // 로그인 상태 확인
-    let islogin = useSelector((state) => state.userReducer.islogin);
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
+
+    // 로그인 확인 후 페이지 이동
+    useEffect(()=>{
+        // 로그인 확인 API 실행
+        dispatch(IsLoginAPI());
+    },[])
 
     // 엔터 입력 시 로그인 동작 기능
     const onCheckEnter = (e) => {
@@ -29,27 +35,9 @@ function LoginPage(){
         }
     }
 
-    // 로그인된 상태인지 확인
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-
-            // localStorage에서 islogin 값을 얻어온다.
-            const value = JSON.parse(window.localStorage.getItem("islogin"));
-            if(value) dispatch(UserAuthActionList.SetLoginState(value))
-
-            // 토큰 & 유저 인덱스가 쿠키에 설정되어 있지 않을 때
-            if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
-            {   
-                dispatch(UserAuthActionList.SetLoginState(false));
-                localStorage.setItem("islogin", false);
-            }
-        }
-    },[]);
-
-    // 이미 로그인된 상태일 때, 메인페이지로 강제 이동
     if (islogin){
         navigate('/');
-        return(<></>);
+        return(<></>); 
     }
     else{
         return (
@@ -59,7 +47,7 @@ function LoginPage(){
                     <div className="Login-View">
                         <img src="/img/docker.svg" />
                         <div className="Login-View-input">
-
+    
                             {/* ID & PW 입력 창 */}
                             <form onKeyPress={onCheckEnter} style={{width:'100%'}}>
                                 <div className="Login-View-input-info">
@@ -68,7 +56,7 @@ function LoginPage(){
                                     <input type="password" onChange={(e)=>{setpw(e.target.value)}} className="Login-View-input-info password" placeholder="Password"/>
                                 </div>
                             </form>
-
+    
                             {/* 로그인 버튼 */}
                             <div class="Login-View-input-button">
                                 <button className="Button-Md" onClick={()=>{dispatch(LoginAPI(id, pw));}}>
@@ -82,7 +70,7 @@ function LoginPage(){
                                 <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>비밀번호 찾기</Link></li>
                                 <li className="text"><Link to="/register" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
                             </ul>
-
+    
                         </div>
                     </div>
                 </div>

@@ -3,23 +3,86 @@ import "rsuite/dist/rsuite.min.css";
 
 import Footer from "../components/base/footer";
 import Header from "../components/base/header";
-import { useEffect, useState } from 'react';
-import options from '../data/options';
-import SelectBox from '../components/selectbox';
-import { BasicInfo, TechInfo } from '../data/profile';
 import SearchSelectBox from '../components/searchselectbox';
+import SelectBox from '../components/selectbox';
+
+import options from '../data/options';
+import { UserAuthActionList } from '../redux-modules/UserReducer';
+import { useEffect, useState } from 'react';
+import { BasicInfo, TechInfo } from '../data/profile';
 import { Slider, RangeSlider } from 'rsuite';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
+import { ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
+import IsLogin, { IsLoginAPI } from '../components/util/islogin';
 
 function StudyAddPage(){
 
+    // 로그인 상태 확인
+    const islogin = useSelector((state) => state.userReducer.islogin);
+    
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [title, setTitle] = useState(''); // 스터디 제목
+    const [description, setdescription] = useState(''); // 스터디의 내용
+
     const [category, setcategory] = useState('');
     const [place, setplace] = useState('');
+
+    const [maxman, Setmaxman] = useState(10); // 스터디 최대 인원 설정
 
     const [AllTechList, SetAllTechList] = useState([]); // 전체 기술 목록
     const [StudyTechArray, SetStudyTechArray] = useState([]); // 현재 나의 기술 목록
     const [techsearch, setTechsearch] = useState(''); // 기술 검색 값 임시 저장
 
-    const [users, Setusers] = useState(10);
+    const [ableSubmit, SetableSubmit] = useState(false);    // 스터디 생성 요청 가능 여부
+
+    // 스터디 추가를 위한 데이터 검증 & 전송
+    function Submit(title, maxman, description, place, category){
+        
+        // 모든 항목에서 사용가능한 데이터를 입력했을 경우
+        if (ableSubmit){
+
+            const tech = [];
+            StudyTechArray.map((item)=>{
+                tech.push(item.name);
+            })
+
+            // 회원가입 API에서 사용될 데이터
+            const data = {
+                "title": title,
+                "maxman": maxman,
+                "description": description,
+                "place": place,
+                "category": category,
+                "tech": tech
+            }
+            
+            // 회원가입 API 호출
+            axios.post(`${process.env.REACT_APP_SPRING_API_URL}/study/create`, data, { withCredentials: true, credentials: "include" })
+            .then(res => {
+                dispatch(ActivePopup("info", "스터디 생성이 완료되었습니다."));
+                dispatch(UnActivePopup(2));
+                setTimeout(()=>{navigate('/study/manage')}, 2000)
+                return res;
+            })
+            .catch(error => {
+                dispatch(ActivePopup("error", "스터디 생성에 실패하였습니다!"));
+                dispatch(UnActivePopup(2));
+                return error;
+            });
+
+        }
+
+        else{
+            dispatch(ActivePopup("error", "입력값을 확인해주세요."));
+            dispatch(UnActivePopup(2));
+        }
+
+    }
 
     // 기술테크에 기술 추가
     function AddStudytech(id, name, category, icon_url){
@@ -84,16 +147,57 @@ function StudyAddPage(){
         return array;
     }
 
+    // 로그인 확인 후 페이지 이동
+    useEffect(()=>{
+
+        // 로그인 확인 API 실행
+        dispatch(IsLoginAPI());
+        
+        if(!islogin){
+            navigate('/login');
+            return(<></>);      
+        }
+    },[])
+
     // 페이지 로드 시
     useEffect(()=>{
         // 전체 기술 목록 얻어오기
         TechInfo.GetAllTechList(SetAllTechList);
     },[]);
 
+    // 스터디 생성 버튼 활성화 / 비활성화
+    useEffect(()=>{
+
+        if (title.length > 0 && 
+            description.length > 0 && 
+            category.length > 0 && 
+            place.length > 0 &&
+            maxman > 0 &&
+            StudyTechArray != []){
+                SetableSubmit(true);
+            }
+        else {
+            SetableSubmit(false);
+        }
+    },[title, description, category, place, maxman, StudyTechArray])
+
     return(
         <>
             <Header/>
-                <div className="Frame">
+                <div className="Frame" style={{paddingTop:'5%'}}>
+                    
+                    {/* 스터디의 제목 설정 */}
+                    <div className='Study-Info'>
+                        <div className='Study-Info-Title item-input'>
+                            <input
+                                className='input-box'
+                                placeholder='스터디의 제목을 입력해 주세요.'
+                                onChange={(e)=>{setTitle(e.target.value)}}
+                            />
+                        </div>
+                    </div>
+
+                    {/* 스터디의 상세 내용 설정 */}
                     <div className='Study-Info'>
 
                         {/* Select를 사용하는 스터디 설정 */}
@@ -131,7 +235,7 @@ function StudyAddPage(){
 
                         {/* 스터디의 기술 스택을 설정하는 부분 */}
                         <div className='Study-Info-tech item'>
-                            <div className='title-item-row'>
+                            <div className='title-item-column'>
                                 <div className='title'>기술 스택</div>
                                 <div className='tech'>
 
@@ -166,34 +270,55 @@ function StudyAddPage(){
                             </div>
                         </div>
                         
+                        {/* 스터디의 최대 인원수를 설정하는 부분 */}
                         <div className='Study-Info-users item'>
                             <div className='title-item-column'>
                                 <div className='title'>모집 인원</div>
                                 <div style={{display:'flex', width: '100%', height:'auto', margin:'auto'}}>
-                                    <div style={{width:'80%', marginRight:'20px'}}>
+                                    <div style={{width:'80%', marginRight:'30px'}}>
                                         <Slider
                                             progress
-                                            defaultValue={users}
+                                            defaultValue={maxman}
                                             max={50}
                                             onChange={value => {
-                                                Setusers(value);
+                                                Setmaxman(value);
                                             }}
                                         />
                                     </div>
-                                    <div className='title'>{`${users}명`}</div>
+                                    <div className='title'>{`${maxman}명`}</div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
 
-                    <div className='Study-Setting'>
-
+                    {/* 스터디의 내용 설정 */}
+                    <div className='Study-Info'>
+                        <div className='Study-Info-Content item-input'>
+                            <input
+                                className='input-box'
+                                placeholder="스터디를 소개할 글을 적으세요. &#13;&#10; (무엇을 목표로 하고 어떤 활동을 할 것 인지.)"
+                                onChange={(e)=>{setdescription(e.target.value)}}
+                                style={{minHeight:'200px'}}
+                            />
+                        </div>
                     </div>
+                                            
+                    {/* 스터디 생성하기 버튼 설정 */}
+                    <div className='Study-Info'>
+                        {
+                            // 스터디 생성하기 버튼 활성화 / 비활성화
+                            ableSubmit
+                            ?   <button className='Button-Md' style={{width:'100%'}} onClick={()=>{Submit(title, maxman, description, place, category)}}>스터디 생성하기</button>
+                            :   <button className='Button-Md disabled' style={{width:'100%'}} disabled>스터디 생성하기</button>
+                        }
+                    </div>
+
                 </div>
             <Footer/>
         </>
     )
+
 }
 
 export default StudyAddPage;

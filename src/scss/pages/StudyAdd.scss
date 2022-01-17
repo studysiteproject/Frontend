@@ -26,8 +26,13 @@
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
 
-    .item{
+    margin: 10px;
+
+    .item {
         padding: 3%;
+    }
+    .item-input{
+        padding: 2%;
     }
 }
 
@@ -35,10 +40,6 @@
     display: flex;
     justify-content: space-between;
     
-    width: 100%;
-}
-
-.Study-Setting{
     width: 100%;
 }
 
@@ -77,4 +78,12 @@
 
     margin: 10px;
     padding: 10px;
+}
+
+.input-box{
+    width: 100%;
+        
+    background: none;
+    border: none;
+    outline: none;
 }
