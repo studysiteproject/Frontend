@@ -278,8 +278,9 @@ function ProfilePage(){
 
                 if (defaultemail != email){
                     dispatch(SendAuthEmail(email));
-                    dispatch(ActivePopup("info", "이메일을 변경하여 임시 휴면 상태로 전환되었습니다.\n계정을 다시 활성화 하기 위해서는 변경한 이메일에 전송된 인증 메일을 확인해주세요."));
-                    dispatch(UnActivePopup(2));
+                    dispatch(ActivePopup("info", "이메일을 변경하여 임시 휴면 상태로 전환되었습니다.\n\n계정을 다시 활성화 하기 위해서는 변경한 이메일에 전송된 인증 메일을 확인해주세요."));
+                    dispatch(UnActivePopup(5));
+                    setTimeout(()=>{}, 5000);
                 }
 
                 setTimeout(()=>{navigate('/')}, 2000);
@@ -306,7 +307,7 @@ function ProfilePage(){
         // 로그인 확인 API 실행
         dispatch(IsLoginAPI());
         
-        if(!islogin){
+        if(!islogin && typeof islogin !== 'undefined'){
             navigate('/login');
             return(<></>);      
         }
@@ -639,7 +640,7 @@ function ProfilePage(){
             <Footer/>
         </>
     );
-    
+
 }
 
 export default ProfilePage

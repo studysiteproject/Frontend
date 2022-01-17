@@ -3,20 +3,18 @@ import { createAction } from 'redux-actions';
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
 const SET_LOGIN_STATE = "SET_LOGIN_STATE";
-const INIT_ACTION = "INIT_ACTION";
 
 const INITIAL_STATE = {
     islogin : false
 }
 
 // 스터디 목록 얻어오기 액션
-const Initaction = createAction(INIT_ACTION);
 const Login = createAction(LOGIN);
 const Logout = createAction(LOGOUT);
 const SetLoginState = createAction(SET_LOGIN_STATE, (islogin) => ({islogin}));
   
-export default function Reducer(state=INITIAL_STATE, action){
-
+export default function Reducer(state, action){
+    
     switch(action.type){
         
         case LOGIN:
@@ -34,10 +32,6 @@ export default function Reducer(state=INITIAL_STATE, action){
                 ...state,
                 islogin: action.payload.islogin
             }
-        case INIT_ACTION:
-            return {
-                state: INIT_ACTION
-            }
         default:
             return {
                 ...state
@@ -49,7 +43,6 @@ export default function Reducer(state=INITIAL_STATE, action){
 const UserAuthActionList = {
     Login,
     Logout,
-    SetLoginState,
-    Initaction
+    SetLoginState
 }
 export { UserAuthActionList }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Popup } from "../util/Popup"
 
-function BasePage(props){
+function BasePage(){
 
     const popup_info = useSelector((state) => state.infoReducer.popupinfo);
 

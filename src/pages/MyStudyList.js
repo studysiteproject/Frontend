@@ -59,6 +59,7 @@ function MyStudyListPage(){
         "users": false,
         "edit": false,
         "delete": false,
+        "exit": false,
         "leader": false,
         "favorite": false
     })
@@ -73,49 +74,9 @@ function MyStudyListPage(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    // 로그인 확인 후 페이지 이동
-    useEffect(()=>{
-
-        // 로그인 확인 API 실행
-        dispatch(IsLoginAPI());
-        
-        if(!islogin){
-            navigate('/login');
-            return(<></>);      
-        }
-    },[])
-
-    // 사용자의 정보 받아오기
-    useEffect(()=>{
-
-        if(islogin){
-            // 로그인한 사용자의 쿠키 값에서 index 얻어오기
-            const user_index = getCookieValue("index");
-            
-            const SetBasicInfo = {
-                setnickname,
-                setemail,
-                setjob,
-                setprofileimage,
-            }
-    
-            // 닉네임, 이메일, 직업정보, 프로필 이미지 조회
-            BasicInfo.GetUserInfo(SetBasicInfo, user_index, false);
-    
-            // 현재 나의 URL 목록 얻어오기
-            UrlInfo.MyUrlList(setmyurlarray, user_index);
-                    
-            // 현재 나의 기술 목록 얻어오기
-            TechInfo.MyTechList(SetMyTechArray, user_index);
-        }
-
-    },[]);
-
-    // 카테고리 변경 시 스터디 목록 옵션 변경
-    useEffect(()=>{
-        
-        if (islogin)
-        {
+    function GetStudy(select){
+        if (islogin || typeof islogin === 'undefined')
+        {   
             switch (select){
                 case 0:
                     dispatch(GetStudyListAPI("created"))
@@ -123,6 +84,7 @@ function MyStudyListPage(){
                         "users": true,
                         "edit": true,
                         "delete": true,
+                        "exit": false,
                         "leader": false,
                         "favorite": false
                     })
@@ -132,7 +94,8 @@ function MyStudyListPage(){
                     setOption({
                         "users": true,
                         "edit": false,
-                        "delete": true,
+                        "delete": false,
+                        "exit": true,
                         "leader": false,
                         "favorite": false
                     });
@@ -143,13 +106,55 @@ function MyStudyListPage(){
                         "users": true,
                         "edit": false,
                         "delete": false,
+                        "exit": false,
                         "leader": false,
                         "favorite": true
                     });
                     break;
             }
         }
+    }
 
+    // 로그인 확인 후 페이지 이동
+    useEffect(()=>{
+
+        // 로그인 확인 API 실행
+        dispatch(IsLoginAPI());
+
+        if(!islogin && typeof islogin !== 'undefined'){
+            navigate('/login');
+            return(<></>); 
+        }
+        
+    },[])
+
+    // 사용자의 정보 받아오기
+    useEffect(()=>{
+
+        // 로그인한 사용자의 쿠키 값에서 index 얻어오기
+        const user_index = getCookieValue("index");
+        
+        const SetBasicInfo = {
+            setnickname,
+            setemail,
+            setjob,
+            setprofileimage,
+        }
+
+        // 닉네임, 이메일, 직업정보, 프로필 이미지 조회
+        BasicInfo.GetUserInfo(SetBasicInfo, user_index, false);
+
+        // 현재 나의 URL 목록 얻어오기
+        UrlInfo.MyUrlList(setmyurlarray, user_index);
+                
+        // 현재 나의 기술 목록 얻어오기
+        TechInfo.MyTechList(SetMyTechArray, user_index);
+
+    },[]);
+
+    // 카테고리 변경 시 스터디 목록 옵션 변경
+    useEffect(()=>{
+        GetStudy(select);
     },[select]);
 
     return(

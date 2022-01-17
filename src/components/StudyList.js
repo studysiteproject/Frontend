@@ -7,10 +7,12 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
 import { useSelector, useDispatch } from 'react-redux';
-import { GetStudyListAPI, AddFavoriteAPI, DeleteFavoriteAPI } from '../redux-modules/module/StudyManage';
+import { GetStudyListAPI, AddFavoriteAPI, DeleteFavoriteAPI, DeleteStudyAPI, ExitStudyAPI } from '../redux-modules/module/StudyManage';
 import { REGEX } from '../data/regex';
 import { BasicInfo } from '../data/profile';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Category from './category';
 
 function StudyList(props){
 
@@ -135,7 +137,22 @@ function Item(props){
                     ? <img
                         className='icon'
                         src={`${BasicInfo.ICON_BASE_URL}/trash.svg`}
-                        onClick={()=>{navigate(`/study/${props.item.id}/delete`)}}
+                        onClick={()=>{
+                            dispatch(DeleteStudyAPI(props.item.id));
+                        }}
+                    />
+                    : null
+                }
+
+                {/* 삭제 옵션 옵션 활성화 시 삭제 버튼 추가 */}
+                {
+                    props.option['exit']
+                    ? <img
+                        className='icon'
+                        src={`${BasicInfo.ICON_BASE_URL}/exit.svg`}
+                        onClick={()=>{
+                            dispatch(ExitStudyAPI(props.item.id));
+                        }}
                     />
                     : null
                 }
@@ -148,6 +165,7 @@ function Item(props){
                             className='icon' 
                             src={`${BasicInfo.ICON_BASE_URL}/heart_fill.svg`} 
                             onClick={()=>{
+                            console.log(props)
                             dispatch(DeleteFavoriteAPI(props.item.id));
                           }}
                         />

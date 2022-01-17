@@ -8,8 +8,9 @@ const INITIAL_STATE = {
     select: 0,
     popupinfo: {
         "active": false,
-        "type": "info",
-        "message": ""
+        "message_type": "info",
+        "message": "",
+        "popup_type": "default"
     }
 }
 

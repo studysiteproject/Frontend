@@ -153,7 +153,7 @@ function StudyAddPage(){
         // 로그인 확인 API 실행
         dispatch(IsLoginAPI());
         
-        if(!islogin){
+        if(!islogin && typeof islogin !== 'undefined'){
             navigate('/login');
             return(<></>);      
         }

@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { StudyActionList } from '../StudyReducer';
 import { ActivePopup, UnActivePopup } from './InfoManage';
+
+
 
 // 스터디 리스트를 얻어오는 기능
 export function GetStudyListAPI(study_type=""){
@@ -125,6 +128,73 @@ export function DeleteFavoriteAPI(id){
             }
             else{
                 dispatch(ActivePopup("error", "즐겨찾기 삭제에 실패하였습니다."));
+                dispatch(UnActivePopup(2));
+            }
+
+            return error;
+        })
+    }
+}
+
+export function DeleteStudyAPI(id){
+    return function (dispatch){
+
+        axios.delete(`${process.env.REACT_APP_SPRING_API_URL}/study/${id}`, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "스터디 삭제가 완료되었습니다."));
+            dispatch(UnActivePopup(2));
+            dispatch(GetStudyListAPI("created"))
+            return res;
+        })
+        .catch(error => {
+            const status = error.response['status'];
+
+            if(status == 400){
+                dispatch(ActivePopup("error", "잘못된 입력값입니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else if (status == 401){
+                dispatch(ActivePopup("error", "해당 스터디를 생성한 사용자가 아닙니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else if (status == 404){
+                dispatch(ActivePopup("error", "존재하지 않는 스터디 입니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else{
+                dispatch(ActivePopup("error", "즐겨찾기 삭제에 실패하였습니다."));
+                dispatch(UnActivePopup(2));
+            }
+
+            return error;
+        })
+    }
+}
+
+export function ExitStudyAPI(id){
+    
+    return function (dispatch){
+
+        axios.delete(`${process.env.REACT_APP_SPRING_API_URL}/study/applicationlist/${id}`, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "스터디 탈퇴가 완료되었습니다."));
+            dispatch(UnActivePopup(2));
+            dispatch(GetStudyListAPI("applicationlist"))
+            return res;
+        })
+        .catch(error => {
+            const status = error.response['status'];
+
+            if (status == 401){
+                dispatch(ActivePopup("error", "해당 스터디를 생성한 사용자가 아닙니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else if (status == 404){
+                dispatch(ActivePopup("error", "존재하지 않는 스터디 입니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else{
+                dispatch(ActivePopup("error", "스터디 탈퇴에 실패하였습니다."));
                 dispatch(UnActivePopup(2));
             }
 
