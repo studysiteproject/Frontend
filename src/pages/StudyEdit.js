@@ -167,7 +167,7 @@ function StudyEditPage(){
 
         axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/check/${study_id}`, { headers: header, withCredentials: true, credentials: "include" })
         .then(res => {
-            if (res.data == true){
+            if (res.data['iswriter'] == true){
                 // 스터디의 정보를 저장하는 State들의 설정 함수 모음
                 const SetBasicInfo = {
                     setTitle,
