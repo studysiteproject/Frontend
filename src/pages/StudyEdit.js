@@ -168,22 +168,31 @@ function StudyEditPage(){
         axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/check/${study_id}`, { headers: header, withCredentials: true, credentials: "include" })
         .then(res => {
             if (res.data['iswriter'] == true){
+                
+                new Promise((resolve, reject) => {
+                    // 스터디의 정보를 저장하는 State들의 설정 함수 모음
+                    const SetBasicInfo = {
+                        setTitle,
+                        setcategory,
+                        setplace,
+                        SetStudyTechArray,
+                        Setmaxman,
+                        setdescription
+                    }
 
-                // // 전체 기술 목록 얻어오기
-                // TechInfo.GetAllTechList(SetAllTechList);
+                    // 스터디의 기본정보 얻어오기 
+                    GetStudyInfo(SetBasicInfo, study_id);
 
-                // // 스터디의 정보를 저장하는 State들의 설정 함수 모음
-                // const SetBasicInfo = {
-                //     setTitle,
-                //     setcategory,
-                //     setplace,
-                //     SetStudyTechArray,
-                //     Setmaxman,
-                //     setdescription
-                // }
-
-                // // 스터디의 기본정보 얻어오기 
-                // GetStudyInfo(SetBasicInfo, study_id)
+                    resolve();
+                })
+                .then(()=>{
+                    TechInfo.GetAllTechList(SetAllTechList);
+                })
+                .catch(()=>{
+                    dispatch(ActivePopup("error", "기본정보를 받아오기에 실패하였습니다!."));
+                    dispatch(UnActivePopup(2));
+                    setTimeout(()=>{navigate('/')},2000);
+                })
 
             }
             else {
