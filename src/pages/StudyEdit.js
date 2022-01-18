@@ -183,18 +183,20 @@ function StudyEditPage(){
 
                 // 전체 기술 목록 얻어오기
                 TechInfo.GetAllTechList(SetAllTechList);
+
+                return res;
             }
             else {
                 dispatch(ActivePopup("error", "해당 스터디의 작성자가 아닙니다!"));
                 dispatch(UnActivePopup(2));
-                setTimeout(()=>{navigate('/study/manage')},2000);
+                setTimeout(()=>{navigate('/')},2000);
                 return(<></>);     
             }
         })
         .catch(error => {
             dispatch(ActivePopup("error", "스터디 작성자 여부를 확인할 수 없습니다!"));
             dispatch(UnActivePopup(2));
-            setTimeout(()=>{navigate('/study/manage')},2000);
+            setTimeout(()=>{navigate('/')},2000);
             return(<></>);
         })
 
