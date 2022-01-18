@@ -169,6 +169,9 @@ function StudyEditPage(){
         .then(res => {
             if (res.data['iswriter'] == true){
 
+                // 전체 기술 목록 얻어오기
+                TechInfo.GetAllTechList(SetAllTechList);
+
                 // 스터디의 정보를 저장하는 State들의 설정 함수 모음
                 const SetBasicInfo = {
                     setTitle,
@@ -181,11 +184,6 @@ function StudyEditPage(){
 
                 // 스터디의 기본정보 얻어오기 
                 GetStudyInfo(SetBasicInfo, study_id);
-
-                setTimeout(()=>{},500);
-
-                // 전체 기술 목록 얻어오기
-                TechInfo.GetAllTechList(SetAllTechList);
                 
             }
             else {
