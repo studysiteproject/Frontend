@@ -183,7 +183,7 @@ function StudyEditPage(){
                 }
 
                 // 스터디의 기본정보 얻어오기 
-                setTimeout(()=>{GetStudyInfo(SetBasicInfo, study_id)}, 1000);
+                GetStudyInfo(SetBasicInfo, study_id);
                 
             }
             else {
@@ -279,14 +279,15 @@ function StudyEditPage(){
                         </div>
 
                         {/* 스터디의 기술 스택을 설정하는 부분 */}
-                        <div className='Study-Info-tech item'>
+
+                        {/* <div className='Study-Info-tech item'>
                             <div className='title-item-column'>
                                 <div className='title'>기술 스택</div>
-                                <div className='tech'>
+                                <div className='tech'> */}
 
                                     {/* 현재 스터디의 기술 목록을 나타내는 리스트 */}
                                     {/* 현재는 item의 X 클릭 시 삭제되도록 설정 */}
-                                    <div className='tech-list'>
+                                    {/* <div className='tech-list'>
                                         {
                                             StudyTechArray.map((item)=>{
                                                 return(
@@ -302,10 +303,10 @@ function StudyEditPage(){
                                                 )
                                             })
                                         }
-                                    </div>
+                                    </div> */}
 
                                     {/* 기술 목록 검색, 선택 박스 */}
-                                    <SearchSelectBox
+                                    {/* <SearchSelectBox
                                         choice={techsearch}
                                         setChoice={setTechsearch}
                                         placeholder={"원하는 기술을 검색하세요."}
@@ -313,7 +314,7 @@ function StudyEditPage(){
                                     />
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         
                         {/* 스터디의 최대 인원수를 설정하는 부분 */}
                         <div className='Study-Info-users item'>
