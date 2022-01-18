@@ -186,7 +186,8 @@ function StudyEditPage(){
                     resolve();
                 })
                 .then(()=>{
-                    TechInfo.GetAllTechList(SetAllTechList);
+                    // TechInfo.GetAllTechList(SetAllTechList);
+                    alert("TEST!");
                 })
                 .catch(()=>{
                     dispatch(ActivePopup("error", "기본정보를 받아오기에 실패하였습니다!."));
