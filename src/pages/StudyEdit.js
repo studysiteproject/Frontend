@@ -171,22 +171,22 @@ function StudyEditPage(){
                 
                 new Promise((resolve, reject) => {
                     // 스터디의 정보를 저장하는 State들의 설정 함수 모음
-                    const SetBasicInfo = {
-                        setTitle,
-                        setcategory,
-                        setplace,
-                        SetStudyTechArray,
-                        Setmaxman,
-                        setdescription
-                    }
+                    // const SetBasicInfo = {
+                    //     setTitle,
+                    //     setcategory,
+                    //     setplace,
+                    //     SetStudyTechArray,
+                    //     Setmaxman,
+                    //     setdescription
+                    // }
 
-                    // 스터디의 기본정보 얻어오기 
-                    GetStudyInfo(SetBasicInfo, study_id);
+                    // // 스터디의 기본정보 얻어오기 
+                    // GetStudyInfo(SetBasicInfo, study_id);
 
                     resolve();
                 })
                 .then(()=>{
-                    // TechInfo.GetAllTechList(SetAllTechList);
+                    TechInfo.GetAllTechList(SetAllTechList);
                     alert("TEST!");
                 })
                 .catch(()=>{
