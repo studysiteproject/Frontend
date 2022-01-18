@@ -102,7 +102,11 @@ function Item(props){
                     props.option['leader']
                     ? <div className="StudyList-Item-Profile">
                         <div className="StudyList-Item-Profile-img">
-                            <img src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.id}/${props.item.user_info.img_url}`}></img>
+                            {
+                                props.item.user_info.img_url == "default.png"
+                                ?   <img src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.img_url}`}/>
+                                :   <img src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.id}/${props.item.user_info.img_url}`}/>
+                            }
                         </div>
                         <text className="StudyList-Item-Profile-name">{props.item.user_info.user_name}</text>
                       </div>
