@@ -28,10 +28,24 @@ export default function Reducer(state, action){
                 islogin: false
             }
         case SET_LOGIN_STATE:
-            return {
-                ...state,
-                islogin: action.payload.islogin
+            if(action.payload.islogin == true){
+                return {
+                    ...state,
+                    islogin: true
+                }
             }
+            else if(action.payload.islogin == false){
+                return {
+                    ...state,
+                    islogin: false
+                }
+            }
+            else{
+                return {
+                    ...state
+                }
+            }
+            
         default:
             return {
                 ...state

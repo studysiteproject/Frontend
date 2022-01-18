@@ -102,7 +102,7 @@ function RegisterPage(){
     }
     
     // 이미 로그인된 상태일 때, 메인페이지로 강제 이동
-    if (islogin){
+    if (islogin && typeof islogin !== 'undefined'){
         navigate('/');
         return(<></>);
     }

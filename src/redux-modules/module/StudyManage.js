@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { StudyActionList } from '../StudyReducer';
 import { ActivePopup, UnActivePopup } from './InfoManage';
 
-
-
 // 스터디 리스트를 얻어오는 기능
 export function GetStudyListAPI(study_type=""){
     
@@ -201,4 +199,27 @@ export function ExitStudyAPI(id){
             return error;
         })
     }
+}
+
+// 스터디의 상세 정보를 얻어온다.
+export function GetStudyInfo(setdata, id){
+    axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/${id}`, { withCredentials: true, credentials: "include" })
+    .then(res => {
+
+        // 유저의 기본 정보 결과 얻어오기
+        const study_info = res.data
+
+        // 인자로 설정한 데이터 설정 함수를 이용하여 얻어온 정보 설정
+        setdata.setTitle(study_info["title"]);
+        setdata.setcategory(study_info["category"]);
+        setdata.setplace(study_info["place"]);
+        setdata.SetStudyTechArray(study_info["tech_info"]);
+        setdata.Setmaxman(study_info["maxman"]);
+        setdata.setdescription(study_info["description"]);
+
+        return res
+    })
+    .catch(error => {
+        return error;
+    })
 }

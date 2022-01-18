@@ -35,7 +35,7 @@ function LoginPage(){
         }
     }
 
-    if (islogin){
+    if (islogin && typeof islogin !== 'undefined'){
         navigate('/');
         return(<></>); 
     }

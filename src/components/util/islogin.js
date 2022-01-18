@@ -13,7 +13,8 @@ export function IsLoginAPI() {
 
             // localStorage에서 islogin 값을 얻어온다.
             const value = JSON.parse(window.localStorage.getItem("islogin"));
-            if(value) dispatch(UserAuthActionList.SetLoginState(value))
+            // alert(value)
+            if(value && typeof value !== 'undefined') dispatch(UserAuthActionList.SetLoginState(value))
 
             // 토큰 & 유저 인덱스가 쿠키에 설정되어 있지 않을 때
             if (!document.cookie.includes('access_token') || !document.cookie.includes('index'))
@@ -54,7 +55,7 @@ function IsLogin(props) {
 
     },[]);
 
-    if(islogin){
+    if(islogin && typeof islogin !== 'undefined'){
         
         // 만약 로그인 시 이동될 경로를 설정했는지 확인
         if(typeof props.OnLoginUrl !== 'undefined'){

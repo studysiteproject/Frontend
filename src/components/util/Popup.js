@@ -30,8 +30,10 @@ export function PopupConfirm(props){
             <div className='popup'>
                 <div className={`popup-in-${popup_info.message_type}`}>
                     <text className='Font-Md Bold'>{popup_info.message}</text>
-                    <button className='Button-Md' onClick={()=>{props.ok()}}>확인</button>
-                    <button className='Button-Md' onClick={()=>{props.no()}}>취소</button>
+                    <div className='popup-in-button'>
+                        <button className='Button-Md' onClick={()=>{props.ok()}}>확인</button>
+                        <button className='Button-Md' onClick={()=>{props.no()}}>취소</button>
+                    </div>
                 </div>
             </div>
         )

@@ -121,10 +121,7 @@ function MyStudyListPage(){
         // 로그인 확인 API 실행
         dispatch(IsLoginAPI());
 
-        if(!islogin && typeof islogin !== 'undefined'){
-            navigate('/login');
-            return(<></>); 
-        }
+        
         
     },[])
 
@@ -157,109 +154,115 @@ function MyStudyListPage(){
         GetStudy(select);
     },[select]);
 
-    return(
-        <>
-            <Header/>
-
-                <div className="List-Frame">
-
-                    {/* 프로필 요약 부분 */}
-                    <div className="Profile-item">
-
-                        {/* 프로필 이미지 부분 */}
-                        <div className="profile-image" style={{width:'80%', marginBottom: '10px'}}>
-                            <img src={profileimage}/>
-                        </div>
-
-                        {/* 회원 상세 정보 */}
-                        <div className="Profile-info">
-
-                            {/* 이름 */}
-                            <div className='Font-Md Bold ellipsis-div'>{nickname}</div>
-
-                            {/* 이메일 */}
-                            <div className='Font-Sm Semi Bold ellipsis-div'>{email}</div>
-
-                            {/* 프로필 관리 버튼 */}
-                            <button class="Button-Sm" style={{width:'100%'}} onClick={()=>{navigate('/profile')}}>프로필 관리</button>
-
-                            {/* 직업, 기술목록, URL 정보 */}
-                            <div className='Profile-info-detail'>
-
-                                {/* 직업 */}
-                                <div className='item'>
-                                    <img class="sm" src="/img/icon/user.svg" style={{marginRight:'5px'}}/>
-                                    <div className='Font-Sm Semi Bold'>{job_ko[job]}</div>
-                                </div>
-
-                                {/* URL 목록 */}
-                                {
-                                    myurlarray.map((item)=>{
-                                        return(
-                                            <div className='item'>
-                                                <img class="sm" src="/img/icon/url.svg" style={{marginRight:'5px'}}/>
-                                                <div className='Font-Sm Bold start-align ellipsis-div start-align'>
-                                                    <a class="Font-Sm Semi" href={item} target="_blank">{item}</a>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-
-                                {/* 구분선 */}
-                                <hr style={{marginBottom:'10px'}}/>
-                                
-                                {/* 기술 목록 확인 */}
-                                <div className='Profile-info-detail tech'>
+    if(!islogin && typeof islogin !== 'undefined'){
+        navigate('/login');
+        return(<></>); 
+    }
+    else{
+        return(
+            <>
+                <Header/>
+    
+                    <div className="List-Frame">
+    
+                        {/* 프로필 요약 부분 */}
+                        <div className="Profile-item">
+    
+                            {/* 프로필 이미지 부분 */}
+                            <div className="profile-image" style={{width:'80%', marginBottom: '10px'}}>
+                                <img src={profileimage}/>
+                            </div>
+    
+                            {/* 회원 상세 정보 */}
+                            <div className="Profile-info">
+    
+                                {/* 이름 */}
+                                <div className='Font-Md Bold ellipsis-div'>{nickname}</div>
+    
+                                {/* 이메일 */}
+                                <div className='Font-Sm Semi Bold ellipsis-div'>{email}</div>
+    
+                                {/* 프로필 관리 버튼 */}
+                                <button class="Button-Sm" style={{width:'100%'}} onClick={()=>{navigate('/profile')}}>프로필 관리</button>
+    
+                                {/* 직업, 기술목록, URL 정보 */}
+                                <div className='Profile-info-detail'>
+    
+                                    {/* 직업 */}
+                                    <div className='item'>
+                                        <img class="sm" src="/img/icon/user.svg" style={{marginRight:'5px'}}/>
+                                        <div className='Font-Sm Semi Bold'>{job_ko[job]}</div>
+                                    </div>
+    
+                                    {/* URL 목록 */}
                                     {
-                                        MyTechArray.map((item)=>{
+                                        myurlarray.map((item)=>{
                                             return(
-                                                <OverlayTrigger placement="top" overlay={renderTooltip(item['name'])}>
-                                                    <img
-                                                        className='icon'
-                                                        src={`${BasicInfo.TECH_ICON_BASE_URL}/${item['category']}/${item['icon_url']}`}
-                                                    />
-                                                </OverlayTrigger>
-                                                )
+                                                <div className='item'>
+                                                    <img class="sm" src="/img/icon/url.svg" style={{marginRight:'5px'}}/>
+                                                    <div className='Font-Sm Bold start-align ellipsis-div start-align'>
+                                                        <a class="Font-Sm Semi" href={item} target="_blank">{item}</a>
+                                                    </div>
+                                                </div>
+                                            )
                                         })
                                     }
+    
+                                    {/* 구분선 */}
+                                    <hr style={{marginBottom:'10px'}}/>
+                                    
+                                    {/* 기술 목록 확인 */}
+                                    <div className='Profile-info-detail tech'>
+                                        {
+                                            MyTechArray.map((item)=>{
+                                                return(
+                                                    <OverlayTrigger placement="top" overlay={renderTooltip(item['name'])}>
+                                                        <img
+                                                            className='icon'
+                                                            src={`${BasicInfo.TECH_ICON_BASE_URL}/${item['category']}/${item['icon_url']}`}
+                                                        />
+                                                    </OverlayTrigger>
+                                                    )
+                                            })
+                                        }
+                                    </div>
+    
                                 </div>
-
                             </div>
+    
                         </div>
-
-                    </div>
-
-                    {/* 스터디 목록 조회 부분 */}
-                    <div className="StudyList-item">
-
-                        {/* 스터디 목록의 카테고리 */}
-                        <Category 
-                            select={select} 
-                            setselect ={setselect} 
-                            categorylist={categorylist}
-                        />
-
-                        {/* 검색창, 스터디 추가 버튼 */}
-                        <div className="flex-row-end" style={{width:'100%', margin:'0px'}}>
-                            <Search setMainSearch={setMainSearch}/>
-                            <CreateStudyButton/>
+    
+                        {/* 스터디 목록 조회 부분 */}
+                        <div className="StudyList-item">
+    
+                            {/* 스터디 목록의 카테고리 */}
+                            <Category 
+                                select={select} 
+                                setselect ={setselect} 
+                                categorylist={categorylist}
+                            />
+    
+                            {/* 검색창, 스터디 추가 버튼 */}
+                            <div className="flex-row-end" style={{width:'100%', margin:'0px'}}>
+                                <Search setMainSearch={setMainSearch}/>
+                                <CreateStudyButton/>
+                            </div>
+    
+                            {/* 스터디 목록 */}
+                            <StudyList
+                                studylist={studylist} 
+                                studylistlenth={studylistlenth}                             
+                                MainSearch={MainSearch}
+                                option={option}
+                            />
+                            
                         </div>
-
-                        {/* 스터디 목록 */}
-                        <StudyList
-                            studylist={studylist} 
-                            studylistlenth={studylistlenth}                             
-                            MainSearch={MainSearch}
-                            option={option}
-                        />
-                        
                     </div>
-                </div>
-
-            <Footer/>
-        </>
-    )
+    
+                <Footer/>
+            </>
+        )
+    }
 
 }
 

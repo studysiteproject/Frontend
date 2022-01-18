@@ -13,7 +13,7 @@ function Header() {
     const [clickprofile, setclickprofile] = useState(false);
 
     // 로그인 된 상태일 때
-    if (islogin){
+    if (islogin && typeof islogin !== 'undefined'){
         return (
             <div className="Header">
                 <div className="logo-div">
