@@ -183,7 +183,7 @@ function StudyEditPage(){
                 }
 
                 // 스터디의 기본정보 얻어오기 
-                GetStudyInfo(SetBasicInfo, study_id);
+                setTimeout(()=>{GetStudyInfo(SetBasicInfo, study_id)}, 1000);
                 
             }
             else {
