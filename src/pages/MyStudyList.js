@@ -84,7 +84,7 @@ function MyStudyListPage(){
                         resolve();
                     })
                     .then(()=>{
-                        dispatch(GetStudyListAPI("created"));
+                        setTimeout(()=>{dispatch(GetStudyListAPI("created"))},300);
                         setOption({
                             "users": true,
                             "edit": true,
@@ -101,7 +101,7 @@ function MyStudyListPage(){
                         resolve();
                     })
                     .then(()=>{
-                        dispatch(GetStudyListAPI("applicationlist"));
+                        setTimeout(()=>{dispatch(GetStudyListAPI("applicationlist"))},300);
                         setOption({
                             "users": true,
                             "edit": false,
@@ -118,7 +118,7 @@ function MyStudyListPage(){
                         resolve();
                     })
                     .then(()=>{
-                        dispatch(GetStudyListAPI("favorite"));
+                        setTimeout(()=>{dispatch(GetStudyListAPI("favorite"))},300);
                         setOption({
                             "users": false,
                             "edit": false,

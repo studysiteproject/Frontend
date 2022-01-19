@@ -181,7 +181,6 @@ function StudyEditPage(){
                 // 스터디의 기본정보 얻어오기 
                 GetStudyInfo(SetBasicInfo, study_id);
 
-                // 모든 기술 확인
                 TechInfo.GetAllTechList(SetAllTechList);
 
             }
@@ -204,6 +203,7 @@ function StudyEditPage(){
 
     // 스터디 수정 버튼 활성화 / 비활성화
     useEffect(()=>{
+
         if (title.length > 0 && 
             description.length > 0 && 
             category.length > 0 && 
@@ -212,6 +212,7 @@ function StudyEditPage(){
             StudyTechArray != []){
                 SetableSubmit(true);
             }
+
         else {
             SetableSubmit(false);
         }
@@ -337,11 +338,11 @@ function StudyEditPage(){
                         {/* 스터디의 내용 설정 */}
                         <div className='Study-Info'>
                             <div className='Study-Info-Content item-input'>
-                                <input
+                                <textarea
                                     className='input-box'
                                     placeholder="스터디를 소개할 글을 적으세요. &#13;&#10; (무엇을 목표로 하고 어떤 활동을 할 것 인지.)"
                                     onChange={(e)=>{setdescription(e.target.value)}}
-                                    style={{minHeight:'200px'}}
+                                    style={{minHeight:'500px'}}
                                     value={description}
                                 />
                             </div>

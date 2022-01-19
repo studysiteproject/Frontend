@@ -293,15 +293,15 @@ function StudyAddPage(){
                         {/* 스터디의 내용 설정 */}
                         <div className='Study-Info'>
                             <div className='Study-Info-Content item-input'>
-                                <input
+                                <textarea
                                     className='input-box'
                                     placeholder="스터디를 소개할 글을 적으세요. &#13;&#10; (무엇을 목표로 하고 어떤 활동을 할 것 인지.)"
                                     onChange={(e)=>{setdescription(e.target.value)}}
-                                    style={{minHeight:'200px'}}
+                                    style={{minHeight:'500px'}}
                                 />
                             </div>
                         </div>
-                                                
+
                         {/* 스터디 생성하기 버튼 설정 */}
                         <div className='Study-Info'>
                             {
