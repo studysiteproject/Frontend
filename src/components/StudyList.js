@@ -18,39 +18,51 @@ import { ActiveConfirmPopup, UnActivePopup } from '../redux-modules/module/InfoM
 
 function StudyList(props){
 
+    const [ok, setok] = useState(()=>()=>{});
+    const [no, setno] = useState(()=>()=>{});
+
     if (props.studylistlenth > 0){
         return(
-            <div className="StudyList">
-                {
-                    props.studylist.map((item)=>{
+            <>
+                <div className="StudyList">
+                    {
+                        props.studylist.map((item)=>{
 
-                        // 유효한 검색어가 존재하는 경우
-                        if (!"[\[\]?*+|{}\\()@.nr]".includes(props.MainSearch)){
-                            if(item.title.match(new RegExp(props.MainSearch,'i')) != null){
-                                return (
-                                    <Item 
+                            // 유효한 검색어가 존재하는 경우
+                            if (!"[\[\]?*+|{}\\()@.nr]".includes(props.MainSearch)){
+                                if(item.title.match(new RegExp(props.MainSearch,'i')) != null){
+                                    return (
+                                        <Item 
+                                            item={item}
+                                            option={props.option}
+                                            setok={setok}
+                                            setno={setno}
+                                            ismain={props.ismain}
+                                        />
+                                    )
+                                }
+                            }
+
+                            // 검색어를 입력하지 않은 경우
+                            else {
+                                return(
+                                    item.title.includes(props.MainSearch)
+                                    ? <Item 
                                         item={item}
                                         option={props.option}
+                                        setok={setok}
+                                        setno={setno}
+                                        ismain={props.ismain}
                                     />
+                                    : null
+                                    
                                 )
                             }
-                        }
-
-                        // 검색어를 입력하지 않은 경우
-                        else {
-                            return(
-                                item.title.includes(props.MainSearch)
-                                ? <Item 
-                                    item={item}
-                                    option={props.option}
-                                />
-                                : null
-                                
-                            )
-                        }
-                    })
-                }
-            </div>
+                        })
+                    }
+                </div>
+                <PopupConfirm ok={ok} no={no}/>
+            </>
         );
     }
     else{
@@ -63,9 +75,6 @@ function Item(props){
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const [ok, setok] = useState(()=>()=>{})
-    const [no, setno] = useState(()=>()=>{})
 
     const renderTooltip = (props, value) => (
         <Tooltip {...props}>{value}</Tooltip>
@@ -148,8 +157,8 @@ function Item(props){
                             className='icon'
                             src={`${BasicInfo.ICON_BASE_URL}/trash.svg`}
                             onClick={()=>{
-                                setok(()=>()=>{dispatch(DeleteStudyAPI(props.item.id))});
-                                setno(()=>()=>{dispatch(UnActivePopup())});
+                                props.setok(()=>()=>{dispatch(DeleteStudyAPI(props.item.id))});
+                                props.setno(()=>()=>{dispatch(UnActivePopup())});
                                 dispatch(ActiveConfirmPopup("info", "이 스터디를 정말 삭제하시겠습니까?"));
                             }}
                         />
@@ -163,8 +172,8 @@ function Item(props){
                             className='icon'
                             src={`${BasicInfo.ICON_BASE_URL}/exit.svg`}
                             onClick={()=>{
-                                setok(()=>()=>{dispatch(ExitStudyAPI(props.item.id))});
-                                setno(()=>()=>{dispatch(UnActivePopup())});
+                                props.setok(()=>()=>{dispatch(ExitStudyAPI(props.item.id))});
+                                props.setno(()=>()=>{dispatch(UnActivePopup())});
                                 dispatch(ActiveConfirmPopup("info", "이 스터디를 정말 탈퇴하시겠습니까?"));
                             }}
                         />
@@ -179,8 +188,16 @@ function Item(props){
                                 className='icon' 
                                 src={`${BasicInfo.ICON_BASE_URL}/heart_fill.svg`} 
                                 onClick={()=>{
-                                console.log(props)
-                                dispatch(DeleteFavoriteAPI(props.item.id));
+                                    new Promise((resolve, reject)=>{
+                                        dispatch(DeleteFavoriteAPI(props.item.id));
+                                        resolve();
+                                    })
+                                    .then(()=>{
+                                        if(!(props.ismain)){
+                                            // 0.3초(적용된 DB 확인) 딜레이를 주고 새로운 즐겨찾기 목록 확인
+                                            setTimeout(()=>{dispatch(GetStudyListAPI("favorite"))},300)
+                                        }
+                                    })
                             }}
                             />
                             : <img
@@ -195,7 +212,6 @@ function Item(props){
                 </div>
 
             </div>
-            <PopupConfirm ok={ok} no={no}/>
         </>
     )
 }

@@ -103,11 +103,11 @@ function MyStudyListPage(){
                 case 2:
                     dispatch(GetStudyListAPI("favorite"))
                     setOption({
-                        "users": true,
+                        "users": false,
                         "edit": false,
                         "delete": false,
                         "exit": false,
-                        "leader": false,
+                        "leader": true,
                         "favorite": true
                     });
                     break;
@@ -120,8 +120,6 @@ function MyStudyListPage(){
 
         // 로그인 확인 API 실행
         dispatch(IsLoginAPI());
-
-        
         
     },[])
 
@@ -254,6 +252,7 @@ function MyStudyListPage(){
                                 studylistlenth={studylistlenth}                             
                                 MainSearch={MainSearch}
                                 option={option}
+                                ismain={false}
                             />
                             
                         </div>

@@ -87,6 +87,7 @@ function MainPage(){
                 studylistlenth={studylistlenth} 
                 MainSearch={MainSearch}
                 option={option}
+                ismain={true}
             />
             </div>
             <Footer/>
