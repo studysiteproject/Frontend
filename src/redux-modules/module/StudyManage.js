@@ -20,6 +20,7 @@ export function GetStudyListAPI(study_type=""){
                 dispatch(StudyActionList.SetList(res.data));
             })
             .catch(error=>{
+                dispatch(StudyActionList.Initaction());
                 return error;
             })
         }

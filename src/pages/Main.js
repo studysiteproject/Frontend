@@ -45,16 +45,40 @@ function MainPage(){
 
         switch (select){
             case 1:
-                dispatch(GetStudyListAPI("dev"));
+                new Promise((resolve,reject)=>{
+                    StudyActionList.Initaction();
+                    resolve();
+                })
+                .then(()=>{
+                    dispatch(GetStudyListAPI("dev"));
+                })
                 break;
             case 2:
-                dispatch(GetStudyListAPI("design"));
+                new Promise((resolve,reject)=>{
+                    StudyActionList.Initaction();
+                    resolve();
+                })
+                .then(()=>{
+                    dispatch(GetStudyListAPI("design"));
+                })
                 break;
             case 3:
-                dispatch(GetStudyListAPI("official"));
+                new Promise((resolve,reject)=>{
+                    StudyActionList.Initaction();
+                    resolve();
+                })
+                .then(()=>{
+                    dispatch(GetStudyListAPI("official"));
+                })
                 break;
             default:
-                dispatch(GetStudyListAPI("all"));
+                new Promise((resolve,reject)=>{
+                    StudyActionList.Initaction();
+                    resolve();
+                })
+                .then(()=>{
+                    dispatch(GetStudyListAPI("all"));
+                })
         }
 
     },[select]);

@@ -181,6 +181,7 @@ function StudyEditPage(){
                 // 스터디의 기본정보 얻어오기 
                 GetStudyInfo(SetBasicInfo, study_id);
 
+                // 모든 기술 확인
                 TechInfo.GetAllTechList(SetAllTechList);
 
             }
@@ -203,7 +204,6 @@ function StudyEditPage(){
 
     // 스터디 수정 버튼 활성화 / 비활성화
     useEffect(()=>{
-
         if (title.length > 0 && 
             description.length > 0 && 
             category.length > 0 && 
@@ -212,7 +212,6 @@ function StudyEditPage(){
             StudyTechArray != []){
                 SetableSubmit(true);
             }
-
         else {
             SetableSubmit(false);
         }

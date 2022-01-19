@@ -79,37 +79,55 @@ function MyStudyListPage(){
         {   
             switch (select){
                 case 0:
-                    dispatch(GetStudyListAPI("created"))
-                    setOption({
-                        "users": true,
-                        "edit": true,
-                        "delete": true,
-                        "exit": false,
-                        "leader": false,
-                        "favorite": false
+                    new Promise((resolve,reject)=>{
+                        StudyActionList.Initaction();
+                        resolve();
+                    })
+                    .then(()=>{
+                        dispatch(GetStudyListAPI("created"));
+                        setOption({
+                            "users": true,
+                            "edit": true,
+                            "delete": true,
+                            "exit": false,
+                            "leader": false,
+                            "favorite": false
+                        })
                     })
                     break;
                 case 1:
-                    dispatch(GetStudyListAPI("applicationlist"))
-                    setOption({
-                        "users": true,
-                        "edit": false,
-                        "delete": false,
-                        "exit": true,
-                        "leader": false,
-                        "favorite": false
-                    });
+                    new Promise((resolve,reject)=>{
+                        StudyActionList.Initaction();
+                        resolve();
+                    })
+                    .then(()=>{
+                        dispatch(GetStudyListAPI("applicationlist"));
+                        setOption({
+                            "users": true,
+                            "edit": false,
+                            "delete": false,
+                            "exit": true,
+                            "leader": false,
+                            "favorite": false
+                        });
+                    })
                     break;
                 case 2:
-                    dispatch(GetStudyListAPI("favorite"))
-                    setOption({
-                        "users": false,
-                        "edit": false,
-                        "delete": false,
-                        "exit": false,
-                        "leader": true,
-                        "favorite": true
-                    });
+                    new Promise((resolve,reject)=>{
+                        StudyActionList.Initaction();
+                        resolve();
+                    })
+                    .then(()=>{
+                        dispatch(GetStudyListAPI("favorite"));
+                        setOption({
+                            "users": false,
+                            "edit": false,
+                            "delete": false,
+                            "exit": false,
+                            "leader": true,
+                            "favorite": true
+                        });
+                    })                    
                     break;
             }
         }
