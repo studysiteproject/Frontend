@@ -60,35 +60,39 @@ function UserInStudy(props){
                                             >{item.user_info.user_name}</text>
 
                                             {/* 추방 아이콘 부분 */}
-                                            <div>
-                                                <img 
-                                                    className='md'
-                                                    src={`${BasicInfo.ICON_BASE_URL}/user_minus.svg`}
-                                                    style={{marginRight:'10px'}}
-                                                    onClick={()=>{
-                                                        props.setok(()=>()=>{
-                                                            dispatch(EditUserPermissionAPI(props.study_id, item.user_info.id));
-                                                            dispatch(UnActivePopup());
-                                                            setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
-                                                        });
-                                                        props.setno(()=>()=>{dispatch(UnActivePopup())});
-                                                        dispatch(ActiveConfirmPopup("info", "해당 유저를 신청자 목록으로 이동하시겠습니까?"));
-                                                    }}
-                                                />
-                                                <img 
-                                                    className='md'
-                                                    src={`${BasicInfo.ICON_BASE_URL}/user_close.svg`}
-                                                    onClick={()=>{
-                                                        props.setok(()=>()=>{
-                                                            dispatch(DeleteUserAPI(props.study_id, item.user_info.id));
-                                                            dispatch(UnActivePopup());
-                                                            setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
-                                                        });
-                                                        props.setno(()=>()=>{dispatch(UnActivePopup())});
-                                                        dispatch(ActiveConfirmPopup("info", "해당 유저를 추방하시겠습니까?"));
-                                                    }}
-                                                />
-                                            </div>
+                                            {
+                                                !props.onlyview
+                                                ?   <div>
+                                                        <img 
+                                                            className='md'
+                                                            src={`${BasicInfo.ICON_BASE_URL}/user_minus.svg`}
+                                                            style={{marginRight:'10px'}}
+                                                            onClick={()=>{
+                                                                props.setok(()=>()=>{
+                                                                    dispatch(EditUserPermissionAPI(props.study_id, item.user_info.id));
+                                                                    dispatch(UnActivePopup());
+                                                                    setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
+                                                                });
+                                                                props.setno(()=>()=>{dispatch(UnActivePopup())});
+                                                                dispatch(ActiveConfirmPopup("info", "해당 유저를 신청자 목록으로 이동하시겠습니까?"));
+                                                            }}
+                                                        />
+                                                        <img 
+                                                            className='md'
+                                                            src={`${BasicInfo.ICON_BASE_URL}/user_close.svg`}
+                                                            onClick={()=>{
+                                                                props.setok(()=>()=>{
+                                                                    dispatch(DeleteUserAPI(props.study_id, item.user_info.id));
+                                                                    dispatch(UnActivePopup());
+                                                                    setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
+                                                                });
+                                                                props.setno(()=>()=>{dispatch(UnActivePopup())});
+                                                                dispatch(ActiveConfirmPopup("info", "해당 유저를 추방하시겠습니까?"));
+                                                            }}
+                                                        />
+                                                    </div>
+                                                :   null
+                                            }
 
                                         </div>
 
@@ -129,35 +133,39 @@ function UserInStudy(props){
                                             >{item.user_info.user_name}</text>
                                             
                                             {/* 승인 / 거부 아이콘 부분 */}
-                                            <div>
-                                                <img 
-                                                    className='md' 
-                                                    src={`${BasicInfo.ICON_BASE_URL}/user_plus.svg`} 
-                                                    style={{marginRight:'10px'}}
-                                                    onClick={()=>{
-                                                        props.setok(()=>()=>{
-                                                            dispatch(EditUserPermissionAPI(props.study_id, item.user_info.id));
-                                                            dispatch(UnActivePopup());
-                                                            setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
-                                                        });
-                                                        props.setno(()=>()=>{dispatch(UnActivePopup())});
-                                                        dispatch(ActiveConfirmPopup("info", "해당 유저의 참여를 승인하시겠습니까?"));
-                                                    }}
-                                                />
-                                                <img 
-                                                    className='md' 
-                                                    src={`${BasicInfo.ICON_BASE_URL}/off_outline_close.svg`}
-                                                    onClick={()=>{
-                                                        props.setok(()=>()=>{
-                                                            dispatch(DeleteUserAPI(props.study_id, item.user_info.id));
-                                                            dispatch(UnActivePopup());
-                                                            setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
-                                                        });
-                                                        props.setno(()=>()=>{dispatch(UnActivePopup())});
-                                                        dispatch(ActiveConfirmPopup("info", "해당 유저의 참여를 거부하시겠습니까?"));
-                                                    }}
-                                                />
-                                            </div>
+                                            {
+                                                !props.onlyview
+                                                ?   <div>
+                                                        <img 
+                                                            className='md' 
+                                                            src={`${BasicInfo.ICON_BASE_URL}/user_plus.svg`} 
+                                                            style={{marginRight:'10px'}}
+                                                            onClick={()=>{
+                                                                props.setok(()=>()=>{
+                                                                    dispatch(EditUserPermissionAPI(props.study_id, item.user_info.id));
+                                                                    dispatch(UnActivePopup());
+                                                                    setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
+                                                                });
+                                                                props.setno(()=>()=>{dispatch(UnActivePopup())});
+                                                                dispatch(ActiveConfirmPopup("info", "해당 유저의 참여를 승인하시겠습니까?"));
+                                                            }}
+                                                        />
+                                                        <img 
+                                                            className='md' 
+                                                            src={`${BasicInfo.ICON_BASE_URL}/off_outline_close.svg`}
+                                                            onClick={()=>{
+                                                                props.setok(()=>()=>{
+                                                                    dispatch(DeleteUserAPI(props.study_id, item.user_info.id));
+                                                                    dispatch(UnActivePopup());
+                                                                    setTimeout(()=>{SetUserInStudy(props.study_id)}, 500);
+                                                                });
+                                                                props.setno(()=>()=>{dispatch(UnActivePopup())});
+                                                                dispatch(ActiveConfirmPopup("info", "해당 유저의 참여를 거부하시겠습니까?"));
+                                                            }}
+                                                        />
+                                                    </div>
+                                                :   null
+                                            }
 
                                         </div>
 

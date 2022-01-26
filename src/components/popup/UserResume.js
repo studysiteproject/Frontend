@@ -32,6 +32,7 @@ function UserResume(props){
     const [UserUrlArray, SetUserUrlArray] = useState([]); // 현재 유저의 url 목록
 
     useEffect(()=>{
+ 
         const SetBasicInfo = {
             setnickname,
             setemail,
@@ -46,18 +47,6 @@ function UserResume(props){
 
     },[])
 
-    // 테스트 반환
-    // return(
-    //     <div className='start-align'>
-    //         <button className='Button-Sm'
-    //             onClick={()=>{alert("승인테스트")}}
-    //         >승인</button>
-    //         <button className='Button-Sm'
-    //             onClick={()=>{props.setisResumeView({"isactive": false, "study_id": '', 'user_id':''})}}
-    //         >거절</button>
-    //     </div>
-    // )
-
     return (
         <>
             <div className='user-resume-frame'>
@@ -71,7 +60,7 @@ function UserResume(props){
 
                 {/* 신고 횟수가 5번을 넘으면 경고 표시 */}
                 {
-                    warningcnt > -1
+                    warningcnt > 5
                     ?   <div className='row-fill-container end-align' style={{marginBottom: '20px'}}>
                             <img className='md' src={`${BasicInfo.ICON_BASE_URL}/warning.svg`}/>
                         </div>

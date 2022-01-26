@@ -32,8 +32,8 @@
 
     border-radius: 10px;
 
-    left: 35%;
-    right: 35%;
+    left: 30%;
+    right: 30%;
     top: 10%;
     bottom: auto;
 
@@ -51,7 +51,9 @@
         margin: 1%;
     }
 
-    white-space: pre-wrap;
+    text{
+        white-space: pre-wrap;
+    }
 
 }
 

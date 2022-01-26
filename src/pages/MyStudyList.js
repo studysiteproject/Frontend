@@ -71,7 +71,7 @@ function MyStudyListPage(){
     let studylistlenth = studylist.length;
 
     // 스터디의 팀원 & 유저 정보를 확인하기 위한 팝업
-    const [isUsersView, setisUsersView] = useState({"isactive": false, "study_id": ''});
+    const [isUsersView, setisUsersView] = useState({"isactive": false, "onlyview": true, "study_id": ''});
     const [isResumeView, setisResumeView] = useState({"isactive": false, "study_id": '', 'user_id':''});
 
     // 선택 창에서 사용할 함수
@@ -100,6 +100,8 @@ function MyStudyListPage(){
     }
 
     function SetStudy(select){
+
+        var newisIsersView = {...isUsersView}
         if (islogin || typeof islogin === 'undefined')
         {   
             switch (select){
@@ -114,6 +116,8 @@ function MyStudyListPage(){
                     "leader": false,
                     "favorite": false
                     }))
+                    newisIsersView.onlyview = false
+                    setisUsersView(newisIsersView)
                     break;
                 case 1:
                     SetInit()
@@ -126,6 +130,8 @@ function MyStudyListPage(){
                         "leader": false,
                         "favorite": false
                     }))
+                    newisIsersView.onlyview = true
+                    setisUsersView(newisIsersView)
                     break;
                 case 2:
                     SetInit()
@@ -298,6 +304,7 @@ function MyStudyListPage(){
                                     setisResumeView={setisResumeView}
                                     setok={setok}
                                     setno={setno}
+                                    onlyview={isUsersView.onlyview}
                                 />
                             </InfoFrame>
                         </PopupInfo>
