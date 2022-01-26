@@ -38,6 +38,7 @@ function StudyList(props){
                                             setok={setok}
                                             setno={setno}
                                             ismain={props.ismain}
+                                            setisUsersView={props.setisUsersView}
                                         />
                                     )
                                 }
@@ -53,6 +54,7 @@ function StudyList(props){
                                         setok={setok}
                                         setno={setno}
                                         ismain={props.ismain}
+                                        setisUsersView={props.setisUsersView}
                                     />
                                     : null
                                     
@@ -119,8 +121,8 @@ function Item(props){
                             <div className="StudyList-Item-Profile-img">
                                 {
                                     props.item.user_info.img_url == "default.png"
-                                    ?   <img src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.img_url}`}/>
-                                    :   <img src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.id}/${props.item.user_info.img_url}`}/>
+                                    ?   <img className='profile' src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.img_url}`}/>
+                                    :   <img className='profile' src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.id}/${props.item.user_info.img_url}`}/>
                                 }
                             </div>
                             <text className="StudyList-Item-Profile-name">{props.item.user_info.user_name}</text>
@@ -134,7 +136,7 @@ function Item(props){
                         ? <img 
                             className='icon'
                             src={`${BasicInfo.ICON_BASE_URL}/users.svg`}
-                            onClick={()=>{navigate(`/study/${props.item.id}/users`)}}
+                            onClick={()=>{props.setisUsersView({"isactive": true, "study_id": props.item.id})}}
                         />
                         : null
                     }

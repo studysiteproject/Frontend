@@ -1,0 +1,13 @@
+@import './base.scss';
+@import './base/font.scss';
+@import './base/button-style.scss';
+@import './base/align.scss';
+
+.tech-icon-list{
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    width: 100%;
+}

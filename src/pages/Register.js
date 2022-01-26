@@ -18,6 +18,8 @@ import options from '../data/options';
 import axios from 'axios';
 import { ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
 import IsLogin, { IsLoginAPI } from '../components/util/islogin';
+import Background from '../components/base/background';
+import InfoFrame from '../components/base/InfoFrame';
 
 function RegisterPage(){
 
@@ -110,164 +112,154 @@ function RegisterPage(){
         return (
             <>
                 <Header/>
-                <div className="Register">
-        
-                        <div className="Register-View">
-                            
-                            <img src="/img/docker.svg" />
-    
-                            <div className="Register-View-input">
-    
-                                {/* 입력창 + 버튼 */}
-                                <div className="Register-View-input-info">
-    
-                                    {/* 회원가입을 위한 정보 입력창 */}
-                                    <form>
-    
-                                        {/* ID 입력창 */}
-                                        <div className="item">
-                                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                <text>ID</text>
-                                                {
-                                                    id.length
-                                                    ? <text className={`checkData ${ableid ? "able" : "error"}`}>{ableid ? "사용 가능한 ID입니다." : "사용할 수 없는 ID입니다."}</text>
-                                                    : <text className={`checkData none`}>{"ID를 입력해주세요."}</text>
-                                                }
-                                            </div>
-                                            <input type="text" 
-                                                onChange={(e)=>{setid(e.target.value);CheckUserInfo.checkID_action(e.target.value, setableid)}} 
-                                                className="Register-View-input-info id" 
-                                                placeholder="6 ~ 20자리를 입력해주세요." 
-                                                pattern={REGEX.ID_regex} title={REGEX_MESSAGE.ID_message} 
-                                                required
-                                            />
+                <Background padding={'100px'}>
+                    <InfoFrame width={'50%'}>
+                            {/* 입력창 + 버튼 */}
+                            <div className="Register-View-input-info">
+
+                                {/* 회원가입을 위한 정보 입력창 */}
+                                <form>
+
+                                    {/* ID 입력창 */}
+                                    <div className="item">
+                                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <text>ID</text>
+                                            {
+                                                id.length
+                                                ? <text className={`checkData ${ableid ? "able" : "error"}`}>{ableid ? "사용 가능한 ID입니다." : "사용할 수 없는 ID입니다."}</text>
+                                                : <text className={`checkData none`}>{"ID를 입력해주세요."}</text>
+                                            }
                                         </div>
-    
-                                        {/* PW 입력창 */}
-                                        <div className="item">
-                                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                <text>Password</text>
-                                                {
-                                                    pw.length
-                                                    ? <text className={`checkData ${ablepw ? "able" : "error"}`}>{ablepw ? "사용 가능한 PW입니다." : "사용할 수 없는 PW입니다."}</text>
-                                                    : <text className={`checkData none`}>{"패스워드를 입력해주세요."}</text>
-                                                }
-                                            </div>
-                                            <input type="password" 
-                                                onChange={(e)=>{setpw(e.target.value);CheckUserInfo.checkPW_action(e.target.value, setablepw)}} 
-                                                className="Register-View-input-info password" 
-                                                placeholder="8글자 이상 입력해주세요."
-                                                required
-                                            />
-                                        </div>
-    
-                                        {/* PW 확인 값 입력창 */}
-                                        <div className="item">
-                                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                <text>Password 확인</text>
-                                                {
-                                                    checkpw.length
-                                                    ? <text className={`checkData ${pw == checkpw ? "able" : "error"}`}>
-                                                        {pw == checkpw 
-                                                            ? <img class="sm" src="/img/icon/check_bold.svg" style={{margin:'0'}}/> 
-                                                            : "패스워드와 동일하게 입력해주세요."}
-                                                    </text>
-                                                    : <text className={`checkData none`}>{"패스워드 확인 값을 입력해주세요."}</text>
-                                                }
-                                                
-                                            </div>
-                                            <input type="password" 
-                                                onChange={(e)=>{setcheckpw(e.target.value)}} 
-                                                className="Register-View-input-info passwordcheck" 
-                                                placeholder="패스워드와 동일하게 입력해주세요."
-                                                pattern={Password_check_regex} 
-                                                title={REGEX_MESSAGE.Password_check_message} 
-                                                required
-                                            />
-                                        </div>
-    
-                                        {/* 이름(닉네임) 입력창 */}
-                                        <div className="item">
-                                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                <text>닉네임</text>
-                                                {
-                                                    nickname.length
-                                                    ? <text className={`checkData ${ablenickname ? "able" : "error"}`}>{ablenickname ? "사용 가능한 닉네임입니다." : "사용할 수 없는 닉네임입니다."}</text>
-                                                    : <text className={`checkData none`}>{"닉네임을 입력해주세요."}</text>
-                                                }
-                                            </div>
-                                            <input type="text" 
-                                                onChange={(e)=>{setnickname(e.target.value);CheckUserInfo.checkNickName_action(e.target.value, setablenickname)}} 
-                                                className="Register-View-input-info nickname" 
-                                                placeholder="3 ~ 20자를 입력해주세요."
-                                                pattern={REGEX.Nickname_regex} 
-                                                title={REGEX_MESSAGE.Nickname_message} 
-                                                required
-                                            />
-                                        </div>
-    
-                                        {/* 이메일 입력창 */}
-                                        <div className="item">
-                                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                <text>Email</text>
-                                                {
-                                                    email.length
-                                                    ? <text className={`checkData ${ableemail ? "able" : "error"}`}>{ableemail ? "사용 가능한 Email입니다." : "사용할 수 없는 Email입니다."}</text>
-                                                    : <text className={`checkData none`}>{"이메일을 입력해주세요."}</text>
-                                                }
-                                            </div>
-                                            <input type="text" 
-                                                onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
-                                                className="Register-View-input-info email" 
-                                                placeholder="이메일을 입력해주세요."
-                                                pattern={REGEX.Email_regex} 
-                                                title={REGEX_MESSAGE.Email_message} 
-                                                required
-                                            />
-                                        </div>
-    
-                                        {/* 직업 선택창 */}
-                                        <div className="item">
-                                            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                <text>직업</text>
-                                            </div>
-                                            <SelectBox
-                                                choice={job}
-                                                setChoice={setjob}
-                                                placeholder={"직업을 선택하세요."}
-                                                options={options.job_data}
-                                                isSearchable={false}
-                                            />
-                                        </div>
-    
-                                    </form>
-    
-                                    {/* 회원가입 버튼 */}
-                                    <div class="Register-View-input-button" style={{marginTop: '10px'}}>
-    
-                                        {/* 모든 데이터를 정상적으로 입력하면 회원가입 버튼이 활성화된다. */}
-                                        {
-                                            ablesubmit
-                                            ? <button type="submit" className="Button-Md" 
-                                                onClick={()=>{
-                                                    Submit(id, pw, nickname, email, job);
-                                                }}>
-                                                회원가입
-                                            </button>
-                                            : <button type="submit" className="Button-Md" disabled>
-                                                회원가입
-                                            </button>
-                                        }
-    
+                                        <input type="text" 
+                                            onChange={(e)=>{setid(e.target.value);CheckUserInfo.checkID_action(e.target.value, setableid)}} 
+                                            className="Register-View-input-info id" 
+                                            placeholder="6 ~ 20자리를 입력해주세요." 
+                                            pattern={REGEX.ID_regex} title={REGEX_MESSAGE.ID_message} 
+                                            required
+                                        />
                                     </div>
-    
+
+                                    {/* PW 입력창 */}
+                                    <div className="item">
+                                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <text>Password</text>
+                                            {
+                                                pw.length
+                                                ? <text className={`checkData ${ablepw ? "able" : "error"}`}>{ablepw ? "사용 가능한 PW입니다." : "사용할 수 없는 PW입니다."}</text>
+                                                : <text className={`checkData none`}>{"패스워드를 입력해주세요."}</text>
+                                            }
+                                        </div>
+                                        <input type="password" 
+                                            onChange={(e)=>{setpw(e.target.value);CheckUserInfo.checkPW_action(e.target.value, setablepw)}} 
+                                            className="Register-View-input-info password" 
+                                            placeholder="8글자 이상 입력해주세요."
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* PW 확인 값 입력창 */}
+                                    <div className="item">
+                                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <text>Password 확인</text>
+                                            {
+                                                checkpw.length
+                                                ? <text className={`checkData ${pw == checkpw ? "able" : "error"}`}>
+                                                    {pw == checkpw 
+                                                        ? <img class="sm" src="/img/icon/check_bold.svg" style={{margin:'0'}}/> 
+                                                        : "패스워드와 동일하게 입력해주세요."}
+                                                </text>
+                                                : <text className={`checkData none`}>{"패스워드 확인 값을 입력해주세요."}</text>
+                                            }
+                                            
+                                        </div>
+                                        <input type="password" 
+                                            onChange={(e)=>{setcheckpw(e.target.value)}} 
+                                            className="Register-View-input-info passwordcheck" 
+                                            placeholder="패스워드와 동일하게 입력해주세요."
+                                            pattern={Password_check_regex} 
+                                            title={REGEX_MESSAGE.Password_check_message} 
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* 이름(닉네임) 입력창 */}
+                                    <div className="item">
+                                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <text>닉네임</text>
+                                            {
+                                                nickname.length
+                                                ? <text className={`checkData ${ablenickname ? "able" : "error"}`}>{ablenickname ? "사용 가능한 닉네임입니다." : "사용할 수 없는 닉네임입니다."}</text>
+                                                : <text className={`checkData none`}>{"닉네임을 입력해주세요."}</text>
+                                            }
+                                        </div>
+                                        <input type="text" 
+                                            onChange={(e)=>{setnickname(e.target.value);CheckUserInfo.checkNickName_action(e.target.value, setablenickname)}} 
+                                            className="Register-View-input-info nickname" 
+                                            placeholder="3 ~ 20자를 입력해주세요."
+                                            pattern={REGEX.Nickname_regex} 
+                                            title={REGEX_MESSAGE.Nickname_message} 
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* 이메일 입력창 */}
+                                    <div className="item">
+                                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <text>Email</text>
+                                            {
+                                                email.length
+                                                ? <text className={`checkData ${ableemail ? "able" : "error"}`}>{ableemail ? "사용 가능한 Email입니다." : "사용할 수 없는 Email입니다."}</text>
+                                                : <text className={`checkData none`}>{"이메일을 입력해주세요."}</text>
+                                            }
+                                        </div>
+                                        <input type="text" 
+                                            onChange={(e)=>{setemail(e.target.value);CheckUserInfo.checkEmail_action(e.target.value, setableemail)}} 
+                                            className="Register-View-input-info email" 
+                                            placeholder="이메일을 입력해주세요."
+                                            pattern={REGEX.Email_regex} 
+                                            title={REGEX_MESSAGE.Email_message} 
+                                            required
+                                        />
+                                    </div>
+
+                                    {/* 직업 선택창 */}
+                                    <div className="item">
+                                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <text>직업</text>
+                                        </div>
+                                        <SelectBox
+                                            choice={job}
+                                            setChoice={setjob}
+                                            placeholder={"직업을 선택하세요."}
+                                            options={options.job_data}
+                                            isSearchable={false}
+                                        />
+                                    </div>
+
+                                </form>
+
+                                {/* 회원가입 버튼 */}
+                                <div class="Register-View-input-button" style={{marginTop: '10px'}}>
+
+                                    {/* 모든 데이터를 정상적으로 입력하면 회원가입 버튼이 활성화된다. */}
+                                    {
+                                        ablesubmit
+                                        ? <button type="submit" className="Button-Md" 
+                                            onClick={()=>{
+                                                Submit(id, pw, nickname, email, job);
+                                            }}>
+                                            회원가입
+                                        </button>
+                                        : <button type="submit" className="Button-Md" disabled>
+                                            회원가입
+                                        </button>
+                                    }
+
                                 </div>
-                                
-                            </div>
-    
-                        </div>
-                    
-                </div>
+
+                            </div>                                    
+                    </InfoFrame>
+                </Background>
                 <Footer/>
             </>
         );

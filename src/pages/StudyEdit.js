@@ -17,7 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
 import IsLogin, { IsLoginAPI } from '../components/util/islogin';
-import { GetStudyInfo, StudyAuth } from '../redux-modules/module/StudyManage';
+import { GetStudyInfoAPI, StudyAuth } from '../redux-modules/module/StudyManage';
 
 function StudyEditPage(){
 
@@ -179,7 +179,7 @@ function StudyEditPage(){
                 }
 
                 // 스터디의 기본정보 얻어오기 
-                GetStudyInfo(SetBasicInfo, study_id);
+                GetStudyInfoAPI(SetBasicInfo, study_id);
 
                 TechInfo.GetAllTechList(SetAllTechList);
 

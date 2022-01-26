@@ -20,10 +20,18 @@ const place = [
     { value: "offline", label: "오프라인" }
 ]
 
+const job_ko = {
+    "student": "학생",
+    "university" : "대학생",
+    "job-seeker" : "취준생",
+    "salaryman" : "직장인"
+}
+
 const options = {
     job_data,
     category,
-    place
+    place,
+    job_ko
 }
 
 export default options;

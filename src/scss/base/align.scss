@@ -29,11 +29,33 @@ $margin : 15px;
 .start-align{
     display: flex;
     align-self: flex-start;
+    align-items: center;
 }
 
 .end-align{
     display: flex;
-    align-items: flex-end;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.between-align{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.center-align{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.row-fill-container{
+    width: 100%;
+}
+
+.column-fill-container{
+    height: 100%;
 }
 
 .ellipsis-div {

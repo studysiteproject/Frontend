@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { REGEX, REGEX_MESSAGE } from '../../data/regex';
+import { BasicInfo } from '../../data/profile';
+import { REGEX, REGEX_MESSAGE, URL_TYPE_REGEX } from '../../data/regex';
 
 const _ = require('lodash');
 
@@ -150,6 +151,24 @@ function checkUrl(url, seturlable){
 
 }
 
+// 입력한 URL이 어떤 홈페이지의 URL인지(EX : Github, LinkedIn, Notion, ...)
+function CheckUrlType(url){
+
+    // url 타입이 저장된 json 값의 key 목록을 가져온다.
+    const url_type_keys = Object.keys(URL_TYPE_REGEX);
+
+    for (var index=0; index<url_type_keys.length; index++) {
+        
+        let type_name = url_type_keys[index]
+
+        if (url.match(new RegExp(URL_TYPE_REGEX[type_name]))){
+            return `${BasicInfo.URL_TYPE_ICON_BASE_URL}/${type_name}.svg`
+        }
+    }
+
+    return `${BasicInfo.URL_TYPE_ICON_BASE_URL}/default.svg`
+}
+
 // 불필요한 요청을 줄이기 위해 입력 데이터 검사 함수는 디바운싱 방식 이용
 const checkID_action = _.debounce(checkID, 500);
 const checkPW_action = _.debounce(checkPW, 500);
@@ -163,5 +182,6 @@ export const CheckUserInfo = {
     checkNickName_action,
     checkEmail_action,
     checkUrl_action,
+    CheckUrlType,
     AbleAuthEmail
 }

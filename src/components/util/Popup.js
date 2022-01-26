@@ -41,3 +41,26 @@ export function PopupConfirm(props){
     else{return(<></>)}
 
 }
+
+// OK 버튼이 존재하지 않는 Popup
+export function PopupInfo(props){
+
+    var Frame_style = {
+        padding:'auto',
+        overflow:'auto'
+    }
+    
+    // 정해진 width 값이 존재하는 경우
+    if (typeof props.padding !== 'undefined') {
+        Frame_style['padding'] = props.padding;
+    }
+
+    return(
+        <div className='popup-aline-center' style={Frame_style}>
+            <div className='popup-info'>
+                {props.children}
+            </div>
+        </div>
+    )
+  
+}

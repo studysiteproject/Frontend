@@ -203,7 +203,7 @@ export function ExitStudyAPI(id){
 }
 
 // 스터디의 상세 정보를 얻어온다.
-export function GetStudyInfo(setdata, id){
+export function GetStudyInfoAPI(setdata, id){
     axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/${id}`, { withCredentials: true, credentials: "include" })
     .then(res => {
 
@@ -223,4 +223,45 @@ export function GetStudyInfo(setdata, id){
     .catch(error => {
         return error;
     })
+}
+
+// 승인된 사람은 신청자 목록으로, 신청자 목록인 사람은 승인하는 API
+export function EditUserPermissionAPI(study_id, user_id){
+    return function (dispatch){
+
+        let header = {
+            Cookie: document.cookie
+        }
+
+        axios.put(`${process.env.REACT_APP_SPRING_API_URL}/study/member?studyId=${study_id}&userId=${user_id}`,{},{ withCredentials: true, credentials: "include" })
+        .then(res => {
+            return res
+        })
+        .catch(error => {
+            dispatch(ActivePopup("error", "사용자의 스터디 참여 상태 변경에 실패하였습니다."));
+            dispatch(UnActivePopup(2));
+            return error;
+        })
+    }
+}
+
+// 팀원인 유저는 추방, 신청자인 유저는 신청을 거부하는 API
+export function DeleteUserAPI(study_id, user_id){
+
+    return function (dispatch){
+
+        let header = {
+            Cookie: document.cookie
+        }
+
+        axios.delete(`${process.env.REACT_APP_SPRING_API_URL}/study/member?studyId=${study_id}&userId=${user_id}`, { headers: header, withCredentials: true, credentials: "include" })
+        .then(res => {
+            return res
+        })
+        .catch(error => {
+            dispatch(ActivePopup("error", "사용자의 스터디 참여 상태 삭제에 실패하였습니다."));
+            dispatch(UnActivePopup(2));
+            return error;
+        })
+    }
 }

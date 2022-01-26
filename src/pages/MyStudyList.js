@@ -10,7 +10,7 @@ import StudyList from '../components/StudyList';
 import { CheckUserInfo } from '../components/util/Checkinfo';
 import { GetEditValue } from '../components/util/GetEditValue';
 import { getCookieValue } from '../util';
-import { GetStudyListAPI } from '../redux-modules/module/StudyManage';
+import { DeleteUserAPI, EditUserPermissionAPI, GetStudyListAPI } from '../redux-modules/module/StudyManage';
 import { BasicInfo, TechInfo, UrlInfo } from '../data/profile';
 
 import { useEffect, useState } from 'react'
@@ -20,26 +20,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserAuthActionList } from '../redux-modules/UserReducer';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import axios from 'axios';
-import { times } from 'lodash';
+import { map, times } from 'lodash';
 import { StudyActionList } from '../redux-modules/StudyReducer';
 import IsLoginPage, { IsLoginAPI } from '../components/util/islogin';
-
+import { PopupConfirm, PopupInfo } from '../components/util/Popup';
+import InfoFrame from '../components/base/InfoFrame';
+import { ActiveConfirmPopup, ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
+import UserInStudy from '../components/popup/UserInStudy';
+import UserResume from '../components/popup/UserResume';
+import options from '../data/options';
 
 function MyStudyListPage(){
 
     const islogin = useSelector((state) => state.userReducer.islogin);
 
     // 프로필에서 사용되는 사용자의 정보를 저장
-    const [profileimage, setprofileimage] = useState("");
     const [nickname, setnickname] = useState(''); // 이름(닉네임) 값 임시 저장
     const [email, setemail] = useState(''); // 이메일 값 임시 저장
     const [job, setjob] = useState(''); // 직업 값 임시 저장
-    const job_ko = {
-        "student": "학생",
-        "university" : "대학생",
-        "job-seeker" : "취준생",
-        "salaryman" : "직장인"
-    }
+    const [profileimage, setprofileimage] = useState("");
 
     // 프로필에서 사용되는 사용자의 URL 목록을 저장
     const [myurlarray, setmyurlarray] = useState([]); // 현재 나의 url 목록
@@ -70,64 +69,75 @@ function MyStudyListPage(){
     // 스터디 목록
     const studylist = useSelector((state) => state.studyReducer.studylist);
     let studylistlenth = studylist.length;
-    
+
+    // 스터디의 팀원 & 유저 정보를 확인하기 위한 팝업
+    const [isUsersView, setisUsersView] = useState({"isactive": false, "study_id": ''});
+    const [isResumeView, setisResumeView] = useState({"isactive": false, "study_id": '', 'user_id':''});
+
+    // 선택 창에서 사용할 함수
+    const [ok, setok] = useState(()=>()=>{});
+    const [no, setno] = useState(()=>()=>{});
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    function GetStudy(select){
+    function SetInit(){
+        return new Promise(()=>{
+            StudyActionList.Initaction();
+        })
+    }
+
+    function GetStudy(category){
+        return new Promise(()=>{
+            dispatch(GetStudyListAPI(category));
+        })
+    }
+
+    function SetOption(option){
+        return new Promise(()=>{
+            setOption(option);
+        })
+    }
+
+    function SetStudy(select){
         if (islogin || typeof islogin === 'undefined')
         {   
             switch (select){
                 case 0:
-                    new Promise((resolve,reject)=>{
-                        StudyActionList.Initaction();
-                        resolve();
-                    })
-                    .then(()=>{
-                        setTimeout(()=>{dispatch(GetStudyListAPI("created"))},300);
-                        setOption({
-                            "users": true,
-                            "edit": true,
-                            "delete": true,
-                            "exit": false,
-                            "leader": false,
-                            "favorite": false
-                        })
-                    })
+                    SetInit()
+                    .then(GetStudy("created"))
+                    .then(SetOption({
+                    "users": true,
+                    "edit": true,
+                    "delete": true,
+                    "exit": false,
+                    "leader": false,
+                    "favorite": false
+                    }))
                     break;
                 case 1:
-                    new Promise((resolve,reject)=>{
-                        StudyActionList.Initaction();
-                        resolve();
-                    })
-                    .then(()=>{
-                        setTimeout(()=>{dispatch(GetStudyListAPI("applicationlist"))},300);
-                        setOption({
-                            "users": true,
-                            "edit": false,
-                            "delete": false,
-                            "exit": true,
-                            "leader": false,
-                            "favorite": false
-                        });
-                    })
+                    SetInit()
+                    .then(GetStudy("applicationlist"))
+                    .then(SetOption({
+                        "users": true,
+                        "edit": false,
+                        "delete": false,
+                        "exit": true,
+                        "leader": false,
+                        "favorite": false
+                    }))
                     break;
                 case 2:
-                    new Promise((resolve,reject)=>{
-                        StudyActionList.Initaction();
-                        resolve();
-                    })
-                    .then(()=>{
-                        setTimeout(()=>{dispatch(GetStudyListAPI("favorite"))},300);
-                        setOption({
-                            "users": false,
-                            "edit": false,
-                            "delete": false,
-                            "exit": false,
-                            "leader": true,
-                            "favorite": true
-                        });
-                    })                    
+                    SetInit()
+                    .then(GetStudy("favorite"))
+                    .then(SetOption({
+                        "users": false,
+                        "edit": false,
+                        "delete": false,
+                        "exit": false,
+                        "leader": true,
+                        "favorite": true
+                    }))             
                     break;
             }
         }
@@ -167,7 +177,7 @@ function MyStudyListPage(){
 
     // 카테고리 변경 시 스터디 목록 옵션 변경
     useEffect(()=>{
-        GetStudy(select);
+        SetStudy(select);
     },[select]);
 
     if(!islogin && typeof islogin !== 'undefined'){
@@ -178,9 +188,8 @@ function MyStudyListPage(){
         return(
             <>
                 <Header/>
-    
                     <div className="List-Frame">
-    
+                        
                         {/* 프로필 요약 부분 */}
                         <div className="Profile-item">
     
@@ -207,7 +216,7 @@ function MyStudyListPage(){
                                     {/* 직업 */}
                                     <div className='item'>
                                         <img class="sm" src="/img/icon/user.svg" style={{marginRight:'5px'}}/>
-                                        <div className='Font-Sm Semi Bold'>{job_ko[job]}</div>
+                                        <div className='Font-Sm Semi Bold'>{options.job_ko[job]}</div>
                                     </div>
     
                                     {/* URL 목록 */}
@@ -215,7 +224,7 @@ function MyStudyListPage(){
                                         myurlarray.map((item)=>{
                                             return(
                                                 <div className='item'>
-                                                    <img class="sm" src="/img/icon/url.svg" style={{marginRight:'5px'}}/>
+                                                    <img class="sm" src={CheckUserInfo.CheckUrlType(item)} style={{marginRight:'5px'}}/>
                                                     <div className='Font-Sm Bold start-align ellipsis-div start-align'>
                                                         <a class="Font-Sm Semi" href={item} target="_blank">{item}</a>
                                                     </div>
@@ -238,7 +247,7 @@ function MyStudyListPage(){
                                                             src={`${BasicInfo.TECH_ICON_BASE_URL}/${item['category']}/${item['icon_url']}`}
                                                         />
                                                     </OverlayTrigger>
-                                                    )
+                                                )
                                             })
                                         }
                                     </div>
@@ -271,12 +280,48 @@ function MyStudyListPage(){
                                 MainSearch={MainSearch}
                                 option={option}
                                 ismain={false}
+                                setisUsersView={setisUsersView}
                             />
                             
                         </div>
                     </div>
-    
                 <Footer/>
+                
+                {/* 스터디에 신청 / 참여 중인 유저 목록 확인 팝업 */}
+                {
+                    isUsersView.isactive
+                    ?   <PopupInfo>
+                            <InfoFrame width={'800px'}>
+                                <UserInStudy
+                                    study_id={isUsersView.study_id}
+                                    setisUsersView={setisUsersView}
+                                    setisResumeView={setisResumeView}
+                                    setok={setok}
+                                    setno={setno}
+                                />
+                            </InfoFrame>
+                        </PopupInfo>
+                    :   null
+                }
+
+                {
+                    isResumeView.isactive
+                    ?   <PopupInfo padding={"5%"}>
+                            <InfoFrame width={'800px'}>
+                                <UserResume
+                                    user_id={isResumeView.user_id}
+                                    study_id={isResumeView.study_id}
+                                    setisResumeView={setisResumeView}
+                                    setok={setok}
+                                    setno={setno}
+                                />
+                            </InfoFrame>
+                        </PopupInfo>
+                    :   null
+                }
+
+                <PopupConfirm ok={ok} no={no}/>
+                    
             </>
         )
     }

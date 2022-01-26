@@ -12,11 +12,13 @@ import StudyAddPage from "../pages/StudyAdd";
 import BasePage from "./base/base";
 import SettingsPage from "../pages/Settings";
 import StudyEditPage from "../pages/StudyEdit";
+import TESTPAGE from "../pages/TEST";
 
 export default () => (
     <BrowserRouter>
         <Routes>
             <Route path='/' element={<MainPage/>}></Route>
+            <Route path='/test' element={<TESTPAGE/>}></Route>
             <Route path='/login' element={<LoginPage/>}></Route>
             <Route path='/logout' element={<LogoutPage/>}></Route>
             <Route path='/profile' element={<ProfilePage/>}></Route>
