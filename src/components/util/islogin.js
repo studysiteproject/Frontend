@@ -13,7 +13,7 @@ export function IsLoginAPI() {
 
             // localStorage에서 islogin 값을 얻어온다.
             const value = JSON.parse(window.localStorage.getItem("islogin"));
-            // alert(value)
+
             if(value && typeof value !== 'undefined') dispatch(UserAuthActionList.SetLoginState(value))
 
             // 토큰 & 유저 인덱스가 쿠키에 설정되어 있지 않을 때

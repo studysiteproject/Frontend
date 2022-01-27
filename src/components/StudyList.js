@@ -13,8 +13,10 @@ import { BasicInfo } from '../data/profile';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Category from './category';
-import { PopupConfirm } from './util/Popup';
+import { PopupConfirm, PopupInfo } from './util/Popup';
 import { ActiveConfirmPopup, UnActivePopup } from '../redux-modules/module/InfoManage';
+import UserProfile from './popup/UserProfile';
+import InfoFrame from './base/InfoFrame';
 
 function StudyList(props){
 
@@ -78,6 +80,8 @@ function Item(props){
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [isProfileView, setisProfileView] = useState({"isactive": false, 'user_id':''});
+
     const renderTooltip = (props, value) => (
         <Tooltip {...props}>{value}</Tooltip>
     );
@@ -87,7 +91,7 @@ function Item(props){
             <div className="StudyList-Item">
 
                 {/* 모집 스터디 제목 */}
-                <div className="StudyList-Item-title" onClick={()=>{alert(props.item.id + "번 스터디입니다.")}}>
+                <div className="StudyList-Item-title" onClick={()=>{navigate(`/study/detail/${props.item.id}`)}}>
                     <text className='Font-Md'>{props.item.title}</text>
                 </div>
 
@@ -121,11 +125,18 @@ function Item(props){
                             <div className="StudyList-Item-Profile-img">
                                 {
                                     props.item.user_info.img_url == "default.png"
-                                    ?   <img className='profile' src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.img_url}`}/>
+                                    ?   <img className='profile' src={`${BasicInfo.PROFILE_DEFAULT_URL}`}/>
                                     :   <img className='profile' src={`${BasicInfo.PROFILE_BASE_URL}/${props.item.user_info.id}/${props.item.user_info.img_url}`}/>
                                 }
                             </div>
-                            <text className="StudyList-Item-Profile-name">{props.item.user_info.user_name}</text>
+                            <text 
+                                className="StudyList-Item-Profile-name hover-text"
+                                onClick={()=>{
+                                    setisProfileView({"isactive": true, 'user_id': props.item.user_info.id})
+                                }}
+                            >
+                                {props.item.user_info.user_name}
+                            </text>
                         </div>
                         : null
                     }
@@ -206,14 +217,28 @@ function Item(props){
                                 className='icon'
                                 src={`${BasicInfo.ICON_BASE_URL}/heart_unfill.svg`} 
                                 onClick={()=>{
-                                dispatch(AddFavoriteAPI(props.item.id));
-                            }}
+                                    dispatch(AddFavoriteAPI(props.item.id));
+                                }}
                             />
                         : null
                     }
                 </div>
 
             </div>
+
+            {
+                isProfileView.isactive
+                ?   <PopupInfo padding={"5%"}>
+                        <InfoFrame width={'800px'}>
+                            <UserProfile
+                                user_id={isProfileView.user_id}
+                                setisProfileView={setisProfileView}
+                            />
+                        </InfoFrame>
+                    </PopupInfo>
+                :   null
+            }
+
         </>
     )
 }

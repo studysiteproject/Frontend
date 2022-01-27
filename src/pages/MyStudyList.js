@@ -71,7 +71,8 @@ function MyStudyListPage(){
     let studylistlenth = studylist.length;
 
     // 스터디의 팀원 & 유저 정보를 확인하기 위한 팝업
-    const [isUsersView, setisUsersView] = useState({"isactive": false, "onlyview": true, "study_id": ''});
+    const [isUsersView, setisUsersView] = useState({"isactive": false, "study_id": ''});
+    const [onlyview, setonlyview] = useState(false);
     const [isResumeView, setisResumeView] = useState({"isactive": false, "study_id": '', 'user_id':''});
 
     // 선택 창에서 사용할 함수
@@ -101,7 +102,6 @@ function MyStudyListPage(){
 
     function SetStudy(select){
 
-        var newisIsersView = {...isUsersView}
         if (islogin || typeof islogin === 'undefined')
         {   
             switch (select){
@@ -116,8 +116,7 @@ function MyStudyListPage(){
                     "leader": false,
                     "favorite": false
                     }))
-                    newisIsersView.onlyview = false
-                    setisUsersView(newisIsersView)
+                    setonlyview(false)
                     break;
                 case 1:
                     SetInit()
@@ -130,8 +129,7 @@ function MyStudyListPage(){
                         "leader": false,
                         "favorite": false
                     }))
-                    newisIsersView.onlyview = true
-                    setisUsersView(newisIsersView)
+                    setonlyview(true)
                     break;
                 case 2:
                     SetInit()
@@ -201,7 +199,11 @@ function MyStudyListPage(){
     
                             {/* 프로필 이미지 부분 */}
                             <div className="profile-image" style={{width:'80%', marginBottom: '10px'}}>
-                                <img src={profileimage}/>
+                                {
+                                    profileimage.includes('default.png')
+                                    ?   <img src={`${BasicInfo.PROFILE_DEFAULT_URL}`}/>
+                                    :   <img src={profileimage}/>
+                                }
                             </div>
     
                             {/* 회원 상세 정보 */}
@@ -240,7 +242,7 @@ function MyStudyListPage(){
                                     }
     
                                     {/* 구분선 */}
-                                    <hr style={{marginBottom:'10px'}}/>
+                                    <hr style={{margin:'10px 0px 10px 0px'}}/>
                                     
                                     {/* 기술 목록 확인 */}
                                     <div className='Profile-info-detail tech'>
@@ -304,7 +306,7 @@ function MyStudyListPage(){
                                     setisResumeView={setisResumeView}
                                     setok={setok}
                                     setno={setno}
-                                    onlyview={isUsersView.onlyview}
+                                    onlyview={onlyview}
                                 />
                             </InfoFrame>
                         </PopupInfo>
@@ -319,8 +321,6 @@ function MyStudyListPage(){
                                     user_id={isResumeView.user_id}
                                     study_id={isResumeView.study_id}
                                     setisResumeView={setisResumeView}
-                                    setok={setok}
-                                    setno={setno}
                                 />
                             </InfoFrame>
                         </PopupInfo>

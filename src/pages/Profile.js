@@ -21,8 +21,9 @@ import { getCookieValue } from '../util';
 import axios from "axios";
 import { BasicInfo, TechInfo, UrlInfo } from '../data/profile';
 import { SendAuthEmail } from '../redux-modules/module/UserAuth';
-import { ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
+import { ActiveConfirmPopup, ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
 import IsLogin, { IsLoginAPI } from '../components/util/islogin';
+import { PopupConfirm } from '../components/util/Popup';
 
 function ProfilePage(){
     
@@ -55,6 +56,9 @@ function ProfilePage(){
     const [newurlable, setnewurlable] = useState(false); // 새로운 url 값의 사용 가능 여부
 
     const [ablesubmit, setablesubmit] = useState(false); // 회원 수정 버튼 활성화 값 임시 저장
+
+    const [ok, setok] = useState(()=>()=>{});
+    const [no, setno] = useState(()=>()=>{});
 
     // 엔터 입력 시 URL 추가 동작 기능
     const onCheckEnter = (e) => {
@@ -365,7 +369,11 @@ function ProfilePage(){
                             
                             {/* 이미지 확인 부분 */}
                             <div className="profile-image" style={{marginBottom: '20px'}}>
-                                <img src={profileimage}/>
+                                {
+                                    profileimage.includes('default.png')
+                                    ?   <img src={`${BasicInfo.PROFILE_DEFAULT_URL}`}/>
+                                    :   <img src={profileimage}/>
+                                }
                             </div>
 
                             {/* 이미지 업로드 버튼 부분 */}
@@ -618,13 +626,18 @@ function ProfilePage(){
                                     style={{width:'30%'}}
                                     onClick={()=>{
 
-                                        // 회원 정보 수정 여부 확인
-                                        var result = window.confirm("회원 정보를 수정하시겠습니까?");
-                                        
                                         // 확인 시 회원 정보 수정 함수 실행
-                                        if (result){
-                                            Submit(nickname, email, job);
-                                        }
+                                        setok(()=>()=>{Submit(nickname, email, job)});
+                                        setno(()=>()=>{dispatch(UnActivePopup())});
+                                        
+                                        // 회원 정보 수정 여부 확인
+                                        dispatch(ActiveConfirmPopup("info", "회원 정보를 수정하시겠습니까?"));        
+
+                                        // var result = window.confirm("회원 정보를 수정하시겠습니까?");
+                                        
+                                        // if (result){
+                                        //     Submit(nickname, email, job);
+                                        // }
 
                                     }}
                                 >프로필 수정하기
@@ -638,6 +651,8 @@ function ProfilePage(){
                 </div>
 
             <Footer/>
+
+            <PopupConfirm ok={ok} no={no}/>
         </>
     );
 

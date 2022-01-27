@@ -9,11 +9,11 @@ import { BasicInfo } from '../../data/profile';
 import { URL_TYPE_REGEX } from '../../data/regex';
 import TESTPAGE from '../../pages/TEST';
 import { UnActivePopup } from '../../redux-modules/module/InfoManage';
-import { GetUserResumeAPI } from '../../redux-modules/module/UserManage';
+import { GetUserProfileAPI, GetUserResumeAPI } from '../../redux-modules/module/UserManage';
 import { CheckUserInfo } from '../util/Checkinfo';
 import TooltipIcon from '../util/TooltopIcon';
 
-function UserResume(props){
+function UserProfile(props){
 
     const dispatch = useDispatch();
     
@@ -21,15 +21,10 @@ function UserResume(props){
     const [nickname, setnickname] = useState(''); // 이름(닉네임) 값 임시 저장
     const [email, setemail] = useState(''); // 이메일 값 임시 저장
     const [job, setjob] = useState(''); // 직업 값 임시 저장
-    const [description, setdescription] = useState('') // 스터디 신청글 임시 저장
     const [warningcnt, setwarning_cnt] = useState(0); // 스터디 신고 횟수 임시 저장
 
     // 이력서에서 사용되는 사용자의 기술 목록을 저장
     const [UserTechArray, SetUserTechArray] = useState([]); // 현재 유저의 기술 목록
-    const renderTooltip = (value) => (
-        <Tooltip>{value}</Tooltip>  // 사용자의 기술 이름을 표시해준다.
-    );
-
     const [UserUrlArray, SetUserUrlArray] = useState([]); // 현재 유저의 url 목록
 
     useEffect(()=>{
@@ -39,12 +34,11 @@ function UserResume(props){
             setemail,
             setjob,
             setprofileimage,
-            setdescription,
             setwarning_cnt,
             SetUserTechArray,
             SetUserUrlArray,
         }
-        dispatch(GetUserResumeAPI(SetBasicInfo, props.study_id, props.user_id));
+        dispatch(GetUserProfileAPI(SetBasicInfo, props.user_id));
 
     },[])
 
@@ -129,18 +123,6 @@ function UserResume(props){
                     </div>
                 </div>
 
-                {/* 유저 신청글 */}
-                <div className='users-resume-item'>
-                    <div className='start-align row-fill-container'>
-                        <text className='title'>신청글</text>
-                        <textarea className='Info-View-input row-fill-container'
-                            value={description}
-                            style={{minHeight:'250px'}}
-                            readOnly
-                        />
-                    </div>
-                </div>
-
                 {/* 유저 기술스택 */}
                 <div className='users-resume-item'>
                     <text className='title'>기술 스택</text>
@@ -153,7 +135,7 @@ function UserResume(props){
                 <div className='center-align'>
                     <button 
                         className='Button-Sm'
-                        onClick={()=>{props.setisResumeView({"isactive": false, "study_id": '', 'user_id':''})}}
+                        onClick={()=>{props.setisProfileView({"isactive": false, 'user_id':''})}}
                     >창닫기</button>
                 </div>
 
@@ -164,4 +146,4 @@ function UserResume(props){
 
 }
 
-export default UserResume;
+export default UserProfile;

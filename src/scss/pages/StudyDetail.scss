@@ -1,0 +1,20 @@
+@import '../base.scss';
+@import '../base/font.scss';
+@import '../base/button-style.scss';
+@import '../base/align.scss';
+
+.Study-Detail-Frame{
+    padding: 5% 20% 10% 20%;
+}
+
+.item{
+    margin-bottom: 15px;
+}
+
+.item-detail{
+    margin-bottom: 10px;
+
+    text{
+        min-width: 75px;
+    }
+}

@@ -46,7 +46,11 @@ function UserInStudy(props){
                                         {/* 프로필 이미지 */}
                                         <div style={{width:'50px', height:'50px'}}>
                                             <div className='profile-image'>
-                                                <img src={`${BasicInfo.PROFILE_BASE_URL}/${item.user_info.id}/${item.user_info.img_url}`}/>
+                                                {
+                                                    item.user_info.img_url == 'default.png'
+                                                    ?   <img src={`${BasicInfo.PROFILE_DEFAULT_URL}`}/>
+                                                    :   <img src={`${BasicInfo.PROFILE_BASE_URL}/${item.user_info.id}/${item.user_info.img_url}`}/>
+                                                }                  
                                             </div>
                                         </div>
 
@@ -61,8 +65,9 @@ function UserInStudy(props){
 
                                             {/* 추방 아이콘 부분 */}
                                             {
-                                                !props.onlyview
-                                                ?   <div>
+                                                props.onlyview
+                                                ?   null
+                                                :   <div>
                                                         <img 
                                                             className='md'
                                                             src={`${BasicInfo.ICON_BASE_URL}/user_minus.svg`}
@@ -91,7 +96,6 @@ function UserInStudy(props){
                                                             }}
                                                         />
                                                     </div>
-                                                :   null
                                             }
 
                                         </div>
@@ -119,7 +123,11 @@ function UserInStudy(props){
                                         {/* 프로필 이미지 */}
                                         <div style={{width:'50px', height:'50px'}}>
                                             <div className='profile-image'>
-                                                <img src={`${BasicInfo.PROFILE_BASE_URL}/${item.user_info.id}/${item.user_info.img_url}`}/>
+                                                {
+                                                    item.user_info.img_url == 'default.png'
+                                                    ?   <img src={`${BasicInfo.PROFILE_DEFAULT_URL}`}/>
+                                                    :   <img src={`${BasicInfo.PROFILE_BASE_URL}/${item.user_info.id}/${item.user_info.img_url}`}/>
+                                                }
                                             </div>
                                         </div>
 
@@ -134,8 +142,9 @@ function UserInStudy(props){
                                             
                                             {/* 승인 / 거부 아이콘 부분 */}
                                             {
-                                                !props.onlyview
-                                                ?   <div>
+                                                props.onlyview
+                                                ?   null
+                                                :   <div>
                                                         <img 
                                                             className='md' 
                                                             src={`${BasicInfo.ICON_BASE_URL}/user_plus.svg`} 
@@ -164,7 +173,6 @@ function UserInStudy(props){
                                                             }}
                                                         />
                                                     </div>
-                                                :   null
                                             }
 
                                         </div>

@@ -3,6 +3,17 @@
 
 $margin : 15px;
 
+.title-item-row{
+    display: flex;
+    align-items: flex-start;
+
+    width: 100%;
+
+    .title{
+        margin-right: $margin;
+    }
+}
+
 .title-item-column{
     display: flex;
     flex-direction: column;
@@ -12,17 +23,6 @@ $margin : 15px;
 
     .title{
         margin-bottom: $margin;
-    }
-}
-
-.title-item-row{
-    display: flex;
-    align-items: flex-start;
-
-    width: 100%;
-
-    .title{
-        margin-right: $margin;
     }
 }
 
@@ -48,6 +48,12 @@ $margin : 15px;
 .between-align{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.evenly-align{
+    display: flex;
+    justify-content: space-evenly;
     align-items: center;
 }
 

@@ -13,6 +13,7 @@ import BasePage from "./base/base";
 import SettingsPage from "../pages/Settings";
 import StudyEditPage from "../pages/StudyEdit";
 import TESTPAGE from "../pages/TEST";
+import StudyDetailPage from "../pages/StudyDetail";
 
 export default () => (
     <BrowserRouter>
@@ -26,6 +27,7 @@ export default () => (
             <Route path='/settings' element={<SettingsPage/>}></Route>
             <Route path='/study/add' element={<StudyAddPage/>}></Route>
             <Route path='/study/edit/:study_id' element={<StudyEditPage/>}></Route>
+            <Route path='/study/detail/:study_id' element={<StudyDetailPage/>}></Route>
             <Route path='/study/manage' element={<MyStudyListPage/>}></Route>
             <Route path='/auth/email/resend' element={<EmailReAuthPage/>}></Route>
             <Route path='/auth/email/:token' element={<EmailAuthPage/>}></Route>

@@ -64,3 +64,9 @@ a {
 	display: block;
 	padding-bottom: 100%;
 }
+
+.hover-text{
+	&:hover{
+		font-weight: bold;
+	}
+}
