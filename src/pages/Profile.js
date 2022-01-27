@@ -631,14 +631,7 @@ function ProfilePage(){
                                         setno(()=>()=>{dispatch(UnActivePopup())});
                                         
                                         // 회원 정보 수정 여부 확인
-                                        dispatch(ActiveConfirmPopup("info", "회원 정보를 수정하시겠습니까?"));        
-
-                                        // var result = window.confirm("회원 정보를 수정하시겠습니까?");
-                                        
-                                        // if (result){
-                                        //     Submit(nickname, email, job);
-                                        // }
-
+                                        dispatch(ActiveConfirmPopup("info", "회원 정보를 수정하시겠습니까?"));
                                     }}
                                 >프로필 수정하기
                                 </button>

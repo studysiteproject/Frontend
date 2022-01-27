@@ -11,3 +11,10 @@
     border: none;
     outline: none;
 }
+.Info-View-input-hover{
+    @extend .Info-View-input;
+    
+    &:hover{
+        background: #e9e9e9;
+    }
+}

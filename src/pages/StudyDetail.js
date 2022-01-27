@@ -5,16 +5,18 @@ import Footer from '../components/base/footer';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BasicInfo } from '../data/profile';
-import { AddFavoriteAPI, DeleteFavoriteAPI, GetStudyInfoAPI } from '../redux-modules/module/StudyManage';
+import { AddFavoriteAPI, DeleteFavoriteAPI, DeleteStudyAPI, GetStudyInfoAPI } from '../redux-modules/module/StudyManage';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
+import { ActiveConfirmPopup, ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
 import { IsLoginAPI } from '../components/util/islogin';
 import TooltipIcon from '../components/util/TooltopIcon';
 import UserResume from '../components/popup/UserResume';
 import InfoFrame from '../components/base/InfoFrame';
-import { PopupInfo } from '../components/util/Popup';
+import { PopupConfirm, PopupInfo } from '../components/util/Popup';
 import UserProfile from '../components/popup/UserProfile';
+import StudyRecruit from '../components/popup/StudyRecruit';
+import StudyReport from '../components/popup/StudyReport';
 
 function StudyDetailPage(){
 
@@ -42,7 +44,18 @@ function StudyDetailPage(){
     const [leaderinfo, setleaderinfo] = useState({});   // 스터디 작성자 정보 임시 저장
     const [iswriter, setiswriter] = useState(false);    // 해당 스터디의 작성자인지
 
+    // 프로필 팝업 관련 정보
     const [isProfileView, setisProfileView] = useState({"isactive": false, 'user_id':''});
+    
+    // 스터디 신청 관련 팝업 정보
+    const [isRecruitView, setisRecruitView] = useState({"isactive": false});
+    
+    // 스터디 신고 관련 팝업 정보
+    const [isReportView, setisReportView] = useState({"isactive": false});
+
+    // 선택 창에서 사용할 함수
+    const [ok, setok] = useState(()=>()=>{});
+    const [no, setno] = useState(()=>()=>{});
 
     useEffect(()=>{
         dispatch(IsLoginAPI());
@@ -56,38 +69,37 @@ function StudyDetailPage(){
             Cookie: document.cookie
         }
 
-        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/check/${study_id}`, { headers: header, withCredentials: true, credentials: "include" })
-        .then(res => {
+        if (islogin && typeof islogin !== 'undefined'){
+            axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/check/${study_id}`, { headers: header, withCredentials: true, credentials: "include" })
+            .then(res => {
+                setiswriter(res.data['iswriter']);  // 작성자 확인
+                return res;
+            })
+            .catch(error => {
+                dispatch(ActivePopup("error", "스터디 작성자 여부를 확인할 수 없습니다!"));
+                dispatch(UnActivePopup(2));
+                setiswriter(false);
+                return error
+            })
+        }
 
-            // 작성자 확인
-            setiswriter(res.data['iswriter'])
+        const SetBasicInfo = {
+            setTitle,
+            setcategory,
+            setplace,
+            SetStudyTechArray,
+            Setmaxman,
+            setdescription,
+            Setnowman,
+            setWarncnt,
+            setcreateDate,
+            setisfavorite,
+            setisactive,
+            setleaderinfo
+        }
 
-            const SetBasicInfo = {
-                setTitle,
-                setcategory,
-                setplace,
-                SetStudyTechArray,
-                Setmaxman,
-                setdescription,
-                Setnowman,
-                setWarncnt,
-                setcreateDate,
-                setisfavorite,
-                setisactive,
-                setleaderinfo
-            }
-
-            // 스터디의 기본정보 얻어오기 
-            GetStudyInfoAPI(SetBasicInfo, study_id, true);
-
-            return res;
-        })
-        .catch(error => {
-            dispatch(ActivePopup("error", "스터디 작성자 여부를 확인할 수 없습니다!"));
-            dispatch(UnActivePopup(2));
-            setiswriter(false);
-            return error
-        })
+        // 스터디의 기본정보 얻어오기 
+        GetStudyInfoAPI(SetBasicInfo, study_id, true);
 
     },[]);
 
@@ -139,7 +151,7 @@ function StudyDetailPage(){
 
                             {/* 즐겨찾기 옵션 활성화 시 스터디 즐겨찾기 버튼(하트) 추가 */}
                             {
-                                isfavorite
+                                isfavorite && islogin
                                 ?   <img
                                         className='icon' 
                                         src={`${BasicInfo.ICON_BASE_URL}/heart_fill.svg`} 
@@ -226,18 +238,54 @@ function StudyDetailPage(){
                     {
                         islogin && iswriter
                         ?   <div className='evenly-align'>
-                                <button className='Button-Md'>스터디 편집하기</button>
-                                <button className='Button-Md'>스터디 삭제하기</button>
+                                <button 
+                                    className='Button-Md'
+                                    onClick={()=>{
+                                        navigate(`/study/edit/${study_id}`);
+                                    }}
+                                >
+                                스터디 편집하기
+                                </button>
+                                <button 
+                                    className='Button-Md'
+                                    onClick={()=>{
+                                        setok(()=>()=>{
+                                            dispatch(DeleteStudyAPI(study_id));
+                                            window.location.href = '/';
+                                        });
+                                        setno(()=>()=>{dispatch(UnActivePopup())});
+                                        dispatch(ActiveConfirmPopup("info", "이 스터디를 정말 삭제하시겠습니까?"));        
+                                    }}
+                                >
+                                스터디 삭제하기
+                                </button>
                             </div>
                         :   <div className='evenly-align'>
-                                <button className='Button-Md'>스터디 신청하기</button>
-                                <button className='Button-Md'>스터디 신고하기</button>
+                                <button 
+                                    className='Button-Md'
+                                    onClick={()=>{
+                                        setisRecruitView({"isactive": true})
+                                    }}
+                                >
+                                스터디 신청하기
+                                </button>
+                                <button 
+                                    className='Button-Md'
+                                    onClick={()=>{
+                                        setisReportView({"isactive": true})
+                                    }}
+                                >
+                                스터디 신고하기
+                                </button>
                             </div>
                     }
 
                 </div>
             <Footer/>
 
+            <PopupConfirm ok={ok} no={no}/>
+            
+            {/* 유저 프로필 팝업 부분 */}
             {
                 isProfileView.isactive
                 ?   <PopupInfo padding={"5%"}>
@@ -245,6 +293,34 @@ function StudyDetailPage(){
                             <UserProfile
                                 user_id={isProfileView.user_id}
                                 setisProfileView={setisProfileView}
+                            />
+                        </InfoFrame>
+                    </PopupInfo>
+                :   null
+            }
+
+            {/* 스터디 신청 팝업 부분 */}
+            {
+                isRecruitView.isactive
+                ?   <PopupInfo padding={"5%"}>
+                        <InfoFrame width={'800px'}>
+                            <StudyRecruit
+                                study_id={study_id}
+                                setisRecruitView={setisRecruitView}
+                            />
+                        </InfoFrame>
+                    </PopupInfo>
+                :   null
+            }
+
+            {/* 스터디 신고 팝업 부분 */}
+            {
+                isReportView.isactive
+                ?   <PopupInfo padding={"5%"}>
+                        <InfoFrame width={'800px'}>
+                            <StudyReport
+                                study_id={study_id}
+                                setisReportView={setisReportView}
                             />
                         </InfoFrame>
                     </PopupInfo>

@@ -116,9 +116,10 @@ function UserResume(props){
                                     return(
                                         <div className='start-align row-fill-container users-resume-item'>
                                             <img className='md img-title' src={CheckUserInfo.CheckUrlType(item)}/>
-                                            <input className='Info-View-input row-fill-container'
+                                            <input className='Info-View-input-hover row-fill-container'
                                                 value={item}
                                                 readOnly
+                                                onClick={()=>{window.open(item)}}
                                             />
                                         </div>
                                     )
