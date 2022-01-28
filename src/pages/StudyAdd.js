@@ -297,7 +297,7 @@ function StudyAddPage(){
                                     className='input-box'
                                     placeholder="스터디를 소개할 글을 적으세요. &#13;&#10; (무엇을 목표로 하고 어떤 활동을 할 것 인지.)"
                                     onChange={(e)=>{setdescription(e.target.value)}}
-                                    style={{minHeight:'500px'}}
+                                    style={{minHeight:'500px', resize: 'none'}}
                                 />
                             </div>
                         </div>

@@ -51,7 +51,7 @@ function MyStudyListPage(){
 
     // 선택한 카테고리에 대한 정보
     const [select, setselect] = useState(0);   // 몇 번째 카테고리를 선택했는지 저장
-    var categorylist = ['내가 생성한 스터디', '참여중인 스터디', '즐겨찾기 목록'];   // 카테고리 종류
+    var categorylist = ['내가 생성한 스터디', '신청한 스터디', '즐겨찾기 목록'];   // 카테고리 종류
     
     // 스터디 리스트에서 사용할 옵션
     const [option, setOption] = useState({

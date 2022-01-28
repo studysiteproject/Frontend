@@ -202,6 +202,76 @@ export function ExitStudyAPI(id){
     }
 }
 
+export function RecruitStudyAPI(id, description){
+    
+    return function (dispatch){
+
+        const data = {
+            "description": description
+        }
+
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/study/recruit/${id}`, data, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "스터디 신청이 완료되었습니다."));
+            dispatch(UnActivePopup(2));
+            return res;
+        })
+        .catch(error => {
+            const status = error.response['status'];
+
+            if (status == 400){
+                dispatch(ActivePopup("error", "이미 신청한 스터디이거나, 신청글이 너무 깁니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else if (status == 401){
+                dispatch(ActivePopup("error", "스터디를 신청하기 위해서는 로그인이 필요합니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else{
+                dispatch(ActivePopup("error", "스터디 신청에 실패하였습니다."));
+                dispatch(UnActivePopup(2));
+            }
+
+            return error;
+        })
+    }
+}
+
+export function ReportStudyAPI(id, description){
+    
+    return function (dispatch){
+
+        const data = {
+            "description": description
+        }
+
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/study/report/${id}`, data, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "스터디 신고가 완료되었습니다."));
+            dispatch(UnActivePopup(2));
+            return res;
+        })
+        .catch(error => {
+            const status = error.response['status'];
+
+            if (status == 400){
+                dispatch(ActivePopup("error", "이미 신고하였거나, 존재하지 않는 스터디입니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else if (status == 401){
+                dispatch(ActivePopup("error", "스터디를 신고하기 위해서는 로그인이 필요합니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else{
+                dispatch(ActivePopup("error", "스터디 신고에 실패하였습니다."));
+                dispatch(UnActivePopup(2));
+            }
+
+            return error;
+        })
+    }
+}
+
 // 스터디의 상세 정보를 얻어온다.
 export function GetStudyInfoAPI(setdata, id, detail=false){
     axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/${id}`, { withCredentials: true, credentials: "include" })

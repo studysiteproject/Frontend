@@ -72,6 +72,43 @@ export function ChangePasswordAPI(pw, newpw, checkpw){
     }
 }
 
+export function ReportUserAPI(study_id, user_id, description){
+    
+    return function (dispatch){
+
+        const data = {
+            "study_id": study_id,
+            "reported_id": user_id,
+            "description": description
+        }
+
+        axios.post(`${process.env.REACT_APP_DJANGO_API_URL}/user/report`, data, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "팀원의 신고가 완료되었습니다."));
+            dispatch(UnActivePopup(2));
+            return res;
+        })
+        .catch(error => {
+            const status = error.response['status'];
+
+            if (status == 400){
+                dispatch(ActivePopup("error", "유효하지 않은 팀원이거나, 존재하지 않는 스터디입니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else if (status == 401){
+                dispatch(ActivePopup("error", "팀원을 신고하기 위해서는 로그인이 필요합니다."));
+                dispatch(UnActivePopup(2));
+            }
+            else{
+                dispatch(ActivePopup("error", "팀원 신고에 실패하였습니다."));
+                dispatch(UnActivePopup(2));
+            }
+
+            return error;
+        })
+    }
+}
+
 export function LeaveUserAPI(){
     return function (dispatch){
 

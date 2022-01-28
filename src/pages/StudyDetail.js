@@ -11,14 +11,17 @@ import axios from 'axios';
 import { ActiveConfirmPopup, ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
 import { IsLoginAPI } from '../components/util/islogin';
 import TooltipIcon from '../components/util/TooltopIcon';
-import UserResume from '../components/popup/UserResume';
 import InfoFrame from '../components/base/InfoFrame';
 import { PopupConfirm, PopupInfo } from '../components/util/Popup';
 import UserProfile from '../components/popup/UserProfile';
 import StudyRecruit from '../components/popup/StudyRecruit';
-import StudyReport from '../components/popup/StudyReport';
+import { StudyReport } from '../components/popup/StudyReport';
+import options from '../data/options';
+import Comments from '../components/Comments';
 
 function StudyDetailPage(){
+
+    const _ = require('lodash');
 
     const { study_id } = useParams();
 
@@ -42,7 +45,7 @@ function StudyDetailPage(){
     const [isactive, setisactive] = useState("");
 
     const [leaderinfo, setleaderinfo] = useState({});   // 스터디 작성자 정보 임시 저장
-    const [iswriter, setiswriter] = useState(false);    // 해당 스터디의 작성자인지
+    const [iswriter, setiswriter] = useState(false);    // 해당 스터디의 작성자인지 확인
 
     // 프로필 팝업 관련 정보
     const [isProfileView, setisProfileView] = useState({"isactive": false, 'user_id':''});
@@ -57,19 +60,14 @@ function StudyDetailPage(){
     const [ok, setok] = useState(()=>()=>{});
     const [no, setno] = useState(()=>()=>{});
 
-    useEffect(()=>{
-        dispatch(IsLoginAPI());
-    },[])
-
-    // 페이지 로드 시
-    useEffect(()=>{
-
+    function checkiswritter(study_id){
+        
         // 헤더 설정
         let header = {
             Cookie: document.cookie
         }
 
-        if (islogin && typeof islogin !== 'undefined'){
+        if (islogin){
             axios.get(`${process.env.REACT_APP_SPRING_API_URL}/study/check/${study_id}`, { headers: header, withCredentials: true, credentials: "include" })
             .then(res => {
                 setiswriter(res.data['iswriter']);  // 작성자 확인
@@ -82,7 +80,18 @@ function StudyDetailPage(){
                 return error
             })
         }
+    }
+        
+    useEffect(()=>{
+        checkiswritter(study_id);
+    })
 
+    useEffect(()=>{
+        dispatch(IsLoginAPI());
+    },[])
+
+    // 페이지 로드 시
+    useEffect(()=>{
         const SetBasicInfo = {
             setTitle,
             setcategory,
@@ -111,7 +120,7 @@ function StudyDetailPage(){
                     {/* 스터디 부가 정보(생성자, 즐겨찾기, 경고 등) */}
                     <div className='row-fill-container between-align item'>
 
-                        {/* 유저 정보 */}
+                        {/* 유저 정보, 생성시간 */}
                         <div id='User-Info' className='start-align'>
 
                             {/* 프로필 이미지 */}
@@ -131,8 +140,16 @@ function StudyDetailPage(){
                                 onClick={()=>{
                                     setisProfileView({"isactive": true, 'user_id': leaderinfo.id})
                                 }}
+                                style={{marginRight:'20px'}}
                             >
                                 {leaderinfo.user_name}
+                            </text>
+
+                            {/* 생성시간 */}
+                            <text 
+                                className='Font-Sm info'
+                            >
+                                {createDate.replace('T', ' ')}
                             </text>
 
                         </div>
@@ -187,7 +204,7 @@ function StudyDetailPage(){
                     
                     {/* 스터디 제목 */}
                     <div className='Info-View-input row-fill-container item title'>
-                        {`${study_id}번 스터디입니다.`}
+                        {title}
                     </div>
                     
                     {/* 스터디 상세 정보 */}
@@ -197,25 +214,25 @@ function StudyDetailPage(){
                             {/* 지역 */}
                             <div className='title-item-row item-detail'>
                                 <text className='start-align Font-Sm Semi Bold'>지역</text>
-                                <text className='start-align Font-Sm Semi'>123</text>
+                                <text className='start-align Font-Sm Semi'>{place}</text>
                             </div>
 
                             {/* 모집분야 */}
                             <div className='title-item-row item-detail'>
                                 <text className='start-align Font-Sm Semi Bold'>모집분야</text>
-                                <text className='start-align Font-Sm Semi'>123</text>
+                                <text className='start-align Font-Sm Semi'>{options.category_ko[category]}</text>
                             </div>
 
                             {/* 최대 모집 인원 */}
                             <div className='title-item-row item-detail'>
                                 <text className='start-align Font-Sm Semi Bold'>모집인원</text>
-                                <text className='start-align Font-Sm Semi'>123</text>
+                                <text className='start-align Font-Sm Semi'>{`${maxman}명`}</text>
                             </div>
 
                             {/* 현재인원 */}
                             <div className='title-item-row item-detail'>
                                 <text className='start-align Font-Sm Semi Bold'>현재인원</text>
-                                <text className='start-align Font-Sm Semi'>123</text>
+                                <text className='start-align Font-Sm Semi'>{`${nowman}명`}</text>
                             </div>
 
                             {/* 기술스택 */}
@@ -230,9 +247,12 @@ function StudyDetailPage(){
                     </div>
 
                     {/* 스터디 상세 내용 */}
-                    <textarea className='Info-View-input row-fill-container item' style={{minHeight:'200px'}}>
-                        {`${study_id}번 스터디입니다.`}
-                    </textarea>
+                    <textarea 
+                        className='Info-View-input row-fill-container item' 
+                        style={{minHeight:'200px', resize: 'none'}}
+                        value={description}
+                        readOnly
+                    />
                     
                     {/* 로그인한 작성자만 편집 & 삭제 버튼 활성화 */}
                     {
@@ -264,21 +284,44 @@ function StudyDetailPage(){
                                 <button 
                                     className='Button-Md'
                                     onClick={()=>{
-                                        setisRecruitView({"isactive": true})
+                                        if(islogin){
+                                            setisRecruitView({"isactive": true})
+                                        }
+                                        else{
+                                            dispatch(ActivePopup("error", "스터디 신청은 로그인 후 가능합니다."));
+                                            dispatch(UnActivePopup(2));
+                                        }
                                     }}
+                                    disabled={!isactive}    // 스터디 마감 시 신청 제한
                                 >
                                 스터디 신청하기
                                 </button>
                                 <button 
                                     className='Button-Md'
                                     onClick={()=>{
-                                        setisReportView({"isactive": true})
+                                        if(islogin){
+                                            setisReportView({"isactive": true})
+                                        }
+                                        else{
+                                            dispatch(ActivePopup("error", "스터디 신고는 로그인 후 가능합니다."));
+                                            dispatch(UnActivePopup(2));
+                                        }
                                     }}
                                 >
                                 스터디 신고하기
                                 </button>
                             </div>
                     }
+
+                    <hr/>
+
+                    <Comments
+                        study_id={study_id}
+                        setok={setok}
+                        setno={setno}
+                        setisProfileView={setisProfileView}
+                        iswriter={iswriter}
+                    />
 
                 </div>
             <Footer/>

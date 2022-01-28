@@ -13,6 +13,10 @@ import { GetUserResumeAPI } from '../../redux-modules/module/UserManage';
 import { CheckUserInfo } from '../util/Checkinfo';
 import TooltipIcon from '../util/TooltopIcon';
 
+import InfoFrame from '../base/InfoFrame';
+import { PopupInfo } from '../util/Popup';
+import { UserReport } from '../popup/StudyReport';
+
 function UserResume(props){
 
     const dispatch = useDispatch();
@@ -31,6 +35,9 @@ function UserResume(props){
     );
 
     const [UserUrlArray, SetUserUrlArray] = useState([]); // 현재 유저의 url 목록
+
+    // 팀원 신고 관련 팝업 정보
+    const [isReportView, setisReportView] = useState({"isactive": false});
 
     useEffect(()=>{
  
@@ -136,7 +143,7 @@ function UserResume(props){
                         <text className='title'>신청글</text>
                         <textarea className='Info-View-input row-fill-container'
                             value={description}
-                            style={{minHeight:'250px'}}
+                            style={{minHeight:'250px', resize: 'none'}}
                             readOnly
                         />
                     </div>
@@ -151,15 +158,35 @@ function UserResume(props){
                 </div>
                 
                 {/* 창닫기 버튼 */}
-                <div className='center-align'>
+                <div className='row-fill-contailner evenly-align'>
                     <button 
                         className='Button-Sm'
                         onClick={()=>{props.setisResumeView({"isactive": false, "study_id": '', 'user_id':''})}}
                     >창닫기</button>
+                    <button 
+                        className='Button-Sm'
+                        onClick={()=>{
+                            setisReportView({"isactive": true})
+                        }}
+                    >신고하기</button>
                 </div>
 
             </div>
-
+            
+            {/* 유저 신고 팝업 부분 */}
+            {
+                isReportView.isactive
+                ?   <PopupInfo padding={"5%"}>
+                        <InfoFrame width={'800px'}>
+                            <UserReport
+                                study_id={props.study_id}
+                                user_id={props.user_id}
+                                setisReportView={setisReportView}
+                            />
+                        </InfoFrame>
+                    </PopupInfo>
+                :   null
+            }
         </>
     )
 

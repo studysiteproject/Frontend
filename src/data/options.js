@@ -27,11 +27,20 @@ const job_ko = {
     "salaryman" : "직장인"
 }
 
+const category_ko = {
+    "dev": "개발 / 프로그래밍",
+    "design" : "디자인 / 영상편집",
+    "certifi" : "자격증",
+    "lang" : "외국어",
+    "official" : "공무원"
+}
+
 const options = {
     job_data,
     category,
     place,
-    job_ko
+    job_ko,
+    category_ko
 }
 
 export default options;
