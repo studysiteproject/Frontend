@@ -260,7 +260,7 @@ function Comments(props){
                         className='Button-Sm'
                         onClick={()=>{
                             props.setok(()=>()=>{
-                                dispatch(UpdateCommentAPI(props.study_id, user_index, EditCommentMsg));
+                                dispatch((props.study_id, user_index, EditCommentMsg));
                                 dispatch(UnActivePopup());
 
                                 // 수정 옵션 초기화
