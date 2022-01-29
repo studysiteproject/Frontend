@@ -13,9 +13,6 @@ function Comments(props){
     // 유저의 index
     const user_index = getCookieValue("index");
     
-    // 해당 스터디의 작성자인지 확인
-    const [iswriter, setiswriter] = useState(false);
-
     // 댓글 수정 관련 정보
     const [isEdit, setisEdit] = useState({'isactive': false, 'comment_id': ''});
     const [EditCommentMsg, setEditCommentMsg] = useState('');
@@ -246,6 +243,40 @@ function Comments(props){
                         )
                     })
                 }
+
+                {/* 댓글 추가 부분 */}
+                <div className='Comment-item' style={{padding:'10px'}}>
+                    <textarea
+                        className='row-fill-container'
+                        value={EditCommentMsg}
+                        onChange={(e)=>{
+                            setEditCommentMsg(e.target.value)
+                        }}
+                        style={{minHeight:'100px', overflow:'auto', resize:'none', marginBottom:'5px'}}
+                    />
+
+                    {/* 댓글 추가 버튼*/}
+                    <button 
+                        className='Button-Sm'
+                        onClick={()=>{
+                            props.setok(()=>()=>{
+                                dispatch(UpdateCommentAPI(props.study_id, user_index, EditCommentMsg));
+                                dispatch(UnActivePopup());
+
+                                // 수정 옵션 초기화
+                                setisEdit({'isactive': false, 'comment_id': ''});
+                                setEditCommentMsg('');
+                                
+                                // 댓글목록 다시 받아오기
+                                setTimeout(()=>{dispatch(GetCommentsAPI(props.study_id, setCommentData))},500);
+                            });
+                            props.setno(()=>()=>{dispatch(UnActivePopup())});
+                            dispatch(ActiveConfirmPopup("info", "이 댓글을 추가하시겠습니까?"));                                                                                    
+                        }}
+                    >
+                    댓글 추가
+                    </button>
+                </div>
             </div>
         </div>
     )
