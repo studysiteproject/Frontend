@@ -70,7 +70,7 @@ export function UserReport(props){
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if (description.length > 0){
+        if (description.length > 10){
             setableSubmit(true);
         }
         else{
@@ -85,7 +85,7 @@ export function UserReport(props){
             <textarea
                 className="Info-View-input"
                 style={{minHeight:'300px', marginBottom:'30px', overflow:'auto', resize: 'none'}}
-                placeholder="해당 팀원의 신고 사유를 적어주세요."
+                placeholder="해당 팀원의 신고 사유를 적어주세요. (10자 이상 작성)"
                 onChange={(e)=>{
                     setdescription(e.target.value);
                 }}

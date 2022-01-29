@@ -11,7 +11,7 @@ function StudyRecruit(props){
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if (description.length > 0){
+        if (description.length > 10){
             setableSubmit(true);
         }
         else{
@@ -26,7 +26,7 @@ function StudyRecruit(props){
             <textarea
                 className="Info-View-input"
                 style={{minHeight:'300px', marginBottom:'30px', overflow:'auto', resize: 'none'}}
-                placeholder="자신이 스터디에서 무엇을 목표로 하고 어떤 활동을 하고 싶은지 소개할 글을 적어주세요."
+                placeholder="자신이 스터디에서 무엇을 목표로 하고 어떤 활동을 하고 싶은지 소개할 글을 적어주세요. (10자 이상 작성)"
                 onChange={(e)=>{
                     setdescription(e.target.value);
                 }}

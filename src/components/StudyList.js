@@ -178,7 +178,7 @@ function Item(props){
                         : null
                     }
 
-                    {/* 탈퇴 옵션 옵션 활성화 시 삭제 버튼 추가 */}
+                    {/* 탈퇴 옵션 옵션 활성화 시 탈퇴 버튼 추가 */}
                     {
                         props.option['exit']
                         ? <img

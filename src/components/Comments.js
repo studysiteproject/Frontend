@@ -365,7 +365,7 @@ function Comments(props){
                                     dispatch(ActiveConfirmPopup("info", "이 댓글을 추가하시겠습니까?"));
                                 }
                                 else{
-                                    dispatch(ActivePopup("error", "대댓글 추가는 로그인 후 사용가능합니다.\n로그인 후 시도해주세요."));
+                                    dispatch(ActivePopup("error", "댓글 추가는 로그인 후 사용가능합니다.\n로그인 후 시도해주세요."));
                                     dispatch(UnActivePopup(2));
                                     
                                     // 댓글내용 초기화
