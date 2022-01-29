@@ -86,7 +86,9 @@ function Comments(props){
                                                                 <text 
                                                                     className='Font-Md hover-text'
                                                                     onClick={()=>{
-                                                                        props.setisProfileView({"isactive": true, 'user_id': item.comment_user_info.user_id})
+                                                                        if(item.user_id != null){
+                                                                            props.setisProfileView({"isactive": true, 'user_id': item.comment_user_info.user_id});
+                                                                        }
                                                                     }}
                                                                     style={{marginRight:'10px'}}
                                                                 >
