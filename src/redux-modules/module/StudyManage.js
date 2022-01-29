@@ -75,6 +75,7 @@ export function GetStudyListAPI(study_type=""){
     
 }
 
+// 스터디 즐겨찾기를 추가합니다
 export function AddFavoriteAPI(id){
 
     return function (dispatch){
@@ -105,6 +106,7 @@ export function AddFavoriteAPI(id){
     }
 }
 
+// 스터디 즐겨찾기를 해제합니다
 export function DeleteFavoriteAPI(id){
 
     return function (dispatch){
@@ -135,6 +137,7 @@ export function DeleteFavoriteAPI(id){
     }
 }
 
+// 스터디를 삭제합니다
 export function DeleteStudyAPI(id){
     return function (dispatch){
 
@@ -170,6 +173,7 @@ export function DeleteStudyAPI(id){
     }
 }
 
+// 스터디를 탈퇴합니다
 export function ExitStudyAPI(id){
     
     return function (dispatch){
@@ -202,6 +206,7 @@ export function ExitStudyAPI(id){
     }
 }
 
+// 스터디를 신청합니다
 export function RecruitStudyAPI(id, description){
     
     return function (dispatch){
@@ -237,6 +242,7 @@ export function RecruitStudyAPI(id, description){
     }
 }
 
+// 스터디를 신고합니다
 export function ReportStudyAPI(id, description){
     
     return function (dispatch){
@@ -339,6 +345,28 @@ export function DeleteUserAPI(study_id, user_id){
         })
         .catch(error => {
             dispatch(ActivePopup("error", "사용자의 스터디 참여 상태 삭제에 실패하였습니다."));
+            dispatch(UnActivePopup(2));
+            return error;
+        })
+    }
+}
+
+// 승인된 사람은 신청자 목록으로, 신청자 목록인 사람은 승인하는 API
+export function EditStudyActiveAPI(study_id){
+    return function (dispatch){
+
+        let header = {
+            Cookie: document.cookie
+        }
+
+        axios.put(`${process.env.REACT_APP_SPRING_API_URL}/study/recruit/${study_id}`,{},{ withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "스터디 모집 상태 변경에 성공하였습니다."));
+            dispatch(UnActivePopup(2));
+            return res
+        })
+        .catch(error => {
+            dispatch(ActivePopup("error", "스터디 모집 상태 변경에 실패하였습니다."));
             dispatch(UnActivePopup(2));
             return error;
         })

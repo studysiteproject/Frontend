@@ -134,7 +134,7 @@ function SettingsPage() {
                                             onClick={()=>{
                                                 setok(()=>()=>{
                                                     dispatch(ChangePasswordAPI(pw, newpw, checkpw));
-                                                    setTimeout(()=>{navigate('/login')}, 4500)
+                                                    setTimeout(()=>{navigate('/')}, 4500)
                                                 });
                                                 setno(()=>()=>{dispatch(UnActivePopup())});
                                                 dispatch(ActiveConfirmPopup("info", "패스워드를 변경하시겠습니까?"));

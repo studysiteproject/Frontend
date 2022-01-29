@@ -5,7 +5,7 @@ import Footer from '../components/base/footer';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BasicInfo } from '../data/profile';
-import { AddFavoriteAPI, DeleteFavoriteAPI, DeleteStudyAPI, GetStudyInfoAPI } from '../redux-modules/module/StudyManage';
+import { AddFavoriteAPI, DeleteFavoriteAPI, DeleteStudyAPI, EditStudyActiveAPI, GetStudyInfoAPI } from '../redux-modules/module/StudyManage';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { ActiveConfirmPopup, ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
@@ -18,6 +18,7 @@ import StudyRecruit from '../components/popup/StudyRecruit';
 import { StudyReport } from '../components/popup/StudyReport';
 import options from '../data/options';
 import Comments from '../components/Comments';
+import NavItem from 'rsuite/esm/Nav/NavItem';
 
 function StudyDetailPage(){
 
@@ -81,7 +82,7 @@ function StudyDetailPage(){
             })
         }
     }
-        
+    
     useEffect(()=>{
         checkiswritter(study_id);
     })
@@ -109,7 +110,6 @@ function StudyDetailPage(){
 
         // 스터디의 기본정보 얻어오기 
         GetStudyInfoAPI(SetBasicInfo, study_id, true);
-
     },[]);
 
     return(
@@ -190,11 +190,9 @@ function StudyDetailPage(){
                             {/* 모집중 / 모집 완료 확인 */}
                             <button className='Button-Sm' style={{width:'100px'}}>
                             {
-                                isactive == ""
-                                ?   "로딩중" 
-                                :   isactive
-                                    ?   "모집중"
-                                    :   "모집 종료"
+                                isactive
+                                ?   "모집중"
+                                :   "모집 종료"
                             }
                             </button>
 
@@ -258,6 +256,8 @@ function StudyDetailPage(){
                     {
                         islogin && iswriter
                         ?   <div className='evenly-align'>
+
+                                {/* 스터디 편집 이동 버튼 */}
                                 <button 
                                     className='Button-Md'
                                     onClick={()=>{
@@ -266,6 +266,29 @@ function StudyDetailPage(){
                                 >
                                 스터디 편집하기
                                 </button>
+
+                                {/* 스터디 모집 상태 변경 버튼 */}
+                                <button 
+                                    className='Button-Md'
+                                    onClick={()=>{
+                                        setok(()=>()=>{
+                                            dispatch(EditStudyActiveAPI(study_id));
+                                            navigate('/study/manage');
+                                        });
+                                        setno(()=>()=>{dispatch(UnActivePopup())});
+
+                                        if(isactive) dispatch(ActiveConfirmPopup("info", "스터디의 팀원 모집을 종료하시겠습니까?"));
+                                        else dispatch(ActiveConfirmPopup("info", "스터디의 팀원 모집을 활성화하시겠습니까?"));
+                                    }}
+                                >
+                                {
+                                    isactive
+                                    ?   "모집 종료"
+                                    :   "모집 활성화"
+                                }
+                                </button>
+
+                                {/* 스터디 삭제 버튼 */}
                                 <button 
                                     className='Button-Md'
                                     onClick={()=>{
