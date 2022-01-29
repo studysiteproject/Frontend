@@ -1,14 +1,18 @@
 import '../scss/Comments.scss';
 
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux";
-import { DeleteCommentAPI, GetCommentsAPI, UpdateCommentAPI, UpdateCommentVisibleAPI } from "../redux-modules/module/CommentManage";
+import { useDispatch, useSelector } from "react-redux";
+import { AddCommentAPI, AddReplyCommentAPI, DeleteCommentAPI, GetCommentsAPI, UpdateCommentAPI, UpdateCommentVisibleAPI } from "../redux-modules/module/CommentManage";
 import { getCookieValue } from "../util";
 import { BasicInfo } from '../data/profile';
-import { ActiveConfirmPopup, UnActivePopup } from '../redux-modules/module/InfoManage';
+import { ActiveConfirmPopup, ActivePopup, UnActivePopup } from '../redux-modules/module/InfoManage';
 import { PopupConfirm } from './util/Popup';
+import IsLogin from './util/islogin';
 
 function Comments(props){
+
+    // 로그인 상태 확인
+    const islogin = useSelector((state) => state.userReducer.islogin);
 
     // 유저의 index
     const user_index = getCookieValue("index");
@@ -16,6 +20,10 @@ function Comments(props){
     // 댓글 수정 관련 정보
     const [isEdit, setisEdit] = useState({'isactive': false, 'comment_id': ''});
     const [EditCommentMsg, setEditCommentMsg] = useState('');
+    const [NewCommentMsg, setNewCommentMsg] = useState('');
+
+    const [isReply, setisReply] = useState({'isactive': false, 'comment_id': ''});
+    const [NewReplyCommentMsg, setNewReplyCommentMsg] = useState('');
 
     // 대댓글 추가 관련 정보
     const [ReplyCommentAdd, setReplyCommentAdd] = useState({'isactive': false, 'parent_comment_id': ''});
@@ -124,6 +132,9 @@ function Comments(props){
                                                                                                     props.setok(()=>()=>{
                                                                                                         dispatch(DeleteCommentAPI(props.study_id, item.id));
                                                                                                         dispatch(UnActivePopup());
+
+                                                                                                        // 댓글목록 다시 받아오기
+                                                                                                        setTimeout(()=>{dispatch(GetCommentsAPI(props.study_id, setCommentData))},500);
                                                                                                     });
                                                                                                     props.setno(()=>()=>{dispatch(UnActivePopup())});
                                                                                                     dispatch(ActiveConfirmPopup("info", "이 댓글을 정말 삭제하시겠습니까?"));                                                                                    
@@ -148,6 +159,9 @@ function Comments(props){
                                                                                                     props.setok(()=>()=>{
                                                                                                         dispatch(UpdateCommentVisibleAPI(props.study_id, item.id, false));
                                                                                                         dispatch(UnActivePopup());
+
+                                                                                                        // 댓글목록 다시 받아오기
+                                                                                                        setTimeout(()=>{dispatch(GetCommentsAPI(props.study_id, setCommentData))},500);
                                                                                                     });
                                                                                                     props.setno(()=>()=>{dispatch(UnActivePopup())});
                                                                                                     dispatch(ActiveConfirmPopup("info", "이 댓글을 비공개하시겠습니까?"));                                                                                    
@@ -161,6 +175,9 @@ function Comments(props){
                                                                                                     props.setok(()=>()=>{
                                                                                                         dispatch(UpdateCommentVisibleAPI(props.study_id, item.id, true));
                                                                                                         dispatch(UnActivePopup());
+
+                                                                                                        // 댓글목록 다시 받아오기
+                                                                                                        setTimeout(()=>{dispatch(GetCommentsAPI(props.study_id, setCommentData))},500);
                                                                                                     });
                                                                                                     props.setno(()=>()=>{dispatch(UnActivePopup())});
                                                                                                     dispatch(ActiveConfirmPopup("info", "이 댓글을 공개하시겠습니까?"));                                                                                    
@@ -232,6 +249,22 @@ function Comments(props){
                                                                     </text>
                                                             }
                                                         </div>
+
+                                                        {/* 답글 추가하기 부분 */}
+                                                        {
+                                                            item.comment_class && item
+                                                            ?   null
+                                                            :   <div className='start-align' style={{marginTop:'10px'}}>
+                                                                    <text 
+                                                                        className='Semi hover-text'
+                                                                        onClick={()=>{
+                                                                            setisReply({'isactive': true, 'comment_id': item.id})
+                                                                        }}
+                                                                    >
+                                                                    답글 추가하기
+                                                                    </text>
+                                                                </div>
+                                                        }
                                                     
                                                     </div>
                                                 </div>
@@ -239,44 +272,113 @@ function Comments(props){
                                         )
                                     })
                                 }
+
+                                {/* 새로운 대댓글 추가 부분 */}
+                                {
+                                    isReply.isactive && isReply.comment_id == group[0].id
+                                    ?   <div className='row-fill-container end-align'>
+                                            <div className='ReplyComment-item row-fill-container' style={{padding:'10px'}}>
+                                                
+                                                {/* 새로운 대댓글 작성 부분 */}
+                                                <textarea
+                                                    className='row-fill-container'
+                                                    value={NewReplyCommentMsg}
+                                                    onChange={(e)=>{
+                                                        setNewReplyCommentMsg(e.target.value)
+                                                    }}
+                                                    style={{minHeight:'100px', overflow:'auto', resize:'none', marginBottom:'5px'}}
+                                                />
+
+                                                {/* 대댓글 추가 버튼*/}
+                                                <div className='end-align'>
+                                                    <button 
+                                                        className='Button-Sm'
+                                                        onClick={()=>{
+                                                            if(islogin){
+                                                                props.setok(()=>()=>{
+                                                                    dispatch(AddReplyCommentAPI(props.study_id, isReply.comment_id,NewReplyCommentMsg));
+                                                                    dispatch(UnActivePopup());
+    
+                                                                    // 새로운 댓글 내용 초기화
+                                                                    setisReply({'isactive': false, 'comment_id': ''});
+                                                                    setNewCommentMsg('');
+                                                                    
+                                                                    // 댓글목록 다시 받아오기
+                                                                    setTimeout(()=>{dispatch(GetCommentsAPI(props.study_id, setCommentData))},500);
+                                                                });
+                                                                props.setno(()=>()=>{dispatch(UnActivePopup())});
+                                                                dispatch(ActiveConfirmPopup("info", "이 댓글 대댓글을 추가하시겠습니까?"));                                                                                    
+                                                            }
+                                                            else{
+                                                                dispatch(ActivePopup("error", "대댓글 추가는 로그인 후 사용가능합니다.\n로그인 후 시도해주세요."));
+                                                                dispatch(UnActivePopup(2));
+                                                                
+                                                                // 대댓글 옵션 초기화
+                                                                setisReply({'isactive': false, 'comment_id': ''});
+                                                                setNewReplyCommentMsg('');
+                                                            }
+                                                        }}
+                                                    >
+                                                    대댓글 추가
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    : null
+                                }
                             </>
                         )
                     })
                 }
 
-                {/* 댓글 추가 부분 */}
+                {/* 새로운 댓글 추가 부분 */}
                 <div className='Comment-item' style={{padding:'10px'}}>
+
+                    {/* 새로운 댓글 작성 부분 */}
                     <textarea
                         className='row-fill-container'
-                        value={EditCommentMsg}
+                        value={NewCommentMsg}
                         onChange={(e)=>{
-                            setEditCommentMsg(e.target.value)
+                            setNewCommentMsg(e.target.value)
                         }}
                         style={{minHeight:'100px', overflow:'auto', resize:'none', marginBottom:'5px'}}
                     />
 
                     {/* 댓글 추가 버튼*/}
-                    <button 
-                        className='Button-Sm'
-                        onClick={()=>{
-                            props.setok(()=>()=>{
-                                dispatch((props.study_id, user_index, EditCommentMsg));
-                                dispatch(UnActivePopup());
+                    <div className='end-align'>
+                        <button 
+                            className='Button-Sm'
+                            onClick={()=>{
+                                if(islogin){
+                                    props.setok(()=>()=>{
+                                        dispatch(AddCommentAPI(props.study_id, NewCommentMsg));
+                                        dispatch(UnActivePopup());
 
-                                // 수정 옵션 초기화
-                                setisEdit({'isactive': false, 'comment_id': ''});
-                                setEditCommentMsg('');
-                                
-                                // 댓글목록 다시 받아오기
-                                setTimeout(()=>{dispatch(GetCommentsAPI(props.study_id, setCommentData))},500);
-                            });
-                            props.setno(()=>()=>{dispatch(UnActivePopup())});
-                            dispatch(ActiveConfirmPopup("info", "이 댓글을 추가하시겠습니까?"));                                                                                    
-                        }}
-                    >
-                    댓글 추가
-                    </button>
+                                        // 새로운 댓글 내용 초기화
+                                        setNewCommentMsg('');
+                                        
+                                        // 댓글목록 다시 받아오기
+                                        setTimeout(()=>{dispatch(GetCommentsAPI(props.study_id, setCommentData))},500);
+                                    });
+                                    props.setno(()=>()=>{dispatch(UnActivePopup())});
+                                    dispatch(ActiveConfirmPopup("info", "이 댓글을 추가하시겠습니까?"));
+                                }
+                                else{
+                                    dispatch(ActivePopup("error", "대댓글 추가는 로그인 후 사용가능합니다.\n로그인 후 시도해주세요."));
+                                    dispatch(UnActivePopup(2));
+                                    
+                                    // 댓글내용 초기화
+                                    setNewCommentMsg('');
+                                }                                                                                    
+                            }}
+                        >
+                        댓글 추가
+                        </button>
+                    </div>
+
                 </div>
+
             </div>
         </div>
     )

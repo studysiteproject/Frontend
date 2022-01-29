@@ -63,6 +63,50 @@ export function DeleteCommentAPI(study_id, comment_id){
     
 }
 
+export function AddCommentAPI(study_id, comment){
+    
+    return function (dispatch){
+        
+        const data = {
+            "comment": comment
+        }
+
+        axios.post(`${process.env.REACT_APP_DJANGO_API_URL}/study/${study_id}/comments`, data, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            return res;
+        })
+        .catch(error=>{
+            dispatch(ActivePopup("error", "댓글 작성에 실패하였습니다."));
+            dispatch(UnActivePopup(2));
+            return error;
+        })
+        
+    }
+    
+}
+
+export function AddReplyCommentAPI(study_id, comment_id, comment){
+    
+    return function (dispatch){
+        
+        const data = {
+            "comment": comment
+        }
+
+        axios.post(`${process.env.REACT_APP_DJANGO_API_URL}/study/${study_id}/comments/${comment_id}/reply`, data, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            return res;
+        })
+        .catch(error=>{
+            dispatch(ActivePopup("error", "대댓글 작성에 실패하였습니다."));
+            dispatch(UnActivePopup(2));
+            return error;
+        })
+        
+    }
+    
+}
+
 export function UpdateCommentVisibleAPI(study_id, comment_id, flag){
     
     return function (dispatch){
