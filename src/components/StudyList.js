@@ -20,9 +20,6 @@ import InfoFrame from './base/InfoFrame';
 
 function StudyList(props){
 
-    const [ok, setok] = useState(()=>()=>{});
-    const [no, setno] = useState(()=>()=>{});
-
     if (props.studylistlenth > 0){
         return(
             <>
@@ -37,8 +34,8 @@ function StudyList(props){
                                         <Item 
                                             item={item}
                                             option={props.option}
-                                            setok={setok}
-                                            setno={setno}
+                                            setok={props.setok}
+                                            setno={props.setno}
                                             ismain={props.ismain}
                                             setisUsersView={props.setisUsersView}
                                         />
@@ -53,8 +50,8 @@ function StudyList(props){
                                     ? <Item 
                                         item={item}
                                         option={props.option}
-                                        setok={setok}
-                                        setno={setno}
+                                        setok={props.setok}
+                                        setno={props.setno}
                                         ismain={props.ismain}
                                         setisUsersView={props.setisUsersView}
                                     />
@@ -65,7 +62,6 @@ function StudyList(props){
                         })
                     }
                 </div>
-                <PopupConfirm ok={ok} no={no}/>
             </>
         );
     }

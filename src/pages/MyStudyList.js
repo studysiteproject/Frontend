@@ -289,6 +289,8 @@ function MyStudyListPage(){
                                 option={option}
                                 ismain={false}
                                 setisUsersView={setisUsersView}
+                                setok={setok}
+                                setno={setno}
                             />
                             
                         </div>
