@@ -219,11 +219,11 @@ export function PasswordResetPage(){
                                 </div>
 
                                 {/* 패스워드 확인 입력창 */}
-                                <div className="password">
+                                <div className="item">
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                         <text>패스워드 확인</text>
                                     </div>
-                                    <input type="text" 
+                                    <input type="password" 
                                         onChange={(e)=>{setcheckpw(e.target.value)}} 
                                         className="Register-View-input-info check" 
                                         placeholder="패스워드 확인을 위해 다시 입력해주세요."
