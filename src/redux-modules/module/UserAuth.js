@@ -77,3 +77,51 @@ export function SendAuthEmail(email){
     }
 
 }
+
+export function SendPasswordResetPageEmail(user_id, email){
+
+    return function (dispatch){
+
+        // 이메일 인증 API 호출
+        axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/auth/password/reset/send?user_id=${user_id}&user_email=${email}`, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "패스워드 초기화 메일 전송에 성공하였습니다.\n입력하신 메일에 전송된 패스워드 초기화 페이지 URL을 확인해주세요."));
+            dispatch(UnActivePopup(2));
+            return res;
+        })
+        .catch(error => {
+            dispatch(ActivePopup("error", "패스워드 초기화 메일 전송에 실패하였습니다."));
+            dispatch(UnActivePopup(2));
+            return error;
+        });
+
+    }
+
+}
+
+export function PasswordReset(token, new_pw, check_pw){
+
+    return function (dispatch){
+
+        const data = {
+            "password_reset_page_auth_token": token,
+            "new_user_pw": new_pw,
+            "check_new_pw": check_pw
+        }
+
+        // 이메일 인증 API 호출
+        axios.post(`${process.env.REACT_APP_DJANGO_API_URL}/auth/password/reset`, data, { withCredentials: true, credentials: "include" })
+        .then(res => {
+            dispatch(ActivePopup("info", "패스워드 초기화에 성공하였습니다.\n다시 로그인을 진행해주세요."));
+            dispatch(UnActivePopup(2));
+            return res;
+        })
+        .catch(error => {
+            dispatch(ActivePopup("error", "패스워드 초기화에 실패하였습니다."));
+            dispatch(UnActivePopup(2));
+            return error;
+        });
+
+    }
+
+}

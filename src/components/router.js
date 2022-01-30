@@ -14,6 +14,7 @@ import SettingsPage from "../pages/Settings";
 import StudyEditPage from "../pages/StudyEdit";
 import TESTPAGE from "../pages/TEST";
 import StudyDetailPage from "../pages/StudyDetail";
+import { PasswordResetPage, PasswordResetReqPage } from "../pages/PasswordReset";
 
 export default () => (
     <BrowserRouter>
@@ -31,6 +32,8 @@ export default () => (
             <Route path='/study/manage' element={<MyStudyListPage/>}></Route>
             <Route path='/auth/email/resend' element={<EmailReAuthPage/>}></Route>
             <Route path='/auth/email/:token' element={<EmailAuthPage/>}></Route>
+            <Route path='/auth/password/reset' element={<PasswordResetReqPage/>}></Route>
+            <Route path='/auth/password/reset/:token' element={<PasswordResetPage/>}></Route>
         </Routes>
         <BasePage/>
     </BrowserRouter>

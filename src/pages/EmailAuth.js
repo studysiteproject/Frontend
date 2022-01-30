@@ -12,7 +12,7 @@ function EmailAuthPage(){
 
     function VerifyAuthEmail(token){
         
-        // 회원가입 API 호출
+        // 이메일 인증 API 호출
         axios.get(`${process.env.REACT_APP_DJANGO_API_URL}/auth/email/verify?user_mail_auth_token=${token}`, { withCredentials: true, credentials: "include" })
         .then(res => {
             dispatch(ActivePopup("info", "계정 활성화에 성공하였습니다!"));

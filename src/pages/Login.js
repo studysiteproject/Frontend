@@ -67,7 +67,7 @@ function LoginPage(){
                                 
                                 {/* 이동 버튼 */}
                                 <ul className="Login-View-input-links">
-                                    <li className="text"><Link to="/" style={{ textDecoration: 'none', color: '#222222' }}>비밀번호 찾기</Link></li>
+                                    <li className="text"><Link to="/auth/password/reset" style={{ textDecoration: 'none', color: '#222222' }}>비밀번호 찾기</Link></li>
                                     <li className="text"><Link to="/register" style={{ textDecoration: 'none', color: '#222222' }}>회원가입</Link></li>
                                     <li className="text"><Link to="/auth/email/resend" style={{ textDecoration: 'none', color: '#222222' }}>이메일 인증하기</Link></li>
                                 </ul>

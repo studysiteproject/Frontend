@@ -35,7 +35,7 @@ function EmailReAuthPage(){
         dispatch(IsLoginAPI());
     },[])
 
-    // 입력값이 변할때 마다 회원가입이 가능한지 확인
+    // 입력값이 변할때 마다 요청이 가능한지 확인
     useEffect(()=>{
         if (ableemail){
             setablesubmit(true);
@@ -58,7 +58,7 @@ function EmailReAuthPage(){
                     <InfoFrame width={'50%'}>
                         <div className="Register-View-input-info">
 
-                            {/* 회원가입을 위한 정보 입력창 */}
+                            {/* 요청을 위한 정보 입력창 */}
                             <form>
 
                                 {/* 이메일 입력창 */}
@@ -79,10 +79,10 @@ function EmailReAuthPage(){
 
                             </form>
 
-                            {/* 회원가입 버튼 */}
+                            {/* 요청 버튼 */}
                             <div class="Register-View-input-button" style={{marginTop: '10px'}}>
 
-                                {/* 모든 데이터를 정상적으로 입력하면 회원가입 버튼이 활성화된다. */}
+                                {/* 모든 데이터를 정상적으로 입력하면 요청 버튼이 활성화된다. */}
                                 {
                                     ablesubmit
                                     ? <button type="submit" className="Button-Md" 

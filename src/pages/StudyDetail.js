@@ -114,6 +114,8 @@ function StudyDetailPage(){
 
     return(
         <>
+            
+
             <Header/>
                 <div className='Study-Detail-Frame' style={{minWidth:'1000px'}}>
 
@@ -350,7 +352,7 @@ function StudyDetailPage(){
             <Footer/>
 
             <PopupConfirm ok={ok} no={no}/>
-            
+
             {/* 유저 프로필 팝업 부분 */}
             {
                 isProfileView.isactive

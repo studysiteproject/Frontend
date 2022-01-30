@@ -47,7 +47,8 @@ export function PopupInfo(props){
 
     var Frame_style = {
         padding:'auto',
-        overflow:'auto'
+        overflow:'auto',
+        zIndex:'1'
     }
     
     // 정해진 width 값이 존재하는 경우
