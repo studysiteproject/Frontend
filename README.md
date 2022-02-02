@@ -10,7 +10,7 @@
 
 **사이트 링크** : [https://catchstudys.com/](https://catchstudys.com/)
 
-- [백엔드(Django) Github](https://github.com/studysiteproject/DjangoAPI/blob/master/README.md)
+- [백엔드(Django) Github](https://github.com/studysiteproject/DjangoAPI)
 
 - [백엔드(Spring) Github]()
 
