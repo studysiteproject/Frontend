@@ -18,7 +18,7 @@ function InfoFrame(props){
     return (
         <div className="Info-Frame" style={Frame_style}>
             <div className="Info-Logo">
-                <img className="Logo" src="/img/docker.svg" />
+                <img className="Logo" src="/img/logo.svg" />
                 <div className="Info-View">
                     {props.children}
                 </div>

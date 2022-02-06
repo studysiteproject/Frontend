@@ -7,7 +7,6 @@ import OverlayTrigger from 'rsuite/esm/Overlay/OverlayTrigger';
 import options from '../../data/options';
 import { BasicInfo } from '../../data/profile';
 import { URL_TYPE_REGEX } from '../../data/regex';
-import TESTPAGE from '../../pages/TEST';
 import { UnActivePopup } from '../../redux-modules/module/InfoManage';
 import { GetUserProfileAPI, GetUserResumeAPI } from '../../redux-modules/module/UserManage';
 import { CheckUserInfo } from '../util/Checkinfo';

@@ -12,7 +12,6 @@ import StudyAddPage from "../pages/StudyAdd";
 import BasePage from "./base/base";
 import SettingsPage from "../pages/Settings";
 import StudyEditPage from "../pages/StudyEdit";
-import TESTPAGE from "../pages/TEST";
 import StudyDetailPage from "../pages/StudyDetail";
 import { PasswordResetPage, PasswordResetReqPage } from "../pages/PasswordReset";
 
@@ -20,7 +19,6 @@ export default () => (
     <BrowserRouter>
         <Routes>
             <Route path='/' element={<MainPage/>}></Route>
-            <Route path='/test' element={<TESTPAGE/>}></Route>
             <Route path='/login' element={<LoginPage/>}></Route>
             <Route path='/logout' element={<LogoutPage/>}></Route>
             <Route path='/profile' element={<ProfilePage/>}></Route>

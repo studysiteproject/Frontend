@@ -18,7 +18,7 @@ function Header() {
             <div className="Header">
                 <div className="logo-div">
                     <Link to="/">
-                        <img className="logo-img" src="/img/docker.svg"></img>
+                        <img className="logo-img" src="/img/logo2.svg"></img>
                     </Link>
                 </div>
                 <nav>
@@ -61,7 +61,7 @@ function Header() {
             <div className="Header">
                 <div className="logo-div">
                     <Link to="/">
-                        <img className="logo-img" src="/img/docker.svg"></img>
+                        <img className="logo-img" src="/img/logo2.svg"></img>
                     </Link>
                 </div>
                 <nav>
