@@ -56,19 +56,19 @@
 
 - 모집 인원과 설명을 같이 작성할 수 있습니다.
   
-    ![스터디 생성.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/6a82f93c-af96-4e6e-850d-f0ad2bb8e8da/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2022-02-02_23.03.41.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220202%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220202T145433Z&X-Amz-Expires=86400&X-Amz-Signature=6b1fb48b928953d20891e3343cff0877991d3c819f3a89add28e8baa472611e5&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA%25202022-02-02%252023.03.41.png%22&x-id=GetObject)
+    ![스터디 생성.png](./img/study_add.png)
 
 <br>
 
 - 작성된 스터디에 댓글 작성과 즐겨찾기가 가능합니다.
 
-![댓글_즐겨찾기.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/198243e0-d0cc-4bfb-aeec-02cbc1339cbf/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2022-02-02_23.10.19.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220202%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220202T145503Z&X-Amz-Expires=86400&X-Amz-Signature=ef549a13a3b7c9f3e2456b2f249e226f239141ec49a01700ea3386965a0469a4&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA%25202022-02-02%252023.10.19.png%22&x-id=GetObject)
+![댓글_즐겨찾기.png](./img/comment_favorite.png)
 
 <br>
 
 - 내가 생성하거나 참가한 스터디를 관리할 수 있습니다.
   
-    ![스터디관리.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/6d8d2796-f5de-4ed9-a04e-72f535038ea7/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2022-02-02_23.26.06.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220202%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220202T145529Z&X-Amz-Expires=86400&X-Amz-Signature=12fa308109652702d8d85c3e8cf7d35474cfe638604ed216f1df71f7400a9480&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA%25202022-02-02%252023.26.06.png%22&x-id=GetObject)
+    ![스터디관리.png](./img/manage.png)
     
 
 <br>
@@ -77,7 +77,7 @@
 
 - 유저가 어떤 기술을 사용할 수 있는지, 블로그와 같은 URL은 어떤게 있는지 확인할 수 있습니다.
 
-  ![프로필.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/dd23482b-019a-4e5e-bfc2-d84d64b42228/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2022-02-02_23.48.38.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220202%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220202T145621Z&X-Amz-Expires=86400&X-Amz-Signature=4f7c3448476258933e43a2dbafe0058d76554b446bf773b69aaf80df6a06a886&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA%25202022-02-02%252023.48.38.png%22&x-id=GetObject)
+  ![프로필.png](./img/profile.png)
 
 <br>
 
@@ -85,7 +85,7 @@
 
 ---
 
-![프로젝트_구조.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/b6379438-df61-4793-a203-43baf356da6d/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3_%E1%84%83%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A5%E1%84%80%E1%85%B3%E1%84%85%E1%85%A2%E1%86%B7.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220202%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220202T145638Z&X-Amz-Expires=86400&X-Amz-Signature=5cf41a9823c47714e4155b946525a5283c38c13cdbcff940fff1753053f60979&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2591%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A6%25E1%2586%25A8%25E1%2584%2590%25E1%2585%25B3_%25E1%2584%2583%25E1%2585%25A1%25E1%2584%258B%25E1%2585%25B5%25E1%2584%258B%25E1%2585%25A5%25E1%2584%2580%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25A2%25E1%2586%25B7.png%22&x-id=GetObject)
+![프로젝트_구조.png](./img/project.png)
 
 <br>
 
