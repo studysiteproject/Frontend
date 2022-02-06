@@ -239,3 +239,17 @@ export default combineReducers({
 현재 캐치 스터디는 PC로 접속하였을 때만 정상적으로 확인이 가능하며, 작은 화면이나 모바일에서 접속하면 일부분이 잘리는 문제가 발생합니다. 
 
 보완할 수 있는 기회가 된다면 모바일에서도 정상적으로 사용 가능하도록 반응형 웹으로 만들어보고 싶습니다.
+
+
+<br/>
+
+
+### **이미지 출처**
+
+프로젝트에 사용된 아이콘, 이미지의 출처입니다.
+
+ICON : https://github.com/krystonschwarze/coolicons
+
+메인 베너의 그림 : https://pin.it/YrPoJfE
+
+---
